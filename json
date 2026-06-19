@@ -1,1 +1,0 @@
-UPDATE app_data SET data = '<paste JSON here>'::jsonb WHERE id = 'fintiv_main';
