@@ -212,6 +212,48 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 
+
+<!-- 2FA VERIFICATION SCREEN -->
+<div id="mfa-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:10000;align-items:center;justify-content:center;flex-direction:column">
+  <div style="background:var(--surface);border-radius:20px;padding:40px 48px;width:min(420px,92vw);box-shadow:0 24px 64px rgba(59,31,43,.18);border:1px solid var(--border);text-align:center">
+    <div style="font-size:2.4rem;margin-bottom:12px">🔐</div>
+    <h2 style="font-family:'Playfair Display',serif;color:var(--primary);font-size:1.3rem;margin:0 0 6px">Two-Factor Authentication</h2>
+    <p style="color:var(--text-muted);font-size:.82rem;margin:0 0 24px">Enter the 6-digit code from your authenticator app</p>
+    <div id="mfa-error" style="display:none;background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:8px;font-size:.82rem;margin-bottom:14px;border:1px solid #fca5a5"></div>
+    <input type="text" id="mfa-code" maxlength="6" placeholder="000000"
+      style="width:100%;text-align:center;font-size:1.8rem;letter-spacing:10px;padding:14px;border:2px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--text);font-family:monospace;box-sizing:border-box;margin-bottom:16px"
+      oninput="this.value=this.value.replace(/\D/g,'')"
+      onkeydown="if(event.key==='Enter')verifyMFACode()">
+    <button class="btn btn-primary" style="width:100%;padding:11px;font-size:.9rem;justify-content:center" onclick="verifyMFACode()" id="mfa-btn">Verify</button>
+    <p style="margin:14px 0 0;font-size:.76rem;color:var(--text-muted)">
+      <a href="#" onclick="cancelMFA(event)" style="color:var(--primary-light);text-decoration:none">← Back to login</a>
+    </p>
+  </div>
+  <p style="margin-top:20px;font-size:.72rem;color:var(--text-muted);opacity:.7">I-BG Group · Confidential</p>
+</div>
+
+
+<!-- PASSWORD RESET SCREEN -->
+<div id="reset-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:10000;align-items:center;justify-content:center;flex-direction:column">
+  <div style="background:var(--surface);border-radius:20px;padding:40px 48px;width:min(420px,92vw);box-shadow:0 24px 64px rgba(59,31,43,.18);border:1px solid var(--border);text-align:center">
+    <div style="font-size:2.4rem;margin-bottom:12px">🔑</div>
+    <h2 style="font-family:'Playfair Display',serif;color:var(--primary);font-size:1.3rem;margin:0 0 6px">Set New Password</h2>
+    <p style="color:var(--text-muted);font-size:.82rem;margin:0 0 24px">Choose a strong password for your account</p>
+    <div id="reset-error" style="display:none;background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:8px;font-size:.82rem;margin-bottom:14px;border:1px solid #fca5a5"></div>
+    <div id="reset-success" style="display:none;background:#dcfce7;color:#166534;padding:10px 14px;border-radius:8px;font-size:.82rem;margin-bottom:14px;border:1px solid #bbf7d0"></div>
+    <div class="form-group" style="margin-bottom:12px;text-align:left">
+      <label style="font-size:.8rem">New Password</label>
+      <input type="password" id="reset-pw1" placeholder="Min. 8 characters" style="width:100%" onkeydown="if(event.key==='Enter')doPasswordReset()">
+    </div>
+    <div class="form-group" style="margin-bottom:22px;text-align:left">
+      <label style="font-size:.8rem">Confirm Password</label>
+      <input type="password" id="reset-pw2" placeholder="Repeat password" style="width:100%" onkeydown="if(event.key==='Enter')doPasswordReset()">
+    </div>
+    <button class="btn btn-primary" style="width:100%;padding:11px;font-size:.9rem;justify-content:center" onclick="doPasswordReset()" id="reset-btn">Set Password</button>
+  </div>
+  <p style="margin-top:20px;font-size:.72rem;color:var(--text-muted);opacity:.7">I-BG Group · Confidential</p>
+</div>
+
 <!-- SIDEBAR -->
 <div id="sidebar">
   <div class="logo">
@@ -661,6 +703,36 @@ tr:hover td{background:var(--surface2)}
           <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
         </div>
       </div>
+
+      <div class="card mt-4" id="mfa-settings-card">
+        <div class="card-header">
+          <h3>🔐 Two-Factor Authentication (2FA)</h3>
+          <span id="mfa-status-badge" style="font-size:.75rem;padding:3px 10px;border-radius:12px;background:#dcfce7;color:#166534">Checking…</span>
+        </div>
+        <div class="card-body">
+          <p style="color:var(--text-muted);font-size:.85rem;margin:0 0 16px">Protect your account with an authenticator app (Google Authenticator, Authy, 1Password, etc.)</p>
+          <div id="mfa-enroll-section" style="display:none">
+            <p style="font-size:.85rem;margin-bottom:12px">Scan this QR code with your authenticator app, then enter the 6-digit code to confirm:</p>
+            <div style="text-align:center;margin-bottom:16px">
+              <img id="mfa-qr-img" src="" alt="QR Code" style="width:180px;height:180px;border:4px solid var(--border);border-radius:12px;background:#fff">
+              <p style="font-size:.72rem;color:var(--text-muted);margin:8px 0 0">Can't scan? Manual key: <code id="mfa-secret-key" style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-size:.75rem"></code></p>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <input type="text" id="mfa-confirm-code" maxlength="6" placeholder="Enter 6-digit code"
+                style="flex:1;text-align:center;font-size:1.2rem;letter-spacing:6px;padding:10px;border:2px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);font-family:monospace"
+                oninput="this.value=this.value.replace(/\D/g,'')"
+                onkeydown="if(event.key==='Enter')confirmMFAEnroll()">
+              <button class="btn btn-primary" onclick="confirmMFAEnroll()" id="mfa-confirm-btn">Activate 2FA</button>
+              <button class="btn btn-outline" onclick="cancelMFAEnroll()">Cancel</button>
+            </div>
+            <p id="mfa-enroll-error" style="display:none;color:#dc2626;font-size:.8rem;margin-top:8px"></p>
+          </div>
+          <div id="mfa-action-btns">
+            <button class="btn btn-primary" id="mfa-enable-btn" onclick="startMFAEnroll()" style="display:none">Enable 2FA</button>
+            <button class="btn btn-danger" id="mfa-disable-btn" onclick="disableMFA()" style="display:none">Remove 2FA</button>
+          </div>
+        </div>
+      </div>
       <div class="card mt-4">
         <div class="card-header"><h3>Data Management</h3></div>
         <div class="card-body">
@@ -996,15 +1068,16 @@ tr:hover td{background:var(--surface2)}
 <script>
 // ===================== SUPABASE CONFIG =====================
 // TODO: Replace these with your actual Supabase project values
-const SUPABASE_URL  = 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL  = 'https://zkklsfpqbbzsyrmrghib.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpra2xzZnBxYmJ6c3lybXJnaGliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NTI2ODQsImV4cCI6MjA5NzQyODY4NH0.ccaFZWFs_p8Vxc4QAWD3ptmXvbb7V7mx874HWReyhbk';
 const DB_ROW_ID     = 'ibg_main';
 
 let _sb   = null;   // Supabase client
-let _user = null;   // signed-in user
+let _user = null;
+let _isAdmin = false;   // signed-in user
 
 function _initSupabase(){
-  if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
+  if(SUPABASE_URL !== 'https://zkklsfpqbbzsyrmrghib.supabase.co'){
     _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     return true;
   }
@@ -1149,6 +1222,7 @@ function showPage(name){
   if(name==='quotes') renderQuotes();
   if(name==='purchaseorders') renderPurchaseOrders();
   if(name==='budgets') renderBudgets();
+  if(name==='settings' && _sb) loadMFAStatus();
 }
 
 // ===================== HELPERS =====================
@@ -2326,7 +2400,13 @@ function _showApp(email){
   const lb = document.getElementById('logout-btn');
   if(lb) lb.style.display = 'inline-flex';
   const sf = document.querySelector('.sidebar-footer');
-  if(sf) sf.innerHTML = (email||'Local Mode') + '<br><span style="opacity:.38;font-size:.62rem">Fintiv v2.0</span>';
+  const adminBadge = _isAdmin ? ' <span style="background:var(--accent);color:#fff;font-size:.55rem;padding:1px 5px;border-radius:3px;vertical-align:middle;font-family:Raleway,sans-serif;letter-spacing:.5px">ADMIN</span>' : '';
+  if(sf) sf.innerHTML = (email||'Local Mode') + adminBadge + '<br><span style="opacity:.38;font-size:.62rem">Fintiv v2.0</span>';
+  // Show/hide Settings nav based on admin role
+  const settingsNav = document.querySelector('a[onclick="showPage('settings')"]');
+  const settingsSection = settingsNav ? settingsNav.previousElementSibling : null;
+  if(settingsNav) settingsNav.style.display = _isAdmin ? '' : 'none';
+  if(settingsSection && settingsSection.classList.contains('nav-section')) settingsSection.style.display = _isAdmin ? '' : 'none';
 }
 async function doLogin(){
   const email = (document.getElementById('login-email').value||'').trim();
@@ -2337,8 +2417,20 @@ async function doLogin(){
   if(!email||!pw){ err.textContent='Please enter email and password.'; err.style.display='block'; return; }
   btn.textContent='Signing in…'; btn.disabled=true;
   const {error} = await _sb.auth.signInWithPassword({email,password:pw});
-  if(error){ err.textContent=error.message; err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; }
-  // success → onAuthStateChange fires → _showApp
+  if(error){ err.textContent=error.message; err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; return; }
+  // Check if MFA is required
+  const {data:aalData} = await _sb.auth.mfa.getAuthenticatorAssuranceLevel();
+  if(aalData && aalData.nextLevel==='aal2' && aalData.nextLevel!==aalData.currentLevel){
+    // MFA required — show 2FA screen
+    btn.textContent='Sign In'; btn.disabled=false;
+    document.getElementById('login-screen').style.display='none';
+    const mfaScr = document.getElementById('mfa-screen');
+    mfaScr.style.display='flex';
+    document.getElementById('mfa-code').value='';
+    document.getElementById('mfa-error').style.display='none';
+    document.getElementById('mfa-code').focus();
+  }
+  // else: onAuthStateChange fires → _showApp
 }
 async function doLogout(){
   if(_sb){ await _sb.auth.signOut(); }
@@ -2356,6 +2448,155 @@ function startLocalMode(e){
   loadDB();
   _showApp(null);
   renderDashboard();
+}
+
+
+// ===================== 2FA / MFA =====================
+let _mfaFactorId = null;
+let _mfaEnrollId = null;
+let _mfaChallengeId = null;
+
+async function verifyMFACode(){
+  const code = document.getElementById('mfa-code').value.trim();
+  const err  = document.getElementById('mfa-error');
+  const btn  = document.getElementById('mfa-btn');
+  if(code.length!==6){ err.textContent='Please enter a 6-digit code.'; err.style.display='block'; return; }
+  btn.textContent='Verifying…'; btn.disabled=true;
+  err.style.display='none';
+  try{
+    const {data:factors} = await _sb.auth.mfa.listFactors();
+    const totp = factors.totp && factors.totp[0];
+    if(!totp) throw new Error('No 2FA factor found.');
+    const {data:ch, error:chErr} = await _sb.auth.mfa.challenge({factorId:totp.id});
+    if(chErr) throw chErr;
+    const {error:vErr} = await _sb.auth.mfa.verify({factorId:totp.id, challengeId:ch.id, code});
+    if(vErr) throw vErr;
+    // MFA verified — auth state change will fire _showApp
+    document.getElementById('mfa-screen').style.display='none';
+  }catch(e){
+    err.textContent = e.message||'Invalid code. Try again.';
+    err.style.display='block';
+    btn.textContent='Verify'; btn.disabled=false;
+    document.getElementById('mfa-code').value='';
+    document.getElementById('mfa-code').focus();
+  }
+}
+
+function cancelMFA(e){
+  e.preventDefault();
+  document.getElementById('mfa-screen').style.display='none';
+  _showLoginScreen();
+  if(_sb) _sb.auth.signOut();
+}
+
+async function loadMFAStatus(){
+  if(!_sb) return;
+  const badge = document.getElementById('mfa-status-badge');
+  const enableBtn = document.getElementById('mfa-enable-btn');
+  const disableBtn = document.getElementById('mfa-disable-btn');
+  try{
+    const {data:factors} = await _sb.auth.mfa.listFactors();
+    const verified = factors.totp && factors.totp.filter(f=>f.status==='verified');
+    if(verified && verified.length>0){
+      _mfaFactorId = verified[0].id;
+      badge.textContent='Enabled ✓'; badge.style.background='#dcfce7'; badge.style.color='#166534';
+      enableBtn.style.display='none'; disableBtn.style.display='';
+    } else {
+      _mfaFactorId = null;
+      badge.textContent='Not Enabled'; badge.style.background='#fef9c3'; badge.style.color='#854d0e';
+      enableBtn.style.display=''; disableBtn.style.display='none';
+    }
+  }catch(e){ badge.textContent='Unknown'; }
+}
+
+async function startMFAEnroll(){
+  if(!_sb) return;
+  const {data, error} = await _sb.auth.mfa.enroll({factorType:'totp', issuer:'Fintiv', friendlyName:'Fintiv Authenticator'});
+  if(error){ alert('Error starting 2FA setup: '+error.message); return; }
+  _mfaEnrollId = data.id;
+  document.getElementById('mfa-qr-img').src = data.totp.qr_code;
+  document.getElementById('mfa-secret-key').textContent = data.totp.secret;
+  document.getElementById('mfa-enroll-section').style.display='block';
+  document.getElementById('mfa-action-btns').style.display='none';
+  document.getElementById('mfa-confirm-code').value='';
+  document.getElementById('mfa-confirm-code').focus();
+}
+
+async function confirmMFAEnroll(){
+  const code = document.getElementById('mfa-confirm-code').value.trim();
+  const errEl = document.getElementById('mfa-enroll-error');
+  const btn = document.getElementById('mfa-confirm-btn');
+  if(code.length!==6){ errEl.textContent='Enter the 6-digit code from your app.'; errEl.style.display='block'; return; }
+  btn.textContent='Activating…'; btn.disabled=true; errEl.style.display='none';
+  try{
+    const {data:ch, error:chErr} = await _sb.auth.mfa.challenge({factorId:_mfaEnrollId});
+    if(chErr) throw chErr;
+    const {error:vErr} = await _sb.auth.mfa.verify({factorId:_mfaEnrollId, challengeId:ch.id, code});
+    if(vErr) throw vErr;
+    alert('✅ 2FA is now active! You will be asked for a code on every login.');
+    document.getElementById('mfa-enroll-section').style.display='none';
+    document.getElementById('mfa-action-btns').style.display='';
+    await loadMFAStatus();
+  }catch(e){
+    errEl.textContent = e.message||'Invalid code. Try again.';
+    errEl.style.display='block';
+    btn.textContent='Activate 2FA'; btn.disabled=false;
+  }
+}
+
+function cancelMFAEnroll(){
+  if(_mfaEnrollId && _sb) _sb.auth.mfa.unenroll({factorId:_mfaEnrollId}).catch(()=>{});
+  _mfaEnrollId = null;
+  document.getElementById('mfa-enroll-section').style.display='none';
+  document.getElementById('mfa-action-btns').style.display='';
+}
+
+async function disableMFA(){
+  if(!_mfaFactorId){ alert('No 2FA factor found.'); return; }
+  if(!confirm('Remove 2FA from your account? You will no longer be asked for a code on login.')) return;
+  const {error} = await _sb.auth.mfa.unenroll({factorId:_mfaFactorId});
+  if(error){ alert('Error removing 2FA: '+error.message); return; }
+  alert('2FA has been removed from your account.');
+  _mfaFactorId = null;
+  await loadMFAStatus();
+}
+
+
+// ===================== PASSWORD RESET HANDLER =====================
+async function doPasswordReset(){
+  const pw1 = document.getElementById('reset-pw1').value;
+  const pw2 = document.getElementById('reset-pw2').value;
+  const err = document.getElementById('reset-error');
+  const ok  = document.getElementById('reset-success');
+  const btn = document.getElementById('reset-btn');
+  err.style.display='none'; ok.style.display='none';
+  if(pw1.length < 8){ err.textContent='Password must be at least 8 characters.'; err.style.display='block'; return; }
+  if(pw1 !== pw2){ err.textContent='Passwords do not match.'; err.style.display='block'; return; }
+  btn.textContent='Saving…'; btn.disabled=true;
+  const {error} = await _sb.auth.updateUser({password: pw1});
+  if(error){
+    err.textContent = error.message; err.style.display='block';
+    btn.textContent='Set Password'; btn.disabled=false;
+  } else {
+    ok.textContent='✅ Password set successfully! Redirecting to login…';
+    ok.style.display='block'; btn.style.display='none';
+    // Clear the hash and redirect to login after 2s
+    setTimeout(()=>{
+      window.location.hash='';
+      document.getElementById('reset-screen').style.display='none';
+      _showLoginScreen();
+    }, 2000);
+  }
+}
+
+function _checkRecoveryToken(){
+  const hash = window.location.hash;
+  if(hash.includes('type=recovery') && hash.includes('access_token=')){
+    // Supabase will auto-pick up the token via onAuthStateChange PASSWORD_RECOVERY event
+    document.getElementById('reset-screen').style.display='flex';
+    return true;
+  }
+  return false;
 }
 
 // ===================== INIT =====================
@@ -2757,11 +2998,13 @@ function renderCashflowForecast(){
 
 (async function initApp(){
   const sbReady = _initSupabase();
+  if(_checkRecoveryToken()) return; // handled by onAuthStateChange PASSWORD_RECOVERY
   if(sbReady){
     // Check existing session
     const {data:{session}} = await _sb.auth.getSession();
     if(session){
       _user = session.user;
+      _isAdmin = (_user.app_metadata && _user.app_metadata.role === 'admin');
       loadDB();
       await _pullDown();
       _showApp(_user.email);
@@ -2773,12 +3016,18 @@ function renderCashflowForecast(){
     _sb.auth.onAuthStateChange(async (event, session)=>{
       if(event==='SIGNED_IN' && session){
         _user = session.user;
+        _isAdmin = (_user.app_metadata && _user.app_metadata.role === 'admin');
         loadDB();
         await _pullDown();
         _showApp(_user.email);
         renderDashboard();
+      } else if(event==='PASSWORD_RECOVERY'){
+        // Show password reset form
+        document.getElementById('reset-screen').style.display='flex';
+        document.getElementById('login-screen').style.display='none';
       } else if(event==='SIGNED_OUT'){
         _user = null;
+        _isAdmin = false;
         _showLoginScreen();
       }
     });
