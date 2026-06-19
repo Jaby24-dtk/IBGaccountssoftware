@@ -1180,7 +1180,9 @@ let _isAdmin = false;   // signed-in user
 
 function _initSupabase(){
   if(SUPABASE_URL && SUPABASE_ANON){
-    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: { persistSession: false }
+    });
     return true;
   }
   return false;
@@ -1649,6 +1651,7 @@ function renderCharts(){
   // Cash flow
   const cfData = revData.map((r,i)=>r-expData[i]);
   const cumCF = cfData.reduce((acc,v)=>{acc.push((acc[acc.length-1]||0)+v);return acc;},[]);
+  const cfAllZero = cumCF.every(v=>v===0);
   if(charts.cf) charts.cf.destroy();
   charts.cf = new Chart(document.getElementById('cashflowChart'),{
     type:'line',
@@ -1657,7 +1660,12 @@ function renderCharts(){
       borderColor:'#8B3A5A',backgroundColor:'rgba(139,58,90,.1)',fill:true,tension:.4,pointRadius:4
     }]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},
-      scales:{y:{ticks:{callback:v=>sym+Math.round(v).toLocaleString()}}}}
+      scales:{y:{
+        beginAtZero:true,
+        suggestedMin: 0,
+        suggestedMax: cfAllZero ? 100 : undefined,
+        ticks:{callback:v=>sym+Math.round(v).toLocaleString()}
+      }}}
   });
 }
 
