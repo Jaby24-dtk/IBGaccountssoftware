@@ -43,7 +43,7 @@ nav a svg{flex-shrink:0;width:16px;height:16px}
 .nav-section .nav-arrow{font-size:.6rem;transition:transform .2s;opacity:.7}
 .nav-section.collapsed .nav-arrow{transform:rotate(-90deg)}
 .nav-group{overflow:hidden}
-.nav-section.collapsed + .nav-group{display:none !important}
+.nav-section.collapsed + .nav-group{display:none}
 .sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1);font-size:.75rem;opacity:.5}
 
 /* MAIN */
@@ -1154,6 +1154,11 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <script>
+// Sidebar init: ensure nav-groups have explicit display state on load
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.nav-group').forEach(function(g){ g.style.display = ''; });
+});
+
 // ===================== SUPABASE CONFIG =====================
 // TODO: Replace these with your actual Supabase project values
 // Auto-reset if ?cleardata=1 in URL
@@ -1459,7 +1464,15 @@ function confirmResetAllData(){
 }
 
 function toggleNavGroup(sectionEl){
-  sectionEl.classList.toggle('collapsed');
+  const group = sectionEl.nextElementSibling;
+  if(!group || !group.classList.contains('nav-group')) return;
+  if(group.style.display === 'none'){
+    group.style.display = '';
+    sectionEl.classList.remove('collapsed');
+  } else {
+    group.style.display = 'none';
+    sectionEl.classList.add('collapsed');
+  }
 }
 
 function showPage(name){
