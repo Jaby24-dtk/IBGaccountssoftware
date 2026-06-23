@@ -2717,8 +2717,19 @@ async function doLogin(){
     document.getElementById('mfa-code').value='';
     document.getElementById('mfa-error').style.display='none';
     document.getElementById('mfa-code').focus();
+  } else {
+    // No MFA — explicitly show app (don't rely on onAuthStateChange with persistSession:false)
+    const {data:{session}} = await _sb.auth.getSession();
+    if(session){
+      _user = session.user;
+      _isAdmin = (_user.app_metadata && _user.app_metadata.role === 'admin');
+      loadDB();
+      await _pullDown();
+      _showApp(_user.email);
+      renderDashboard();
+    }
+    btn.textContent='Sign In'; btn.disabled=false;
   }
-  // else: onAuthStateChange fires → _showApp
 }
 async function doLogout(){
   if(_sb){ await _sb.auth.signOut(); }
