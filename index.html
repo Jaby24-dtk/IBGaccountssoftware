@@ -308,7 +308,11 @@ tr:hover td{background:var(--surface2)}
       </a>
       <a onclick="showPage('journal')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-        Journal / Ledger
+        Journal
+      </a>
+      <a onclick="showPage('gl')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
+        General Ledger
       </a>
       <a onclick="showPage('coa')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
@@ -332,6 +336,22 @@ tr:hover td{background:var(--surface2)}
       <a onclick="showPage('budgets')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Budget vs Actual
+      </a>
+      <a onclick="showPage('gl-detail')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></svg>
+        GL Detail
+      </a>
+      <a onclick="showPage('gl-summary')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>
+        GL Summary
+      </a>
+      <a onclick="showPage('trial-balance')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><path d="M8 12L5 6l-2 6h10"/><path d="M16 12l-3-6-2 6h10"/><line x1="5" y1="18" x2="19" y2="18"/></svg>
+        Trial Balance
+      </a>
+      <a onclick="showPage('sales-tax')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14l6-6"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><rect x="2" y="2" width="20" height="20" rx="3"/></svg>
+        Sales Tax
       </a>
     </div>
     <div class="nav-section" onclick="toggleNavGroup(this)">Tax &amp; Compliance <span class="nav-arrow">▼</span></div>
@@ -359,6 +379,10 @@ tr:hover td{background:var(--surface2)}
       <a onclick="showPage('xbrl')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         XBRL Filing Report
+      </a>
+      <a onclick="showPage('eci')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        ECI Filing
       </a>
     </div>
     <div class="nav-section" onclick="toggleNavGroup(this)">Settings <span class="nav-arrow">▼</span></div>
@@ -927,6 +951,186 @@ tr:hover td{background:var(--surface2)}
       </div>
     </div>
 
+    <!-- ===== GENERAL LEDGER ===== -->
+    <div id="page-gl" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>General Ledger</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Account:</label>
+            <select id="gl-account" onchange="renderGL()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;min-width:200px"></select>
+            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
+            <select id="gl-year" onchange="renderGL()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+          </div>
+        </div>
+        <div class="card-body" id="gl-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== GL DETAIL ===== -->
+    <div id="page-gl-detail" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>General Ledger — Detail</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
+            <select id="gld-year" onchange="renderGLDetail()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportReport('gld-content')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body" id="gld-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== GL SUMMARY ===== -->
+    <div id="page-gl-summary" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>General Ledger — Summary</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
+            <select id="gls-year" onchange="renderGLSummary()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportReport('gls-content')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body" id="gls-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== TRIAL BALANCE ===== -->
+    <div id="page-trial-balance" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>Trial Balance</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">As of Year:</label>
+            <select id="tb-year" onchange="renderTrialBalance()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportReport('tb-content')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body" id="tb-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== SALES TAX ===== -->
+    <div id="page-sales-tax" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>Sales Tax Report</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
+            <select id="stax-year" onchange="renderSalesTax()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportReport('stax-content')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body" id="stax-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== ECI FILING ===== -->
+    <div id="page-eci" class="page">
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">
+          <h3>Estimated Chargeable Income (ECI) — IRAS Filing</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Year of Assessment:</label>
+            <select id="eci-ya" onchange="renderECI()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <label style="font-size:.8rem;color:var(--text-muted)">Company Type:</label>
+            <select id="eci-scheme" onchange="renderECI()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem">
+              <option value="partial">Partial Tax Exemption</option>
+              <option value="startup">New Start-Up (first 3 YAs)</option>
+            </select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('eci-result')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:16px">
+            ECI must be filed within 3 months from your financial year end. Companies with annual revenue ≤ S$5 million and ECI = NIL are exempt from filing.
+          </p>
+          <!-- Adjustments input panel -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+            <div class="card" style="margin-bottom:0">
+              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">➕ Disallowable Expenses (add back)</h3></div>
+              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Depreciation (book)</label>
+                  <input type="number" id="eci-dep" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">S-plated car transport (disallowed)</label>
+                  <input type="number" id="eci-car" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Rental property tax (disallowed)</label>
+                  <input type="number" id="eci-rptax" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Other disallowable expenses</label>
+                  <input type="number" id="eci-other-dis" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:0">
+              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">➖ Capital Allowances (s19/s19A)</h3></div>
+              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Low-value assets ≤S$1,000 (100%)</label>
+                  <input type="number" id="eci-ca-lva" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Computers / Automation (100%)</label>
+                  <input type="number" id="eci-ca-comp" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">3-year write-off (1/3 this YA)</label>
+                  <input type="number" id="eci-ca-3yr" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Unutilised CA b/f from prior YA</label>
+                  <input type="number" id="eci-ca-bf" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:0">
+              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">🏠 Separate Source Income</h3></div>
+              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Rental income (gross)</label>
+                  <input type="number" id="eci-rental" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Rental property expenses (deductible)</label>
+                  <input type="number" id="eci-rental-exp" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Interest income (foreign-sourced)</label>
+                  <input type="number" id="eci-interest" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:0">
+              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">🌏 Foreign Tax Credit (if claiming)</h3></div>
+              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
+                  <label style="flex:1;color:var(--text-muted)">Foreign withholding tax paid</label>
+                  <input type="number" id="eci-ftc" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
+                </div>
+                <p style="font-size:.75rem;color:var(--text-muted);margin-top:4px">If claiming FTC, IRAS requires you to back-calculate ECI using the ETP formula. The system will compute this automatically.</p>
+              </div>
+            </div>
+          </div>
+          <!-- Result -->
+          <div id="eci-result"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1266,9 +1470,10 @@ tr:hover td{background:var(--surface2)}
 <!-- Journal Modal -->
 <div class="modal-overlay" id="modal-journal">
   <div class="modal">
-    <div class="modal-header"><h3>Journal Entry</h3><button class="modal-close" onclick="closeModal('modal-journal')">&times;</button></div>
+    <div class="modal-header"><h3 id="jrn-modal-title">Journal Entry</h3><button class="modal-close" onclick="closeModal('modal-journal')">&times;</button></div>
     <div class="modal-body">
       <div class="form-grid">
+        <input type="hidden" id="jrn-edit-id">
         <div class="form-group"><label>Date *</label><input type="date" id="jrn-date"></div>
         <div class="form-group"><label>Entry Type</label>
           <select id="jrn-type"><option>General</option><option>Opening</option><option>Adjustment</option><option>Closing</option><option>Accrual</option></select>
@@ -1681,12 +1886,16 @@ const PAGE_TITLES = {
   dashboard:'Dashboard',invoices:'Invoices',payments:'Payments Received',
   expenses:'Expense Register',bills:'Bills & Payables',clients:'Clients & Accounts',
   coa:'Chart of Accounts',
-  journal:'General Journal',pnl:'P&L Statement',balance:'Balance Sheet',
+  journal:'General Journal',gl:'General Ledger',
+  'gl-detail':'GL Detail Report','gl-summary':'GL Summary Report',
+  'trial-balance':'Trial Balance','sales-tax':'Sales Tax Report',
+  pnl:'P&L Statement',balance:'Balance Sheet',
   cashflow:'Cash Flow Statement',quotes:'Quotes & Estimates',purchaseorders:'Purchase Orders',budgets:'Budget vs Actual',settings:'Company Settings',
   // Tax & Compliance
   gst:'GST F5 Return',corptax:'Corporate Tax (Form C-S)',
   ir8a:'IR8A — Employee Remuneration',ir21:'IR21 — Cessation of Employment',
   grants:'Govt Rebates & Grants',xbrl:'XBRL Filing Report',
+  eci:'ECI Filing — IRAS',
 };
 
 function confirmResetAllData(){
@@ -1733,6 +1942,11 @@ function showPage(name){
   if(name==='clients') renderClients();
   if(name==='coa') renderCOA();
   if(name==='journal') renderJournal();
+  if(name==='gl') renderGL();
+  if(name==='gl-detail') renderGLDetail();
+  if(name==='gl-summary') renderGLSummary();
+  if(name==='trial-balance') renderTrialBalance();
+  if(name==='sales-tax') renderSalesTax();
   if(name==='pnl') renderPnL();
   if(name==='balance') renderBalance();
   if(name==='cashflow') renderCashflow();
@@ -1747,6 +1961,7 @@ function showPage(name){
   if(name==='ir21') renderIR21();
   if(name==='grants') renderGrants();
   if(name==='xbrl') renderXBRL();
+  if(name==='eci') renderECI();
 }
 
 // ===================== HELPERS =====================
@@ -2413,35 +2628,61 @@ function deleteClient(id){
 // ===================== JOURNAL =====================
 function renderJournal(){
   const q=(document.getElementById('jrn-search').value||'').toLowerCase();
-  const list=DB.journal.filter(j=>(j.desc+j.debitAcc+j.creditAcc+j.ref).toLowerCase().includes(q));
+  const list=DB.journal.filter(j=>(j.desc+j.debitAcc+j.creditAcc+(j.ref||'')).toLowerCase().includes(q));
   document.getElementById('journal-table').innerHTML=list.length?`
     <table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Debit Account</th><th>Debit</th><th>Credit Account</th><th>Credit</th><th>Ref</th><th></th></tr></thead>
     <tbody>${list.map(j=>`<tr>
-      <td>${j.date}</td>
-      <td><span class="pill">${j.type}</span></td>
-      <td>${j.desc}</td>
-      <td>${j.debitAcc}</td>
-      <td style="color:var(--primary-light);font-weight:600">${fmt(j.debitAmt,j.currency)}</td>
-      <td>${j.creditAcc}</td>
-      <td style="color:var(--danger);font-weight:600">${fmt(j.creditAmt,j.currency)}</td>
+      <td>${j.date||''}</td>
+      <td><span class="pill">${j.type||'General'}</span></td>
+      <td>${j.desc||''}</td>
+      <td style="font-size:.8rem">${_codeToName(j.debitAcc)} <span style="opacity:.5">(${j.debitAcc})</span></td>
+      <td style="color:var(--primary-light);font-weight:600;text-align:right">${fmt(j.debitAmt,j.currency)}</td>
+      <td style="font-size:.8rem">${_codeToName(j.creditAcc)} <span style="opacity:.5">(${j.creditAcc})</span></td>
+      <td style="color:var(--danger);font-weight:600;text-align:right">${fmt(j.creditAmt,j.currency)}</td>
       <td class="text-muted">${j.ref||'—'}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteJournal('${j.id}')">✕</button></td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-outline btn-sm" onclick="editJournal('${j.id}')" title="Edit">✏</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteJournal('${j.id}')">✕</button>
+      </td>
     </tr>`).join('')}</tbody></table>`
-  :'<div class="empty-state"><p>No journal entries.</p></div>';
+  :'<div class="empty-state"><p>No journal entries. Click "+ Journal Entry" to add one.</p></div>';
 }
 
 function openJournalModal(){
   populateCOASelects();
+  document.getElementById('jrn-modal-title').textContent='New Journal Entry';
+  document.getElementById('jrn-edit-id').value='';
   document.getElementById('jrn-date').value=new Date().toISOString().slice(0,10);
-  ['jrn-desc','jrn-debit-acc','jrn-credit-acc','jrn-ref'].forEach(id=>document.getElementById(id).value='');
+  ['jrn-desc','jrn-ref'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('jrn-debit-acc').value='';
+  document.getElementById('jrn-credit-acc').value='';
   document.getElementById('jrn-debit-amt').value='';
   document.getElementById('jrn-credit-amt').value='';
+  document.getElementById('jrn-type').value='General';
+  document.getElementById('modal-journal').classList.add('open');
+}
+
+function editJournal(id){
+  const j=DB.journal.find(x=>x.id===id);
+  if(!j) return;
+  populateCOASelects();
+  document.getElementById('jrn-modal-title').textContent='Edit Journal Entry';
+  document.getElementById('jrn-edit-id').value=id;
+  document.getElementById('jrn-date').value=j.date||'';
+  document.getElementById('jrn-type').value=j.type||'General';
+  document.getElementById('jrn-desc').value=j.desc||'';
+  document.getElementById('jrn-debit-acc').value=j.debitAcc||'';
+  document.getElementById('jrn-debit-amt').value=j.debitAmt||'';
+  document.getElementById('jrn-credit-acc').value=j.creditAcc||'';
+  document.getElementById('jrn-credit-amt').value=j.creditAmt||'';
+  document.getElementById('jrn-currency').value=j.currency||'SGD';
+  document.getElementById('jrn-ref').value=j.ref||'';
   document.getElementById('modal-journal').classList.add('open');
 }
 
 function saveJournalEntry(){
-  const j={
-    id:`JRN-${String(DB.nextJrnNum).padStart(3,'0')}`,
+  const editId=document.getElementById('jrn-edit-id').value;
+  const data={
     date:document.getElementById('jrn-date').value,
     type:document.getElementById('jrn-type').value,
     desc:document.getElementById('jrn-desc').value,
@@ -2452,8 +2693,14 @@ function saveJournalEntry(){
     currency:document.getElementById('jrn-currency').value,
     ref:document.getElementById('jrn-ref').value,
   };
-  if(!j.desc){alert('Description required.');return;}
-  DB.journal.push(j); DB.nextJrnNum++;
+  if(!data.desc){alert('Description required.');return;}
+  if(editId){
+    const idx=DB.journal.findIndex(j=>j.id===editId);
+    if(idx>-1) DB.journal[idx]={...DB.journal[idx],...data};
+  } else {
+    DB.journal.push({id:`JRN-${String(DB.nextJrnNum).padStart(3,'0')}`,...data});
+    DB.nextJrnNum++;
+  }
   saveDB(); closeModal('modal-journal'); renderJournal();
 }
 
@@ -4314,6 +4561,553 @@ function _buildXBRL(s,fy,revenue,totalExp,netProfit,corpTax,netPAT,totalAssets,t
   <acra:Equity contextRef="${d}" decimals="2">${equity.toFixed(2)}</acra:Equity>
 
 </xbrli:xbrl>`;
+}
+
+// ===================== LEDGER ENGINE =====================
+function _codeToName(code){
+  if(!code) return '—';
+  const acc=(DB.chartOfAccounts||[]).find(a=>a.code===code);
+  return acc?acc.name:code;
+}
+
+function _catToAccount(cat){
+  if(!cat) return '6900';
+  const c=cat.toLowerCase();
+  if(c.includes('salary')||c.includes('wage')||c.includes('payroll')) return '6000';
+  if(c.includes('cpf')||c.includes('benefit')) return '6010';
+  if(c.includes('rent')||c.includes('utility')||c.includes('electric')||c.includes('water')) return '6100';
+  if(c.includes('office')||c.includes('stationery')||c.includes('supply')) return '6110';
+  if(c.includes('travel')||c.includes('transport')||c.includes('meal')||c.includes('entertain')) return '6200';
+  if(c.includes('market')||c.includes('advertis')||c.includes('promot')) return '6300';
+  if(c.includes('legal')||c.includes('secretar')) return '6410';
+  if(c.includes('audit')||c.includes('account')||c.includes('tax')) return '6420';
+  if(c.includes('professional')||c.includes('consult')) return '6400';
+  if(c.includes('tech')||c.includes('software')||c.includes('it')||c.includes('subscript')) return '6500';
+  if(c.includes('depreciat')||c.includes('amortis')) return '6600';
+  if(c.includes('insur')) return '6700';
+  if(c.includes('bank')||c.includes('interest')) return '6800';
+  if(c.includes('cogs')||c.includes('cost of goods')) return '5000';
+  if(c.includes('labor')||c.includes('labour')) return '5100';
+  if(c.includes('subcontract')) return '5200';
+  return '6900';
+}
+
+// Build all ledger postings as individual account lines
+function _buildLedgerPostings(yearFilter){
+  const posts=[];
+  const yr=yearFilter?parseInt(yearFilter):null;
+  const inYr=d=>{if(!yr)return true;return new Date(d||'').getFullYear()===yr;};
+  const add=(date,ref,desc,code,debit,credit,src)=>{
+    const name=_codeToName(code);
+    posts.push({date:date||'',ref:ref||'',desc,accountCode:code,accountName:name,debit:Math.max(0,debit||0),credit:Math.max(0,credit||0),source:src});
+  };
+
+  // Invoices → DR: AR(1100), CR: Revenue(4100) + CR: GST Payable(2200)
+  (DB.invoices||[]).forEach(inv=>{
+    if(!inYr(inv.date)) return;
+    const net=inv.lines?inv.lines.reduce((s,l)=>s+l.qty*l.price,0):0;
+    const taxAmt=inv.lines?inv.lines.reduce((s,l)=>s+(l.qty*l.price*(l.tax||0)/100),0):0;
+    const total=net+taxAmt;
+    const label=`Invoice ${inv.id} — ${getClientName(inv.clientId)||''}`;
+    add(inv.date,inv.id,label,'1100',total,0,'invoice');
+    add(inv.date,inv.id,label,'4100',0,net,'invoice');
+    if(taxAmt>0) add(inv.date,inv.id,`GST on ${inv.id}`,'2200',0,taxAmt,'invoice');
+  });
+
+  // Payments received → DR: Cash(1000), CR: AR(1100)
+  (DB.payments||[]).forEach(p=>{
+    if(!inYr(p.date)) return;
+    const amt=toBase(p.amount,p.currency);
+    const label=`Payment ${p.id}`;
+    add(p.date,p.id,label,'1000',amt,0,'payment');
+    add(p.date,p.id,label,'1100',0,amt,'payment');
+  });
+
+  // Expenses → DR: Expense acct, CR: AP(2000); GST → DR: GST Recv(2210)
+  (DB.expenses||[]).forEach(e=>{
+    if(!inYr(e.date)) return;
+    const amt=toBase(e.amount,e.currency);
+    const taxAmt=e.tax?toBase(e.tax,e.currency):0;
+    const code=_catToAccount(e.cat);
+    const label=e.desc||e.cat||e.id;
+    add(e.date,e.id,label,code,amt,0,'expense');
+    add(e.date,e.id,label,'2000',0,taxAmt>0?amt+taxAmt:amt,'expense');
+    if(taxAmt>0) add(e.date,e.id,`GST on ${e.id}`,'2210',taxAmt,0,'expense');
+  });
+
+  // Bills → DR: Expense acct, CR: AP(2000)
+  (DB.bills||[]).forEach(b=>{
+    if(!inYr(b.date)) return;
+    const amt=toBase(b.amount,b.currency);
+    const code=_catToAccount(b.cat);
+    const label=b.desc||b.vendor||b.id;
+    add(b.date,b.id,label,code,amt,0,'bill');
+    add(b.date,b.id,label,'2000',0,amt,'bill');
+  });
+
+  // Manual journal entries
+  (DB.journal||[]).forEach(j=>{
+    if(!inYr(j.date)) return;
+    const da=toBase(j.debitAmt||0,j.currency||'SGD');
+    const ca=toBase(j.creditAmt||0,j.currency||'SGD');
+    if(j.debitAcc)  add(j.date,j.id,j.desc,j.debitAcc,da,0,'journal');
+    if(j.creditAcc) add(j.date,j.id,j.desc,j.creditAcc,0,ca,'journal');
+  });
+
+  return posts.sort((a,b)=>new Date(a.date)-new Date(b.date));
+}
+
+// Group postings by account code → {code:{name,type,category,postings,totalDebit,totalCredit,balance}}
+function _groupByAccount(posts){
+  const map={};
+  posts.forEach(p=>{
+    if(!map[p.accountCode]){
+      const acc=(DB.chartOfAccounts||[]).find(a=>a.code===p.accountCode)||{};
+      map[p.accountCode]={code:p.accountCode,name:p.accountName,type:acc.type||'',category:acc.category||'',postings:[],totalDebit:0,totalCredit:0};
+    }
+    map[p.accountCode].postings.push(p);
+    map[p.accountCode].totalDebit+=p.debit;
+    map[p.accountCode].totalCredit+=p.credit;
+  });
+  // compute balance (normal side depends on account type)
+  Object.values(map).forEach(a=>{
+    const t=(a.type||'').toLowerCase();
+    if(t==='asset'||t==='expense') a.balance=a.totalDebit-a.totalCredit;
+    else a.balance=a.totalCredit-a.totalDebit;
+  });
+  return map;
+}
+
+function _ledgerYears(){
+  const yrs=new Set();
+  const cur=new Date().getFullYear();
+  yrs.add(cur); yrs.add(cur-1); yrs.add(cur-2);
+  (DB.invoices||[]).forEach(i=>yrs.add(new Date(i.date||'').getFullYear()));
+  (DB.expenses||[]).forEach(e=>yrs.add(new Date(e.date||'').getFullYear()));
+  return [...yrs].filter(y=>y>2000).sort((a,b)=>b-a);
+}
+
+function _initLedgerYears(selId){
+  const sel=document.getElementById(selId);
+  if(!sel) return;
+  const cur=new Date().getFullYear();
+  sel.innerHTML=`<option value="">All Years</option>`+_ledgerYears().map(y=>`<option value="${y}"${y===cur?'selected':''}>${y}</option>`).join('');
+}
+
+function _initGLAccounts(){
+  const sel=document.getElementById('gl-account');
+  if(!sel) return;
+  const posts=_buildLedgerPostings();
+  const codes=[...new Set(posts.map(p=>p.accountCode))].sort();
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— All Accounts —</option>'+codes.map(c=>`<option value="${c}"${c===cur?'selected':''}>${c} — ${_codeToName(c)}</option>`).join('');
+}
+
+// ===================== GENERAL LEDGER PAGE =====================
+function renderGL(){
+  _initLedgerYears('gl-year');
+  _initGLAccounts();
+  const yr=document.getElementById('gl-year').value;
+  const accFilter=document.getElementById('gl-account').value;
+  const base=document.getElementById('baseCurrency').value;
+  const sym=SYMBOLS[base]||'$';
+  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+
+  let posts=_buildLedgerPostings(yr||null);
+  if(accFilter) posts=posts.filter(p=>p.accountCode===accFilter);
+
+  const grp=_groupByAccount(posts);
+  const el=document.getElementById('gl-content');
+
+  if(!Object.keys(grp).length){el.innerHTML='<div class="empty-state"><p>No transactions found for this period.</p></div>';return;}
+
+  el.innerHTML=Object.values(grp).sort((a,b)=>a.code.localeCompare(b.code)).map(acct=>{
+    let running=0;
+    const rows=acct.postings.map(p=>{
+      running+=p.debit-p.credit;
+      return `<tr>
+        <td style="font-size:.82rem;color:var(--text-muted)">${p.date}</td>
+        <td style="font-size:.82rem;color:var(--text-muted)">${p.ref}</td>
+        <td>${p.desc}</td>
+        <td style="font-size:.75rem;color:var(--text-muted)">${p.source}</td>
+        <td style="text-align:right;color:var(--primary-light)">${p.debit>0?f(p.debit):''}</td>
+        <td style="text-align:right;color:var(--danger)">${p.credit>0?f(p.credit):''}</td>
+        <td style="text-align:right;font-weight:600">${f(running)}</td>
+      </tr>`;
+    }).join('');
+    return `<div style="margin-bottom:24px">
+      <div style="background:var(--primary);color:#fff;padding:8px 14px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;font-weight:600;font-size:.88rem">
+        <span>${acct.code} — ${acct.name}</span>
+        <span style="opacity:.7;font-size:.78rem">${acct.type} / ${acct.category}</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:var(--surface2)">
+          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Date</th>
+          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Ref</th>
+          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Description</th>
+          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Source</th>
+          <th style="padding:7px 10px;font-size:.75rem;text-align:right">Debit</th>
+          <th style="padding:7px 10px;font-size:.75rem;text-align:right">Credit</th>
+          <th style="padding:7px 10px;font-size:.75rem;text-align:right">Balance</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr style="background:var(--surface2);font-weight:700">
+          <td colspan="4" style="padding:8px 10px;font-size:.82rem">Totals</td>
+          <td style="padding:8px 10px;text-align:right;color:var(--primary-light)">${f(acct.totalDebit)}</td>
+          <td style="padding:8px 10px;text-align:right;color:var(--danger)">${f(acct.totalCredit)}</td>
+          <td style="padding:8px 10px;text-align:right">${f(acct.balance)}</td>
+        </tr></tfoot>
+      </table>
+    </div>`;
+  }).join('');
+}
+
+// ===================== GL DETAIL REPORT =====================
+function renderGLDetail(){
+  _initLedgerYears('gld-year');
+  const yr=document.getElementById('gld-year').value;
+  const base=document.getElementById('baseCurrency').value;
+  const sym=SYMBOLS[base]||'$';
+  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+  const grp=_groupByAccount(_buildLedgerPostings(yr||null));
+  const s=DB.settings||{};
+  const el=document.getElementById('gld-content');
+
+  el.innerHTML=`<div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — General Ledger Detail ${yr?'FY '+yr:'(All Years)'}</div>`+
+    Object.values(grp).sort((a,b)=>a.code.localeCompare(b.code)).map(acct=>{
+      let running=0;
+      const rows=acct.postings.map(p=>{
+        running+=p.debit-p.credit;
+        return `<tr><td style="padding:5px 8px;font-size:.82rem">${p.date}</td><td style="padding:5px 8px;font-size:.82rem">${p.ref}</td><td style="padding:5px 8px;font-size:.82rem">${p.desc}</td><td style="padding:5px 8px;text-align:right;font-size:.82rem">${p.debit>0?f(p.debit):''}</td><td style="padding:5px 8px;text-align:right;font-size:.82rem">${p.credit>0?f(p.credit):''}</td><td style="padding:5px 8px;text-align:right;font-size:.82rem;font-weight:600">${f(running)}</td></tr>`;
+      }).join('');
+      return `<div style="margin-bottom:20px;border:1px solid var(--border);border-radius:8px;overflow:hidden">
+        <div style="background:var(--surface2);padding:8px 12px;font-weight:700;font-size:.85rem">${acct.code} ${acct.name} <span style="font-weight:400;color:var(--text-muted);font-size:.78rem">(${acct.type})</span></div>
+        <table style="width:100%;border-collapse:collapse"><thead><tr style="background:#f9f6f3"><th style="padding:6px 8px;text-align:left;font-size:.75rem">Date</th><th style="padding:6px 8px;text-align:left;font-size:.75rem">Ref</th><th style="padding:6px 8px;text-align:left;font-size:.75rem">Description</th><th style="padding:6px 8px;text-align:right;font-size:.75rem">Debit</th><th style="padding:6px 8px;text-align:right;font-size:.75rem">Credit</th><th style="padding:6px 8px;text-align:right;font-size:.75rem">Balance</th></tr></thead>
+        <tbody>${rows}</tbody>
+        <tfoot><tr style="background:var(--surface2);font-weight:700"><td colspan="3" style="padding:6px 8px;font-size:.8rem">Closing Balance</td><td style="padding:6px 8px;text-align:right;font-size:.8rem">${f(acct.totalDebit)}</td><td style="padding:6px 8px;text-align:right;font-size:.8rem">${f(acct.totalCredit)}</td><td style="padding:6px 8px;text-align:right;font-size:.8rem">${f(acct.balance)}</td></tr></tfoot>
+        </table></div>`;
+    }).join('');
+}
+
+// ===================== GL SUMMARY REPORT =====================
+function renderGLSummary(){
+  _initLedgerYears('gls-year');
+  const yr=document.getElementById('gls-year').value;
+  const base=document.getElementById('baseCurrency').value;
+  const sym=SYMBOLS[base]||'$';
+  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+  const grp=_groupByAccount(_buildLedgerPostings(yr||null));
+  const s=DB.settings||{};
+  const types=['Asset','Liability','Equity','Revenue','Expense'];
+  const el=document.getElementById('gls-content');
+
+  let html=`<div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — General Ledger Summary ${yr?'FY '+yr:'(All Years)'}</div>`;
+  types.forEach(type=>{
+    const accts=Object.values(grp).filter(a=>a.type===type).sort((a,b)=>a.code.localeCompare(b.code));
+    if(!accts.length) return;
+    html+=`<div style="margin-bottom:16px"><div style="background:var(--primary);color:#fff;padding:7px 14px;font-weight:700;font-size:.85rem;border-radius:6px 6px 0 0">${type} Accounts</div>
+    <table style="width:100%;border-collapse:collapse;border:1px solid var(--border)">
+    <thead><tr style="background:var(--surface2)"><th style="padding:7px 10px;text-align:left;font-size:.75rem">Code</th><th style="padding:7px 10px;text-align:left;font-size:.75rem">Account</th><th style="padding:7px 10px;text-align:right;font-size:.75rem">Total Debits</th><th style="padding:7px 10px;text-align:right;font-size:.75rem">Total Credits</th><th style="padding:7px 10px;text-align:right;font-size:.75rem">Net Balance</th></tr></thead>
+    <tbody>${accts.map(a=>`<tr><td style="padding:6px 10px;font-size:.82rem;color:var(--text-muted)">${a.code}</td><td style="padding:6px 10px;font-size:.85rem">${a.name}</td><td style="padding:6px 10px;text-align:right;font-size:.82rem">${f(a.totalDebit)}</td><td style="padding:6px 10px;text-align:right;font-size:.82rem">${f(a.totalCredit)}</td><td style="padding:6px 10px;text-align:right;font-size:.85rem;font-weight:600;color:${a.balance>=0?'var(--accent2)':'var(--danger)'}">${f(a.balance)}</td></tr>`).join('')}</tbody>
+    <tfoot><tr style="background:var(--surface2);font-weight:700"><td colspan="2" style="padding:7px 10px;font-size:.82rem">Total</td><td style="padding:7px 10px;text-align:right;font-size:.82rem">${f(accts.reduce((s,a)=>s+a.totalDebit,0))}</td><td style="padding:7px 10px;text-align:right;font-size:.82rem">${f(accts.reduce((s,a)=>s+a.totalCredit,0))}</td><td style="padding:7px 10px;text-align:right;font-size:.85rem">${f(accts.reduce((s,a)=>s+a.balance,0))}</td></tr></tfoot>
+    </table></div>`;
+  });
+  el.innerHTML=html;
+}
+
+// ===================== TRIAL BALANCE =====================
+function renderTrialBalance(){
+  _initLedgerYears('tb-year');
+  const yr=document.getElementById('tb-year').value;
+  const base=document.getElementById('baseCurrency').value;
+  const sym=SYMBOLS[base]||'$';
+  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+  const grp=_groupByAccount(_buildLedgerPostings(yr||null));
+  const s=DB.settings||{};
+  const el=document.getElementById('tb-content');
+
+  let totalDr=0, totalCr=0;
+  const rows=Object.values(grp).sort((a,b)=>a.code.localeCompare(b.code)).map(a=>{
+    const t=(a.type||'').toLowerCase();
+    const isDebitNormal=(t==='asset'||t==='expense');
+    const debitBal=isDebitNormal&&a.balance>0?a.balance:(!isDebitNormal&&a.balance<0?Math.abs(a.balance):0);
+    const creditBal=!isDebitNormal&&a.balance>0?a.balance:(isDebitNormal&&a.balance<0?Math.abs(a.balance):0);
+    totalDr+=debitBal; totalCr+=creditBal;
+    if(debitBal===0&&creditBal===0) return '';
+    return `<tr>
+      <td style="padding:6px 10px;font-size:.82rem;color:var(--text-muted)">${a.code}</td>
+      <td style="padding:6px 10px;font-size:.85rem">${a.name}</td>
+      <td style="padding:6px 10px;font-size:.82rem;color:var(--text-muted)">${a.type}</td>
+      <td style="padding:6px 10px;text-align:right;font-weight:600;color:var(--primary-light)">${debitBal>0?f(debitBal):''}</td>
+      <td style="padding:6px 10px;text-align:right;font-weight:600;color:var(--danger)">${creditBal>0?f(creditBal):''}</td>
+    </tr>`;
+  }).join('');
+
+  const balanced=Math.abs(totalDr-totalCr)<0.01;
+  el.innerHTML=`
+    <div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — Trial Balance ${yr?'FY '+yr:'(All Years)'}</div>
+    ${balanced
+      ?'<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:.83rem;color:#2e7d32">✅ Trial balance is in balance — Debits equal Credits</div>'
+      :`<div style="background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:.83rem;color:#e65100">⚠ Out of balance by ${f(Math.abs(totalDr-totalCr))} — check for unposted entries</div>`
+    }
+    <table style="width:100%;border-collapse:collapse;border:1px solid var(--border)">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:8px 10px;text-align:left;font-size:.75rem">Code</th>
+        <th style="padding:8px 10px;text-align:left;font-size:.75rem">Account Name</th>
+        <th style="padding:8px 10px;text-align:left;font-size:.75rem">Type</th>
+        <th style="padding:8px 10px;text-align:right;font-size:.75rem">Debit</th>
+        <th style="padding:8px 10px;text-align:right;font-size:.75rem">Credit</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr style="background:var(--primary);color:#fff;font-weight:700">
+        <td colspan="3" style="padding:9px 10px;font-size:.88rem">TOTALS</td>
+        <td style="padding:9px 10px;text-align:right;font-size:.88rem">${f(totalDr)}</td>
+        <td style="padding:9px 10px;text-align:right;font-size:.88rem">${f(totalCr)}</td>
+      </tr></tfoot>
+    </table>`;
+}
+
+// ===================== SALES TAX REPORT =====================
+function renderSalesTax(){
+  _initLedgerYears('stax-year');
+  const yr=document.getElementById('stax-year').value;
+  const base=document.getElementById('baseCurrency').value;
+  const sym=SYMBOLS[base]||'$';
+  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+  const s=DB.settings||{};
+  const filterYr=yr?parseInt(yr):null;
+  const inYr=d=>!filterYr||new Date(d||'').getFullYear()===filterYr;
+
+  // Output tax (GST collected from customers)
+  const outputRows=[]; let totalOutput=0;
+  (DB.invoices||[]).forEach(inv=>{
+    if(!inYr(inv.date)) return;
+    if(!inv.lines) return;
+    const taxAmt=inv.lines.reduce((s,l)=>s+(l.qty*l.price*(l.tax||0)/100),0);
+    if(taxAmt<=0) return;
+    const net=inv.lines.reduce((s,l)=>s+l.qty*l.price,0);
+    outputRows.push({date:inv.date,ref:inv.id,desc:`Invoice — ${getClientName(inv.clientId)||''}`,taxableAmt:net,taxAmt,rate:`${Math.round(taxAmt/net*100)}%`});
+    totalOutput+=taxAmt;
+  });
+
+  // Input tax (GST paid on expenses)
+  const inputRows=[]; let totalInput=0;
+  (DB.expenses||[]).forEach(e=>{
+    if(!inYr(e.date)) return;
+    const taxAmt=e.tax?toBase(e.tax,e.currency):0;
+    if(taxAmt<=0) return;
+    inputRows.push({date:e.date,ref:e.id,desc:e.desc||e.cat,taxableAmt:toBase(e.amount,e.currency),taxAmt});
+    totalInput+=taxAmt;
+  });
+  (DB.bills||[]).forEach(b=>{
+    if(!inYr(b.date)) return;
+    const taxAmt=b.tax?toBase(b.tax,b.currency):0;
+    if(taxAmt<=0) return;
+    inputRows.push({date:b.date,ref:b.id,desc:b.desc||b.vendor,taxableAmt:toBase(b.amount,b.currency),taxAmt});
+    totalInput+=taxAmt;
+  });
+
+  const netPayable=totalOutput-totalInput;
+  const el=document.getElementById('stax-content');
+
+  const mkTable=(rows,emptyMsg)=>rows.length?`
+    <table style="width:100%;border-collapse:collapse;font-size:.83rem">
+      <thead><tr style="background:var(--surface2)"><th style="padding:7px 10px;text-align:left">Date</th><th style="padding:7px 10px;text-align:left">Ref</th><th style="padding:7px 10px;text-align:left">Description</th><th style="padding:7px 10px;text-align:right">Taxable Amt</th><th style="padding:7px 10px;text-align:right">Tax Collected</th></tr></thead>
+      <tbody>${rows.map(r=>`<tr><td style="padding:6px 10px">${r.date}</td><td style="padding:6px 10px;color:var(--text-muted)">${r.ref}</td><td style="padding:6px 10px">${r.desc}</td><td style="padding:6px 10px;text-align:right">${f(r.taxableAmt)}</td><td style="padding:6px 10px;text-align:right;font-weight:600">${f(r.taxAmt)}</td></tr>`).join('')}</tbody>
+    </table>`:`<div style="padding:14px;color:var(--text-muted);font-size:.83rem">${emptyMsg}</div>`;
+
+  el.innerHTML=`
+    <div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — Sales Tax Report ${yr?'FY '+yr:'(All Years)'}</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
+      <div class="kpi-card blue"><div class="kpi-label">Output Tax (Collected)</div><div class="kpi-value">${f(totalOutput)}</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Input Tax (Recoverable)</div><div class="kpi-value">${f(totalInput)}</div></div>
+      <div class="kpi-card ${netPayable>=0?'orange':'green'}"><div class="kpi-label">Net ${netPayable>=0?'Payable':'Refundable'}</div><div class="kpi-value">${f(Math.abs(netPayable))}</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header"><h3>📤 Output Tax — GST Collected on Sales</h3><span class="badge">${f(totalOutput)}</span></div>
+      ${mkTable(outputRows,'No taxable sales found for this period')}
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header"><h3>📥 Input Tax — GST Paid on Purchases</h3><span class="badge" style="background:var(--accent2)">${f(totalInput)}</span></div>
+      ${mkTable(inputRows,'No taxable purchases found for this period')}
+    </div>
+
+    <div style="background:var(--primary);color:#fff;border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:1px">Net GST ${netPayable>=0?'Payable to IRAS':'Refundable from IRAS'}</div>
+        <div style="font-size:1.8rem;font-weight:700;font-family:'Playfair Display',serif">${f(Math.abs(netPayable))}</div>
+      </div>
+      <div style="text-align:right;font-size:.8rem;opacity:.8">
+        <div>Output: ${f(totalOutput)}</div>
+        <div>Input: (${f(totalInput)})</div>
+        <div style="margin-top:4px;font-weight:700">${netPayable>=0?'PAY':'CLAIM'}: ${f(Math.abs(netPayable))}</div>
+      </div>
+    </div>`;
+}
+
+// ===================== ECI FILING =====================
+function _initECIYears(){
+  const sel=document.getElementById('eci-ya');
+  if(!sel||sel.options.length>0) return;
+  const yr=new Date().getFullYear();
+  for(let y=yr+1;y>=yr-3;y--){ const o=document.createElement('option'); o.value=y; o.textContent='YA '+y; sel.appendChild(o); }
+  sel.value=yr+1;
+}
+
+function renderECI(){
+  _initECIYears();
+  const ya=parseInt(document.getElementById('eci-ya').value)||new Date().getFullYear()+1;
+  const scheme=document.getElementById('eci-scheme').value; // 'partial' or 'startup'
+  const fy=ya-1; // financial year = YA - 1
+
+  // ---- Auto-fill from DB ----
+  // Revenue: invoices in financial year
+  const revenue=(DB.invoices||[]).filter(inv=>{
+    const d=new Date(inv.date||inv.createdAt||'');
+    return d.getFullYear()===fy && (inv.status==='paid'||inv.status==='sent'||inv.status==='overdue');
+  }).reduce((s,inv)=>s+getInvoiceTotal(inv),0);
+
+  // Total Expenses from expense records in financial year
+  const totalExp=(DB.expenses||[]).filter(e=>{
+    const d=new Date(e.date||'');
+    return d.getFullYear()===fy;
+  }).reduce((s,e)=>s+(_toSGD(e.amount||0,e.currency)||0),0);
+
+  const netProfit=revenue - totalExp;
+
+  // ---- Manual adjustments from inputs ----
+  const dep    =parseFloat(document.getElementById('eci-dep').value)||0;
+  const car    =parseFloat(document.getElementById('eci-car').value)||0;
+  const rptax  =parseFloat(document.getElementById('eci-rptax').value)||0;
+  const othDis =parseFloat(document.getElementById('eci-other-dis').value)||0;
+  const caLva  =parseFloat(document.getElementById('eci-ca-lva').value)||0;
+  const caComp =parseFloat(document.getElementById('eci-ca-comp').value)||0;
+  const ca3yr  =parseFloat(document.getElementById('eci-ca-3yr').value)||0;
+  const caBf   =parseFloat(document.getElementById('eci-ca-bf').value)||0;
+  const rental =parseFloat(document.getElementById('eci-rental').value)||0;
+  const rentalExp=parseFloat(document.getElementById('eci-rental-exp').value)||0;
+  const interest=parseFloat(document.getElementById('eci-interest').value)||0;
+  const ftc    =parseFloat(document.getElementById('eci-ftc').value)||0;
+
+  // ---- ECI Computation (IRAS method) ----
+  const totalDisallowable = dep+car+rptax+othDis;
+  const totalCA = caLva+caComp+ca3yr+caBf;
+  const totalSeparateSrc = rental+interest;
+
+  const adjBeforeCA = netProfit - totalSeparateSrc + totalDisallowable;
+  const adjAfterCA  = adjBeforeCA - totalCA;
+  const netRental   = rental - rentalExp; // rental net of deductible expenses
+  const eciBeforeExempt = adjAfterCA + netRental + (interest>0?interest:0);
+
+  // ---- Partial vs Start-up exemption ----
+  let exemptAmt=0;
+  if(scheme==='partial'){
+    exemptAmt = Math.min(eciBeforeExempt, 10000)*0.75 + Math.max(0,Math.min(eciBeforeExempt-10000,190000))*0.50;
+  } else {
+    exemptAmt = Math.min(eciBeforeExempt, 100000)*0.75 + Math.max(0,Math.min(eciBeforeExempt-100000,100000))*0.50;
+  }
+  exemptAmt = Math.max(0, Math.min(exemptAmt, eciBeforeExempt));
+
+  const eciAfterExempt = Math.max(0, eciBeforeExempt - exemptAmt);
+  const estTaxThereon  = eciAfterExempt * 0.17;
+  const ftcRelief      = Math.min(ftc, estTaxThereon);
+  const etp            = estTaxThereon - ftcRelief; // Estimated Tax Payable
+
+  // ---- Back-calculate ECI if FTC claimed (IRAS formula) ----
+  let eciToFile = eciBeforeExempt; // default: no FTC
+  let ftcFormula = '';
+  if(ftc>0 && etp>0){
+    if(scheme==='partial'){
+      if(etp<425)         { eciToFile=(200*etp)/8.5; ftcFormula='ECI = (200 × ETP) / 8.5'; }
+      else if(etp<16575)  { eciToFile=(100*etp)/8.5+5000; ftcFormula='ECI = (100 × ETP / 8.5) + S$5,000'; }
+      else                { eciToFile=(50*etp)/8.5+102500; ftcFormula='ECI = (50 × ETP / 8.5) + S$102,500'; }
+    } else {
+      if(etp<4250)        { eciToFile=(200*etp)/8.5; ftcFormula='ECI = (200 × ETP) / 8.5'; }
+      else if(etp<12750)  { eciToFile=(100*etp)/8.5+50000; ftcFormula='ECI = (100 × ETP / 8.5) + S$50,000'; }
+      else                { eciToFile=(50*etp)/8.5+125000; ftcFormula='ECI = (50 × ETP / 8.5) + S$125,000'; }
+    }
+  } else {
+    eciToFile = eciBeforeExempt;
+  }
+
+  const exemptNote = scheme==='partial'
+    ? `Partial Tax Exemption: 75% × S$10,000 + 50% × S$190,000 (max S$102,500)`
+    : `Start-Up Exemption: 75% × S$100,000 + 50% × S$100,000 (max S$125,000)`;
+
+  const noFilingNote = revenue<=5000000 && eciBeforeExempt<=0
+    ? `<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.83rem;color:#2e7d32">
+        ✅ <strong>No ECI filing required.</strong> Annual revenue ≤ S$5,000,000 and ECI = NIL.
+       </div>` : '';
+
+  const f=_fmtSGD;
+  const el=document.getElementById('eci-result');
+
+  el.innerHTML=`
+    ${noFilingNote}
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px;font-size:.85rem;line-height:1.9">
+      <div style="font-weight:700;font-size:.95rem;color:var(--primary);margin-bottom:12px;font-family:'Playfair Display',serif">ECI Computation — YA ${ya} (Financial Year ${fy})</div>
+
+      <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+        <tr><td style="padding:4px 8px;color:var(--text-muted)">Revenue (auto from invoices)</td><td style="padding:4px 8px;text-align:right">${f(revenue)}</td></tr>
+        <tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Total Expenses (auto from expense records)</td><td style="padding:4px 8px;text-align:right">(${f(totalExp)})</td></tr>
+        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Net Profit Before Tax</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(netProfit)}</td></tr>
+
+        ${totalSeparateSrc>0?`<tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Separate Source Income (rental + interest)</td><td style="padding:4px 8px;text-align:right">(${f(totalSeparateSrc)})</td></tr>`:''}
+        ${totalDisallowable>0?`
+        <tr><td style="padding:4px 8px 2px;font-weight:600;color:var(--text-muted)">Add: Disallowable Expenses</td><td></td></tr>
+        ${dep>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Depreciation</td><td style="padding:2px 8px;text-align:right">${f(dep)}</td></tr>`:''}
+        ${car>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">S-plated car transport</td><td style="padding:2px 8px;text-align:right">${f(car)}</td></tr>`:''}
+        ${rptax>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Rental property tax</td><td style="padding:2px 8px;text-align:right">${f(rptax)}</td></tr>`:''}
+        ${othDis>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Other disallowable</td><td style="padding:2px 8px;text-align:right">${f(othDis)}</td></tr>`:''}
+        `:''}
+        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Adjusted Profit Before Capital Allowance</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(adjBeforeCA)}</td></tr>
+
+        ${totalCA>0?`
+        <tr><td style="padding:4px 8px 2px;font-weight:600;color:var(--text-muted)">Less: Capital Allowances</td><td></td></tr>
+        ${caLva>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Low-value assets ≤S$1,000 (100%)</td><td style="padding:2px 8px;text-align:right">(${f(caLva)})</td></tr>`:''}
+        ${caComp>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Computers / Automation (100%)</td><td style="padding:2px 8px;text-align:right">(${f(caComp)})</td></tr>`:''}
+        ${ca3yr>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">3-year write-off (1/3 this YA)</td><td style="padding:2px 8px;text-align:right">(${f(ca3yr)})</td></tr>`:''}
+        ${caBf>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Unutilised CA b/f</td><td style="padding:2px 8px;text-align:right">(${f(caBf)})</td></tr>`:''}
+        `:''}
+        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Adjusted Profit After Capital Allowance</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(adjAfterCA)}</td></tr>
+
+        ${netRental>0||interest>0?`
+        <tr><td style="padding:4px 8px;color:var(--text-muted)">Add: Separate Source Income (net)</td><td></td></tr>
+        ${netRental>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Rental income net of property expenses</td><td style="padding:2px 8px;text-align:right">${f(netRental)}</td></tr>`:''}
+        ${interest>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Foreign interest income</td><td style="padding:2px 8px;text-align:right">${f(interest)}</td></tr>`:''}
+        `:''}
+        <tr style="border-top:2px solid var(--primary-light)"><td style="padding:8px 8px;font-weight:700;color:var(--primary)">ECI (Before Exempt Amount)</td><td style="padding:8px 8px;text-align:right;font-weight:700;color:var(--primary)">${f(eciBeforeExempt)}</td></tr>
+        <tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Exempt Amount <span style="font-size:.75rem">(${exemptNote})</span></td><td style="padding:4px 8px;text-align:right">(${f(exemptAmt)})</td></tr>
+        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">ECI (After Exempt Amount)</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(eciAfterExempt)}</td></tr>
+        <tr><td style="padding:4px 8px;color:var(--text-muted)">Estimated Tax @ 17%</td><td style="padding:4px 8px;text-align:right">${f(estTaxThereon)}</td></tr>
+        ${ftcRelief>0?`<tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Double Taxation Relief (FTC)</td><td style="padding:4px 8px;text-align:right">(${f(ftcRelief)})</td></tr>`:''}
+        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Estimated Tax Payable (ETP)</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(etp)}</td></tr>
+      </table>
+
+      ${ftc>0&&etp>0?`
+      <div style="margin-top:16px;padding:12px 16px;background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;font-size:.82rem">
+        <strong>FTC Back-Calculation (IRAS formula):</strong><br>
+        ${ftcFormula}<br>
+        = ${f(eciToFile)} ← fill this in IRAS myTax Portal as ECI to be taxed at 17%
+      </div>`:''}
+
+      <div style="margin-top:20px;padding:16px 20px;background:var(--primary);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <div>
+          <div style="font-size:.75rem;opacity:.75;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">File in IRAS myTax Portal — ECI to be taxed at 17%</div>
+          <div style="font-size:2rem;font-weight:700;font-family:'Playfair Display',serif">${Math.round(eciToFile).toLocaleString()}</div>
+          <div style="font-size:.75rem;opacity:.65;margin-top:2px">S$ — enter this exact value in the ECI field</div>
+        </div>
+        <div style="text-align:right;font-size:.8rem;opacity:.8">
+          <div>YA ${ya}</div>
+          <div>${scheme==='partial'?'Partial Tax Exemption':'Start-Up Exemption'}</div>
+          <div>Revenue: ${f(revenue)}</div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function exportXBRL(){
