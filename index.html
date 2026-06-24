@@ -334,6 +334,33 @@ tr:hover td{background:var(--surface2)}
         Budget vs Actual
       </a>
     </div>
+    <div class="nav-section" onclick="toggleNavGroup(this)">Tax &amp; Compliance <span class="nav-arrow">▼</span></div>
+    <div class="nav-group">
+      <a onclick="showPage('gst')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14l6-6"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><rect x="2" y="2" width="20" height="20" rx="3"/></svg>
+        GST F5 Return
+      </a>
+      <a onclick="showPage('corptax')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Corporate Tax
+      </a>
+      <a onclick="showPage('ir8a')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        IR8A — Employee Income
+      </a>
+      <a onclick="showPage('ir21')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+        IR21 — Ceased Employment
+      </a>
+      <a onclick="showPage('grants')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Govt Rebates &amp; Grants
+      </a>
+      <a onclick="showPage('xbrl')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        XBRL Filing Report
+      </a>
+    </div>
     <div class="nav-section" onclick="toggleNavGroup(this)">Settings <span class="nav-arrow">▼</span></div>
     <div class="nav-group">
       <a onclick="showPage('settings')">
@@ -797,6 +824,216 @@ tr:hover td{background:var(--surface2)}
       </div>
     </div>
 
+    <!-- ===== GST F5 RETURN ===== -->
+    <div id="page-gst" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>GST F5 Return — Singapore (9%)</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Quarter:</label>
+            <select id="gst-quarter" onchange="renderGST()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem">
+              <option value="Q1">Q1 (Jan–Mar)</option>
+              <option value="Q2">Q2 (Apr–Jun)</option>
+              <option value="Q3">Q3 (Jul–Sep)</option>
+              <option value="Q4">Q4 (Oct–Dec)</option>
+            </select>
+            <select id="gst-year" onchange="renderGST()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('gst')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body" id="gst-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== CORPORATE TAX ===== -->
+    <div id="page-corptax" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>Corporate Income Tax — Singapore (17%)</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Year of Assessment:</label>
+            <select id="corptax-ya" onchange="renderCorpTax()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('corptax')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body" id="corptax-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== IR8A ===== -->
+    <div id="page-ir8a" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>IR8A — Return of Employee's Remuneration</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Year of Assessment:</label>
+            <select id="ir8a-ya" onchange="renderIR8A()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('ir8a')">⬇ Export</button>
+          </div>
+        </div>
+        <div class="card-body" id="ir8a-content"></div>
+      </div>
+      <!-- IR8A Employee Add/Edit Modal trigger -->
+      <div class="card mt-4" id="ir8a-employees-card">
+        <div class="card-header">
+          <h3>Employee Remuneration Data</h3>
+          <button class="btn btn-primary btn-sm" onclick="openIR8AModal()">+ Add / Edit Employee</button>
+        </div>
+        <div class="card-body" id="ir8a-employees-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== IR21 ===== -->
+    <div id="page-ir21" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>IR21 — Notification of Employee's Cessation of Employment</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" onclick="openIR21Modal()">+ New IR21 Filing</button>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print Selected</button>
+          </div>
+        </div>
+        <div class="card-body" id="ir21-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== GOVT REBATES & GRANTS ===== -->
+    <div id="page-grants" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>Government Rebates &amp; Grants Tracker</h3>
+          <button class="btn btn-primary btn-sm" onclick="openGrantModal()">+ Record Grant / Rebate</button>
+        </div>
+        <div class="card-body" id="grants-content"></div>
+      </div>
+    </div>
+
+    <!-- ===== XBRL FILING REPORT ===== -->
+    <div id="page-xbrl" class="page">
+      <div class="card">
+        <div class="card-header">
+          <h3>XBRL Filing Report — ACRA</h3>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:.8rem;color:var(--text-muted)">Financial Year End:</label>
+            <select id="xbrl-year" onchange="renderXBRL()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+            <button class="btn btn-primary btn-sm" onclick="exportXBRL()">⬇ Export XBRL (XML)</button>
+          </div>
+        </div>
+        <div class="card-body" id="xbrl-content"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== IR8A EMPLOYEE MODAL ===== -->
+<div class="modal-overlay" id="modal-ir8a-emp">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-header"><h3 id="ir8a-modal-title">Add Employee IR8A Data</h3><button class="modal-close" onclick="closeModal('modal-ir8a-emp')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Employee Name *</label><input type="text" id="ir8a-emp-name" placeholder="Full name as per NRIC"></div>
+        <div class="form-group"><label>NRIC / FIN</label><input type="text" id="ir8a-emp-nric" placeholder="S1234567A"></div>
+        <div class="form-group"><label>Date of Birth</label><input type="date" id="ir8a-emp-dob"></div>
+        <div class="form-group"><label>Designation</label><input type="text" id="ir8a-emp-desig" placeholder="Job title"></div>
+        <div class="form-group"><label>Gross Salary (annual)</label><input type="number" id="ir8a-emp-salary" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Bonus</label><input type="number" id="ir8a-emp-bonus" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Director's Fees</label><input type="number" id="ir8a-emp-dirfee" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Allowances (transport, etc.)</label><input type="number" id="ir8a-emp-allow" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Benefits-in-Kind</label><input type="number" id="ir8a-emp-bik" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Employer CPF</label><input type="number" id="ir8a-emp-cpf-er" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Employee CPF</label><input type="number" id="ir8a-emp-cpf-ee" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Fund (CDAC/MBMF/SINDA/ECF)</label><input type="number" id="ir8a-emp-fund" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Year of Assessment</label><input type="number" id="ir8a-emp-ya" placeholder="2026" min="2020" max="2030"></div>
+        <input type="hidden" id="ir8a-emp-id">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-ir8a-emp')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveIR8AEmployee()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== IR21 FILING MODAL ===== -->
+<div class="modal-overlay" id="modal-ir21">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header"><h3>IR21 — Ceased Employment Filing</h3><button class="modal-close" onclick="closeModal('modal-ir21')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Employee Name *</label><input type="text" id="ir21-emp-name" placeholder="Full name as per NRIC"></div>
+        <div class="form-group"><label>NRIC / FIN / Passport</label><input type="text" id="ir21-emp-nric" placeholder="S1234567A"></div>
+        <div class="form-group"><label>Date of Birth</label><input type="date" id="ir21-emp-dob"></div>
+        <div class="form-group"><label>Nationality</label><input type="text" id="ir21-emp-nat" placeholder="e.g. Singapore, Filipino"></div>
+        <div class="form-group"><label>Designation</label><input type="text" id="ir21-emp-desig" placeholder="Job title"></div>
+        <div class="form-group"><label>Date of Commencement</label><input type="date" id="ir21-emp-start"></div>
+        <div class="form-group"><label>Date of Cessation *</label><input type="date" id="ir21-emp-end"></div>
+        <div class="form-group"><label>Reason for Cessation</label>
+          <select id="ir21-emp-reason">
+            <option value="Resignation">Resignation</option>
+            <option value="Retrenchment">Retrenchment</option>
+            <option value="Contract Expiry">Contract Expiry</option>
+            <option value="Retirement">Retirement</option>
+            <option value="Dismissal">Dismissal</option>
+            <option value="Death">Death</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Last Monthly Salary</label><input type="number" id="ir21-emp-salary" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Gross Income (year of cessation)</label><input type="number" id="ir21-emp-grossinc" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Bonus / AWS</label><input type="number" id="ir21-emp-bonus" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Director's Fees</label><input type="number" id="ir21-emp-dirfee" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Gratuity / Ex-Gratia</label><input type="number" id="ir21-emp-gratia" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Leave Pay (unused)</label><input type="number" id="ir21-emp-leavepay" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Notice Pay in Lieu</label><input type="number" id="ir21-emp-noticepay" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Benefits-in-Kind (annual)</label><input type="number" id="ir21-emp-bik" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Employer CPF (year total)</label><input type="number" id="ir21-emp-cpf-er" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Employee CPF (year total)</label><input type="number" id="ir21-emp-cpf-ee" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Estimated Tax to Withhold</label><input type="number" id="ir21-emp-withheld" step="0.01" placeholder="0.00"></div>
+        <input type="hidden" id="ir21-emp-id">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-ir21')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveIR21Filing()">Save IR21 Filing</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GRANT / REBATE MODAL ===== -->
+<div class="modal-overlay" id="modal-grant">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header"><h3>Record Government Grant / Rebate</h3><button class="modal-close" onclick="closeModal('modal-grant')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group" style="grid-column:1/-1"><label>Grant / Rebate Name *</label>
+          <input type="text" id="grant-name" placeholder="e.g. Corporate Income Tax Rebate, Jobs Credit Scheme">
+        </div>
+        <div class="form-group"><label>Type</label>
+          <select id="grant-type">
+            <option>Tax Rebate</option>
+            <option>Cash Grant</option>
+            <option>Jobs Credit</option>
+            <option>Enterprise Development</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Amount (SGD)</label><input type="number" id="grant-amount" step="0.01" placeholder="0.00"></div>
+        <div class="form-group"><label>Date Received / Approved</label><input type="date" id="grant-date"></div>
+        <div class="form-group"><label>Year of Assessment / Period</label><input type="text" id="grant-period" placeholder="e.g. YA 2026, Q1 2026"></div>
+        <div class="form-group" style="grid-column:1/-1"><label>Reference / Approval No.</label><input type="text" id="grant-ref" placeholder="IRAS reference number"></div>
+        <div class="form-group" style="grid-column:1/-1"><label>Notes</label><textarea id="grant-notes" placeholder="Additional details..."></textarea></div>
+        <input type="hidden" id="grant-id">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-grant')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveGrant()">Save</button>
+    </div>
   </div>
 </div>
 
@@ -1292,6 +1529,7 @@ function defaultDB(){
     nextExpNum: 1,
     nextBillNum: 1,
     nextJrnNum: 1,
+    taxData: { ir8aEmployees: [], ir21Filings: [], grants: [] },
   };
 }
 
@@ -1444,7 +1682,11 @@ const PAGE_TITLES = {
   expenses:'Expense Register',bills:'Bills & Payables',clients:'Clients & Accounts',
   coa:'Chart of Accounts',
   journal:'General Journal',pnl:'P&L Statement',balance:'Balance Sheet',
-  cashflow:'Cash Flow Statement',quotes:'Quotes & Estimates',purchaseorders:'Purchase Orders',budgets:'Budget vs Actual',settings:'Company Settings'
+  cashflow:'Cash Flow Statement',quotes:'Quotes & Estimates',purchaseorders:'Purchase Orders',budgets:'Budget vs Actual',settings:'Company Settings',
+  // Tax & Compliance
+  gst:'GST F5 Return',corptax:'Corporate Tax (Form C-S)',
+  ir8a:'IR8A — Employee Remuneration',ir21:'IR21 — Cessation of Employment',
+  grants:'Govt Rebates & Grants',xbrl:'XBRL Filing Report',
 };
 
 function confirmResetAllData(){
@@ -1498,6 +1740,13 @@ function showPage(name){
   if(name==='purchaseorders') renderPurchaseOrders();
   if(name==='budgets') renderBudgets();
   if(name==='settings' && _sb) loadMFAStatus();
+  // Tax & Compliance
+  if(name==='gst') renderGST();
+  if(name==='corptax') renderCorpTax();
+  if(name==='ir8a') renderIR8A();
+  if(name==='ir21') renderIR21();
+  if(name==='grants') renderGrants();
+  if(name==='xbrl') renderXBRL();
 }
 
 // ===================== HELPERS =====================
@@ -3288,6 +3537,809 @@ function renderCashflowForecast(){
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">${cards.join('')}</div>`;
 }
 
+
+// ===================== SINGAPORE TAX MODULE =====================
+
+// ---- Shared helpers ----
+function _taxYears(){
+  const now = new Date().getFullYear();
+  const arr=[];
+  for(let y=now+1;y>=now-3;y--) arr.push(y);
+  return arr;
+}
+function _taxSym(){
+  return 'S$';
+}
+function _fmtSGD(v){
+  return 'S$'+Math.round(v).toLocaleString();
+}
+function _taxTbl(rows, boldLast){
+  // rows: [[label, value], ...]
+  let html='<table style="width:100%;border-collapse:collapse;font-size:.875rem">';
+  rows.forEach((r,i)=>{
+    const last = boldLast && i===rows.length-1;
+    html+=`<tr style="border-bottom:1px solid var(--border)${last?';background:var(--surface2)':''}">
+      <td style="padding:8px 12px;${last?'font-weight:700;color:var(--primary)':''}">${r[0]}</td>
+      <td style="padding:8px 12px;text-align:right;font-weight:${last?700:400};${last?'color:var(--primary)':''}">${r[1]}</td>
+    </tr>`;
+  });
+  html+='</table>';
+  return html;
+}
+function exportTaxReport(type){
+  const el=document.getElementById(type+'-content');
+  if(!el) return;
+  const content=el.innerText;
+  const blob=new Blob([content],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='Fintiv_'+type.toUpperCase()+'_'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+}
+
+// ---- Currency helpers (reuse existing toBase if defined, else SGD passthrough) ----
+function _toSGD(amount, currency){
+  if(typeof toBase === 'function') return toBase(amount, currency);
+  return amount;
+}
+
+// ===================== GST F5 RETURN =====================
+function _initGSTYears(){
+  const sel=document.getElementById('gst-year');
+  if(!sel||sel.options.length>0) return;
+  _taxYears().forEach(y=>{
+    const o=document.createElement('option');
+    o.value=y; o.text=y;
+    sel.appendChild(o);
+  });
+  // Set current quarter by default
+  const m=new Date().getMonth();
+  const q=['Q1','Q2','Q3','Q4'][Math.floor(m/3)];
+  document.getElementById('gst-quarter').value=q;
+}
+
+function renderGST(){
+  _initGSTYears();
+  const el=document.getElementById('gst-content');
+  if(!el) return;
+  const quarter=document.getElementById('gst-quarter').value||'Q1';
+  const year=parseInt(document.getElementById('gst-year').value)||new Date().getFullYear();
+  const qMonths={Q1:[0,1,2],Q2:[3,4,5],Q3:[6,7,8],Q4:[9,10,11]};
+  const months=qMonths[quarter];
+  const s=DB.settings||{};
+  const gstRate=(s.taxRate||9)/100;
+
+  // Filter invoices & expenses in this quarter+year
+  const invInPeriod=DB.invoices.filter(inv=>{
+    const d=new Date(inv.date);
+    return d.getFullYear()===year && months.includes(d.getMonth());
+  });
+  const expInPeriod=DB.expenses.filter(exp=>{
+    const d=new Date(exp.date);
+    return d.getFullYear()===year && months.includes(d.getMonth());
+  });
+
+  // Box 1: Standard-rated supplies (taxable revenue)
+  const box1=invInPeriod.filter(i=>i.status!=='draft').reduce((s,i)=>{
+    const subtotal=(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)),0);
+    return s+_toSGD(subtotal,i.currency||'SGD');
+  },0);
+  // Box 2: Zero-rated supplies (exports) — flagged on invoice if currency!=SGD or marked export
+  const box2=0; // Manual entry — not enough data to auto-detect
+  // Box 3: Exempt supplies
+  const box3=0;
+  // Box 4 = 1+2+3
+  const box4=box1+box2+box3;
+  // Box 5: Taxable purchases (expenses with GST)
+  const box5=expInPeriod.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0);
+  // Box 6: Output tax due (9% of box1)
+  const box6=box1*gstRate;
+  // Box 7: Input tax claimable (9% of box5)
+  const box7=box5*gstRate;
+  // Box 8: Net GST payable / (refundable)
+  const box8=box6-box7;
+
+  const qLabel={Q1:'Jan – Mar',Q2:'Apr – Jun',Q3:'Jul – Sep',Q4:'Oct – Dec'};
+
+  el.innerHTML=`
+    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">GST Reg. No.: ${s.tax||'—'} &nbsp;|&nbsp; UEN: ${s.reg||'—'}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">${s.address||''}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">GST F5 Return</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">${quarter} ${year} &nbsp;(${qLabel[quarter]} ${year})</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">GST Rate: ${(gstRate*100).toFixed(0)}%</div>
+      </div>
+    </div>
+
+    <h4 style="color:var(--primary);margin:0 0 10px">Part I — Declaration of Supplies</h4>
+    ${_taxTbl([
+      ['Box 1 — Total value of standard-rated supplies',_fmtSGD(box1)],
+      ['Box 2 — Total value of zero-rated supplies',_fmtSGD(box2)],
+      ['Box 3 — Total value of exempt supplies',_fmtSGD(box3)],
+      ['Box 4 — Total supplies (1+2+3)',_fmtSGD(box4)],
+    ],false)}
+
+    <h4 style="color:var(--primary);margin:14px 0 10px">Part II — Declaration of Purchases</h4>
+    ${_taxTbl([
+      ['Box 5 — Total value of taxable purchases',_fmtSGD(box5)],
+    ],false)}
+
+    <h4 style="color:var(--primary);margin:14px 0 10px">Part III — GST Computation</h4>
+    ${_taxTbl([
+      ['Box 6 — Output tax due (${(gstRate*100).toFixed(0)}% of Box 1)',_fmtSGD(box6)],
+      ['Box 7 — Less: Input tax and refunds claimed',_fmtSGD(box7)],
+      ['Box 8 — Net GST payable / (claimable)',_fmtSGD(box8)],
+    ],true)}
+
+    <div style="margin-top:18px;padding:12px 16px;border-radius:8px;background:${box8>=0?'#fef2f2':'#f0fdf4'};border:1px solid ${box8>=0?'#fecaca':'#bbf7d0'}">
+      <span style="font-weight:700;font-size:.9rem;color:${box8>=0?'#dc2626':'#16a34a'}">
+        ${box8>=0?'⚠ GST Payable to IRAS: ':'✅ GST Refund Claimable: '}${_fmtSGD(Math.abs(box8))}
+      </span>
+    </div>
+
+    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
+      <strong>Note:</strong> Auto-computed from invoices and expenses recorded in this period. Zero-rated and exempt supplies must be reviewed manually. Submit via myTax Portal by the last day of the month following the accounting period.
+    </div>
+  `;
+}
+
+// ===================== CORPORATE TAX =====================
+function _initCorpTaxYears(){
+  const sel=document.getElementById('corptax-ya');
+  if(!sel||sel.options.length>0) return;
+  _taxYears().forEach(y=>{
+    const o=document.createElement('option');
+    o.value=y; o.text='YA '+y;
+    sel.appendChild(o);
+  });
+}
+
+function renderCorpTax(){
+  _initCorpTaxYears();
+  const el=document.getElementById('corptax-content');
+  if(!el) return;
+  const ya=parseInt(document.getElementById('corptax-ya').value)||new Date().getFullYear();
+  const incomeYear=ya-1;
+  const s=DB.settings||{};
+  const corpTaxRate=0.17;
+
+  // P&L for income year
+  const invYear=DB.invoices.filter(i=>i.status!=='draft'&&new Date(i.date).getFullYear()===incomeYear);
+  const payYear=DB.payments.filter(p=>new Date(p.date).getFullYear()===incomeYear);
+  const expYear=DB.expenses.filter(e=>new Date(e.date).getFullYear()===incomeYear);
+  const billYear=DB.bills.filter(b=>b.status==='paid'&&new Date(b.due).getFullYear()===incomeYear);
+
+  const revenue=invYear.reduce((s,i)=>{
+    const total=(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)*(1+(l.tax||0)/100)),0);
+    return s+_toSGD(total,i.currency||'SGD');
+  },0);
+  const expenses=expYear.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0)
+    + billYear.reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
+  const netProfit=revenue-expenses;
+
+  // Taxable income adjustments (simplified)
+  const taxableIncome=Math.max(0,netProfit);
+  // Partial tax exemption: first S$10k @ 75%, next S$190k @ 50%
+  const ex1=Math.min(taxableIncome,10000)*0.75;
+  const ex2=Math.min(Math.max(taxableIncome-10000,0),190000)*0.50;
+  const totalExemption=ex1+ex2;
+  const chargeableIncome=Math.max(0,taxableIncome-totalExemption);
+  const taxBefore=chargeableIncome*corpTaxRate;
+  // CIT Rebate (check if applicable — using latest 50% rebate capped at S$40k for illustration)
+  const citRebate=Math.min(taxBefore*0.50,40000);
+  const taxPayable=Math.max(0,taxBefore-citRebate);
+
+  el.innerHTML=`
+    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">UEN: ${s.reg||'—'} &nbsp;|&nbsp; Tax Ref: ${s.tax||'—'}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">Form C-S (Simplified)</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">Year of Assessment: YA ${ya}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">Income Year: ${incomeYear}</div>
+      </div>
+    </div>
+
+    <h4 style="color:var(--primary);margin:0 0 10px">Revenue &amp; Expenses (FY ${incomeYear})</h4>
+    ${_taxTbl([
+      ['Gross Revenue (Invoices)',_fmtSGD(revenue)],
+      ['Less: Business Expenses',`(${_fmtSGD(expenses)})`],
+      ['Net Profit / (Loss) Before Tax',_fmtSGD(netProfit)],
+    ],false)}
+
+    <h4 style="color:var(--primary);margin:14px 0 10px">Tax Computation</h4>
+    ${_taxTbl([
+      ['Chargeable Income (before exemption)',_fmtSGD(taxableIncome)],
+      ['Less: Partial Tax Exemption — 75% on first S$10,000',`(${_fmtSGD(ex1)})`],
+      ['Less: Partial Tax Exemption — 50% on next S$190,000',`(${_fmtSGD(ex2)})`],
+      ['Chargeable Income After Exemption',_fmtSGD(chargeableIncome)],
+      ['Tax @ 17%',_fmtSGD(taxBefore)],
+      ['Less: CIT Rebate (50%, capped S$40,000)',`(${_fmtSGD(citRebate)})`],
+      ['Estimated Corporate Tax Payable',_fmtSGD(taxPayable)],
+    ],true)}
+
+    <div style="margin-top:18px;padding:12px 16px;border-radius:8px;background:#fef2f2;border:1px solid #fecaca">
+      <span style="font-weight:700;font-size:.9rem;color:#dc2626">Estimated Tax Payable: ${_fmtSGD(taxPayable)}</span>
+    </div>
+
+    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
+      <strong>Note:</strong> This is a simplified estimate based on recorded transactions. Actual chargeable income may differ after IRAS adjustments, capital allowances, and non-deductible expenses. File Form C-S via myTax Portal by 30 November each year (e-filing). Consult your tax agent for final submission.
+    </div>
+  `;
+}
+
+// ===================== IR8A =====================
+function _initIR8AYears(){
+  const sel=document.getElementById('ir8a-ya');
+  if(!sel||sel.options.length>0) return;
+  _taxYears().forEach(y=>{
+    const o=document.createElement('option');
+    o.value=y; o.text='YA '+y;
+    sel.appendChild(o);
+  });
+}
+
+function openIR8AModal(id){
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const emp=id ? DB.taxData.ir8aEmployees.find(e=>e.id===id) : null;
+  document.getElementById('ir8a-modal-title').textContent=emp?'Edit Employee IR8A Data':'Add Employee IR8A Data';
+  const fields=['name','nric','desig','salary','bonus','dirfee','allow','bik','cpf-er','cpf-ee','fund','ya'];
+  if(emp){
+    fields.forEach(f=>{ const el=document.getElementById('ir8a-emp-'+f); if(el) el.value=emp[f.replace('-','_')]||''; });
+    document.getElementById('ir8a-emp-dob').value=emp.dob||'';
+    document.getElementById('ir8a-emp-id').value=emp.id||'';
+  } else {
+    fields.forEach(f=>{ const el=document.getElementById('ir8a-emp-'+f); if(el) el.value=''; });
+    document.getElementById('ir8a-emp-dob').value='';
+    document.getElementById('ir8a-emp-id').value='';
+    document.getElementById('ir8a-emp-ya').value=new Date().getFullYear();
+  }
+  document.getElementById('modal-ir8a-emp').classList.add('open');
+}
+
+function saveIR8AEmployee(){
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const id=document.getElementById('ir8a-emp-id').value||('ir8a_'+Date.now());
+  const rec={
+    id,
+    name:document.getElementById('ir8a-emp-name').value,
+    nric:document.getElementById('ir8a-emp-nric').value,
+    dob:document.getElementById('ir8a-emp-dob').value,
+    desig:document.getElementById('ir8a-emp-desig').value,
+    salary:parseFloat(document.getElementById('ir8a-emp-salary').value)||0,
+    bonus:parseFloat(document.getElementById('ir8a-emp-bonus').value)||0,
+    dirfee:parseFloat(document.getElementById('ir8a-emp-dirfee').value)||0,
+    allow:parseFloat(document.getElementById('ir8a-emp-allow').value)||0,
+    bik:parseFloat(document.getElementById('ir8a-emp-bik').value)||0,
+    cpf_er:parseFloat(document.getElementById('ir8a-emp-cpf-er').value)||0,
+    cpf_ee:parseFloat(document.getElementById('ir8a-emp-cpf-ee').value)||0,
+    fund:parseFloat(document.getElementById('ir8a-emp-fund').value)||0,
+    ya:parseInt(document.getElementById('ir8a-emp-ya').value)||new Date().getFullYear(),
+  };
+  if(!rec.name){ alert('Employee name is required.'); return; }
+  const idx=DB.taxData.ir8aEmployees.findIndex(e=>e.id===id);
+  if(idx>=0) DB.taxData.ir8aEmployees[idx]=rec; else DB.taxData.ir8aEmployees.push(rec);
+  saveDB();
+  closeModal('modal-ir8a-emp');
+  renderIR8A();
+}
+
+function deleteIR8AEmployee(id){
+  if(!confirm('Remove this employee IR8A record?')) return;
+  DB.taxData.ir8aEmployees=(DB.taxData.ir8aEmployees||[]).filter(e=>e.id!==id);
+  saveDB(); renderIR8A();
+}
+
+function renderIR8A(){
+  _initIR8AYears();
+  const el=document.getElementById('ir8a-content');
+  const listEl=document.getElementById('ir8a-employees-list');
+  if(!el) return;
+  const ya=parseInt(document.getElementById('ir8a-ya').value)||new Date().getFullYear();
+  const s=DB.settings||{};
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const emps=(DB.taxData.ir8aEmployees||[]).filter(e=>e.ya===ya);
+
+  el.innerHTML=`
+    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">UEN: ${s.reg||'—'} &nbsp;|&nbsp; Tax Ref: ${s.tax||'—'}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">IRAS Form IR8A</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">Year of Assessment: YA ${ya}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">Income Year: ${ya-1}</div>
+      </div>
+    </div>
+    ${emps.length===0?`<div style="text-align:center;padding:30px;color:var(--text-muted)">No employee IR8A data for YA ${ya}.<br>Use the <strong>Employee Remuneration Data</strong> section below to add records.</div>`:`
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:.8rem">
+      <thead>
+        <tr style="background:var(--primary);color:#fff">
+          <th style="padding:8px 10px;text-align:left">Employee</th>
+          <th style="padding:8px 10px;text-align:left">NRIC/FIN</th>
+          <th style="padding:8px 10px;text-align:right">Salary</th>
+          <th style="padding:8px 10px;text-align:right">Bonus</th>
+          <th style="padding:8px 10px;text-align:right">Dir.Fees</th>
+          <th style="padding:8px 10px;text-align:right">Allow.</th>
+          <th style="padding:8px 10px;text-align:right">BIK</th>
+          <th style="padding:8px 10px;text-align:right">Empr CPF</th>
+          <th style="padding:8px 10px;text-align:right">Empe CPF</th>
+          <th style="padding:8px 10px;text-align:right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${emps.map(e=>{
+          const total=e.salary+e.bonus+e.dirfee+e.allow+e.bik;
+          return `<tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:8px 10px"><strong>${e.name}</strong><br><span style="color:var(--text-muted);font-size:.75rem">${e.desig||''}</span></td>
+            <td style="padding:8px 10px">${e.nric||'—'}</td>
+            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.salary)}</td>
+            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.bonus)}</td>
+            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.dirfee)}</td>
+            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.allow)}</td>
+            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.bik)}</td>
+            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.cpf_er)}</td>
+            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.cpf_ee)}</td>
+            <td style="padding:8px 10px;text-align:right;font-weight:700">${_fmtSGD(total)}</td>
+          </tr>`;
+        }).join('')}
+        <tr style="background:var(--surface2);font-weight:700;border-top:2px solid var(--primary)">
+          <td style="padding:8px 10px" colspan="2">TOTALS</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.salary,0))}</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.bonus,0))}</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.dirfee,0))}</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.allow,0))}</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.bik,0))}</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.cpf_er,0))}</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.cpf_ee,0))}</td>
+          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.salary+e.bonus+e.dirfee+e.allow+e.bik,0))}</td>
+        </tr>
+      </tbody>
+    </table></div>
+    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
+      <strong>Note:</strong> Submit IR8A to IRAS via Auto-Inclusion Scheme (AIS) by 1 March each year. Hard-copy to employee by 1 March. Total employees: <strong>${emps.length}</strong>.
+    </div>`}
+  `;
+
+  if(listEl){
+    listEl.innerHTML=emps.length===0?`<p style="color:var(--text-muted);font-size:.85rem">No records. Click <strong>+ Add / Edit Employee</strong> to start.</p>`:`
+      <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.82rem">
+        <thead><tr style="background:var(--surface2)">
+          <th style="padding:7px 10px;text-align:left">Name</th><th style="padding:7px 10px;text-align:left">NRIC</th>
+          <th style="padding:7px 10px;text-align:right">Total Remuner.</th><th style="padding:7px 10px;text-align:right">Employer CPF</th>
+          <th style="padding:7px 10px"></th>
+        </tr></thead>
+        <tbody>${emps.map(e=>`<tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:7px 10px">${e.name}</td><td style="padding:7px 10px">${e.nric||'—'}</td>
+          <td style="padding:7px 10px;text-align:right">${_fmtSGD(e.salary+e.bonus+e.dirfee+e.allow+e.bik)}</td>
+          <td style="padding:7px 10px;text-align:right">${_fmtSGD(e.cpf_er)}</td>
+          <td style="padding:7px 10px;text-align:right">
+            <button class="btn btn-outline btn-sm" onclick="openIR8AModal('${e.id}')">Edit</button>
+            <button class="btn btn-sm" style="background:#fee2e2;color:#dc2626;border:none;cursor:pointer;border-radius:6px;padding:4px 8px;font-size:.75rem" onclick="deleteIR8AEmployee('${e.id}')">✕</button>
+          </td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  }
+}
+
+// ===================== IR21 =====================
+function openIR21Modal(id){
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const rec=id ? DB.taxData.ir21Filings.find(r=>r.id===id) : null;
+  const fields=['emp-name','emp-nric','emp-nat','emp-desig','emp-start','emp-end','emp-salary','emp-grossinc','emp-bonus','emp-dirfee','emp-gratia','emp-leavepay','emp-noticepay','emp-bik','emp-cpf-er','emp-cpf-ee','emp-withheld'];
+  if(rec){
+    fields.forEach(f=>{ const el=document.getElementById('ir21-'+f); if(el) el.value=rec[f.replace(/-/g,'_')]||''; });
+    document.getElementById('ir21-emp-dob').value=rec.emp_dob||'';
+    document.getElementById('ir21-emp-reason').value=rec.emp_reason||'Resignation';
+    document.getElementById('ir21-emp-id').value=rec.id||'';
+  } else {
+    fields.forEach(f=>{ const el=document.getElementById('ir21-'+f); if(el) el.value=''; });
+    document.getElementById('ir21-emp-dob').value='';
+    document.getElementById('ir21-emp-reason').value='Resignation';
+    document.getElementById('ir21-emp-id').value='';
+  }
+  document.getElementById('modal-ir21').classList.add('open');
+}
+
+function saveIR21Filing(){
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const id=document.getElementById('ir21-emp-id').value||('ir21_'+Date.now());
+  const rec={
+    id,
+    emp_name:document.getElementById('ir21-emp-name').value,
+    emp_nric:document.getElementById('ir21-emp-nric').value,
+    emp_dob:document.getElementById('ir21-emp-dob').value,
+    emp_nat:document.getElementById('ir21-emp-nat').value,
+    emp_desig:document.getElementById('ir21-emp-desig').value,
+    emp_start:document.getElementById('ir21-emp-start').value,
+    emp_end:document.getElementById('ir21-emp-end').value,
+    emp_reason:document.getElementById('ir21-emp-reason').value,
+    emp_salary:parseFloat(document.getElementById('ir21-emp-salary').value)||0,
+    emp_grossinc:parseFloat(document.getElementById('ir21-emp-grossinc').value)||0,
+    emp_bonus:parseFloat(document.getElementById('ir21-emp-bonus').value)||0,
+    emp_dirfee:parseFloat(document.getElementById('ir21-emp-dirfee').value)||0,
+    emp_gratia:parseFloat(document.getElementById('ir21-emp-gratia').value)||0,
+    emp_leavepay:parseFloat(document.getElementById('ir21-emp-leavepay').value)||0,
+    emp_noticepay:parseFloat(document.getElementById('ir21-emp-noticepay').value)||0,
+    emp_bik:parseFloat(document.getElementById('ir21-emp-bik').value)||0,
+    emp_cpf_er:parseFloat(document.getElementById('ir21-emp-cpf-er').value)||0,
+    emp_cpf_ee:parseFloat(document.getElementById('ir21-emp-cpf-ee').value)||0,
+    emp_withheld:parseFloat(document.getElementById('ir21-emp-withheld').value)||0,
+    createdAt:new Date().toISOString().slice(0,10),
+  };
+  if(!rec.emp_name){ alert('Employee name is required.'); return; }
+  const idx=DB.taxData.ir21Filings.findIndex(r=>r.id===id);
+  if(idx>=0) DB.taxData.ir21Filings[idx]=rec; else DB.taxData.ir21Filings.push(rec);
+  saveDB();
+  closeModal('modal-ir21');
+  renderIR21();
+}
+
+function deleteIR21Filing(id){
+  if(!confirm('Remove this IR21 filing?')) return;
+  DB.taxData.ir21Filings=(DB.taxData.ir21Filings||[]).filter(r=>r.id!==id);
+  saveDB(); renderIR21();
+}
+
+function renderIR21(selectedId){
+  const el=document.getElementById('ir21-content');
+  if(!el) return;
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const filings=DB.taxData.ir21Filings||[];
+  const s=DB.settings||{};
+
+  if(filings.length===0){
+    el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--text-muted)">No IR21 filings yet.<br>Click <strong>+ New IR21 Filing</strong> to add a ceased employee.</div>`;
+    return;
+  }
+
+  const showId=selectedId||filings[0].id;
+  const rec=filings.find(r=>r.id===showId)||filings[0];
+  const totalIncome=rec.emp_grossinc+rec.emp_bonus+rec.emp_dirfee+rec.emp_gratia+rec.emp_leavepay+rec.emp_noticepay;
+
+  el.innerHTML=`
+    <!-- Filing list -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      ${filings.map(r=>`
+        <button onclick="renderIR21('${r.id}')" style="padding:6px 12px;border-radius:6px;font-size:.8rem;cursor:pointer;border:1px solid var(--border);background:${r.id===rec.id?'var(--primary)':'var(--surface2)'};color:${r.id===rec.id?'#fff':'var(--text)'};font-family:inherit">
+          ${r.emp_name}<br><span style="font-size:.7rem;opacity:.8">${r.emp_end||'—'}</span>
+        </button>`).join('')}
+      <button onclick="deleteIR21Filing('${rec.id}')" style="padding:6px 12px;border-radius:6px;font-size:.8rem;cursor:pointer;border:1px solid #fecaca;background:#fee2e2;color:#dc2626;font-family:inherit">🗑 Delete</button>
+      <button onclick="openIR21Modal('${rec.id}')" style="padding:6px 12px;border-radius:6px;font-size:.8rem;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:inherit">✏ Edit</button>
+    </div>
+
+    <!-- IR21 Form display -->
+    <div style="border:2px solid var(--primary);border-radius:10px;overflow:hidden">
+      <div style="background:var(--primary);color:#fff;padding:12px 18px;text-align:center">
+        <div style="font-weight:800;font-size:1rem;letter-spacing:.5px">FORM IR21</div>
+        <div style="font-size:.75rem;opacity:.85">Notification of Employee's Cessation of Employment</div>
+        <div style="font-size:.7rem;opacity:.7">IRAS — Inland Revenue Authority of Singapore</div>
+      </div>
+
+      <div style="padding:16px 18px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px">
+          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Employer Name</span><br><strong>${s.company||'—'}</strong></div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">UEN / Tax Ref</span><br><strong>${s.reg||'—'} / ${s.tax||'—'}</strong></div>
+          <div style="padding:8px 12px;border-right:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Employer Address</span><br><strong>${s.address||'—'}</strong></div>
+          <div style="padding:8px 12px"><span style="font-size:.72rem;color:var(--text-muted)">Date Filed</span><br><strong>${rec.createdAt||new Date().toISOString().slice(0,10)}</strong></div>
+        </div>
+
+        <h5 style="color:var(--primary);margin:0 0 8px;font-size:.85rem">PART A — EMPLOYEE PARTICULARS</h5>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px">
+          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Full Name</span><br><strong>${rec.emp_name}</strong></div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">NRIC / FIN / Passport</span><br><strong>${rec.emp_nric||'—'}</strong></div>
+          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Date of Birth</span><br><strong>${rec.emp_dob||'—'}</strong></div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Nationality</span><br><strong>${rec.emp_nat||'—'}</strong></div>
+          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Designation</span><br><strong>${rec.emp_desig||'—'}</strong></div>
+          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Reason for Cessation</span><br><strong>${rec.emp_reason||'—'}</strong></div>
+          <div style="padding:8px 12px;border-right:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Date of Commencement</span><br><strong>${rec.emp_start||'—'}</strong></div>
+          <div style="padding:8px 12px"><span style="font-size:.72rem;color:var(--text-muted)">Date of Cessation</span><br><strong>${rec.emp_end||'—'}</strong></div>
+        </div>
+
+        <h5 style="color:var(--primary);margin:0 0 8px;font-size:.85rem">APPENDIX 1 — EMPLOYMENT INCOME</h5>
+        ${_taxTbl([
+          ['Gross Salary (year of cessation)',_fmtSGD(rec.emp_grossinc)],
+          ['Bonus / AWS',_fmtSGD(rec.emp_bonus)],
+          ['Director\'s Fees',_fmtSGD(rec.emp_dirfee)],
+          ['Gratuity / Ex-Gratia',_fmtSGD(rec.emp_gratia)],
+          ['Leave Pay (unused)',_fmtSGD(rec.emp_leavepay)],
+          ['Notice Pay in Lieu',_fmtSGD(rec.emp_noticepay)],
+          ['Total Employment Income',_fmtSGD(totalIncome)],
+        ],true)}
+
+        <div style="margin-top:12px"></div>
+        ${_taxTbl([
+          ['Benefits-in-Kind (Appendix 1)',_fmtSGD(rec.emp_bik)],
+          ['Employer\'s CPF Contributions',_fmtSGD(rec.emp_cpf_er)],
+          ['Employee\'s CPF Contributions',_fmtSGD(rec.emp_cpf_ee)],
+          ['Estimated Tax to Withhold',_fmtSGD(rec.emp_withheld)],
+        ],false)}
+
+        <div style="margin-top:16px;padding:12px;border:1px solid var(--border);border-radius:6px;font-size:.78rem;color:var(--text-muted)">
+          <strong>Declaration:</strong> I certify that the information given in this form is true and correct. Filed by ${s.company||'the employer'}.
+          <br><br><strong>Note:</strong> IR21 must be submitted at least 1 month before employee's last day (or 2 months for foreigners). Submit via myTax Portal (employers.iras.gov.sg).
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===================== GOVT GRANTS =====================
+function openGrantModal(id){
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const rec=id ? DB.taxData.grants.find(g=>g.id===id) : null;
+  if(rec){
+    document.getElementById('grant-name').value=rec.name||'';
+    document.getElementById('grant-type').value=rec.type||'Tax Rebate';
+    document.getElementById('grant-amount').value=rec.amount||'';
+    document.getElementById('grant-date').value=rec.date||'';
+    document.getElementById('grant-period').value=rec.period||'';
+    document.getElementById('grant-ref').value=rec.ref||'';
+    document.getElementById('grant-notes').value=rec.notes||'';
+    document.getElementById('grant-id').value=rec.id||'';
+  } else {
+    ['name','amount','date','period','ref','notes'].forEach(f=>{ const el=document.getElementById('grant-'+f); if(el) el.value=''; });
+    document.getElementById('grant-type').value='Tax Rebate';
+    document.getElementById('grant-id').value='';
+  }
+  document.getElementById('modal-grant').classList.add('open');
+}
+
+function saveGrant(){
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const id=document.getElementById('grant-id').value||('grant_'+Date.now());
+  const rec={
+    id,
+    name:document.getElementById('grant-name').value,
+    type:document.getElementById('grant-type').value,
+    amount:parseFloat(document.getElementById('grant-amount').value)||0,
+    date:document.getElementById('grant-date').value,
+    period:document.getElementById('grant-period').value,
+    ref:document.getElementById('grant-ref').value,
+    notes:document.getElementById('grant-notes').value,
+  };
+  if(!rec.name){ alert('Grant/Rebate name is required.'); return; }
+  const idx=DB.taxData.grants.findIndex(g=>g.id===id);
+  if(idx>=0) DB.taxData.grants[idx]=rec; else DB.taxData.grants.push(rec);
+  saveDB();
+  closeModal('modal-grant');
+  renderGrants();
+}
+
+function deleteGrant(id){
+  if(!confirm('Remove this grant record?')) return;
+  DB.taxData.grants=(DB.taxData.grants||[]).filter(g=>g.id!==id);
+  saveDB(); renderGrants();
+}
+
+function renderGrants(){
+  const el=document.getElementById('grants-content');
+  if(!el) return;
+  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
+  const grants=DB.taxData.grants||[];
+  const total=grants.reduce((s,g)=>s+g.amount,0);
+
+  const typeColors={'Tax Rebate':'#dbeafe','Cash Grant':'#dcfce7','Jobs Credit':'#fef9c3','Enterprise Development':'#ede9fe','Other':'#f1f5f9'};
+
+  el.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px">
+      <div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-top:3px solid var(--accent2)">
+        <div style="font-size:.75rem;color:var(--text-muted)">Total Grants/Rebates</div>
+        <div style="font-size:1.3rem;font-weight:700;color:var(--accent2)">${_fmtSGD(total)}</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-top:3px solid var(--primary)">
+        <div style="font-size:.75rem;color:var(--text-muted)">No. of Records</div>
+        <div style="font-size:1.3rem;font-weight:700;color:var(--primary)">${grants.length}</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-top:3px solid var(--accent)">
+        <div style="font-size:.75rem;color:var(--text-muted)">Latest</div>
+        <div style="font-size:.9rem;font-weight:700;color:var(--accent)">${grants.length?grants[grants.length-1].name:'—'}</div>
+      </div>
+    </div>
+    ${grants.length===0?`<div style="text-align:center;padding:30px;color:var(--text-muted)">No grants recorded. Click <strong>+ Record Grant / Rebate</strong> to begin.</div>`:`
+    <table style="width:100%;border-collapse:collapse;font-size:.85rem">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:8px 12px;text-align:left">Name</th>
+        <th style="padding:8px 12px;text-align:left">Type</th>
+        <th style="padding:8px 12px;text-align:left">Period</th>
+        <th style="padding:8px 12px;text-align:left">Date</th>
+        <th style="padding:8px 12px;text-align:right">Amount (SGD)</th>
+        <th style="padding:8px 12px;text-align:left">Ref</th>
+        <th style="padding:8px 12px"></th>
+      </tr></thead>
+      <tbody>${grants.map(g=>`
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:8px 12px"><strong>${g.name}</strong>${g.notes?`<br><span style='font-size:.75rem;color:var(--text-muted)'>${g.notes}</span>`:''}</td>
+          <td style="padding:8px 12px"><span style="padding:2px 8px;border-radius:10px;font-size:.75rem;background:${typeColors[g.type]||'#f1f5f9'}">${g.type}</span></td>
+          <td style="padding:8px 12px">${g.period||'—'}</td>
+          <td style="padding:8px 12px">${g.date||'—'}</td>
+          <td style="padding:8px 12px;text-align:right;font-weight:700;color:var(--accent2)">${_fmtSGD(g.amount)}</td>
+          <td style="padding:8px 12px;font-size:.78rem;color:var(--text-muted)">${g.ref||'—'}</td>
+          <td style="padding:8px 12px;white-space:nowrap">
+            <button class="btn btn-outline btn-sm" onclick="openGrantModal('${g.id}')">Edit</button>
+            <button class="btn btn-sm" style="background:#fee2e2;color:#dc2626;border:none;cursor:pointer;border-radius:6px;padding:4px 8px;font-size:.75rem;margin-left:4px" onclick="deleteGrant('${g.id}')">✕</button>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+      <tfoot>
+        <tr style="background:var(--surface2);font-weight:700;border-top:2px solid var(--primary)">
+          <td style="padding:8px 12px" colspan="4">TOTAL</td>
+          <td style="padding:8px 12px;text-align:right;color:var(--accent2)">${_fmtSGD(total)}</td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>`}
+  `;
+}
+
+// ===================== XBRL FILING =====================
+function _initXBRLYears(){
+  const sel=document.getElementById('xbrl-year');
+  if(!sel||sel.options.length>0) return;
+  _taxYears().forEach(y=>{
+    const o=document.createElement('option');
+    o.value=y; o.text='FY '+y;
+    sel.appendChild(o);
+  });
+}
+
+function renderXBRL(){
+  _initXBRLYears();
+  const el=document.getElementById('xbrl-content');
+  if(!el) return;
+  const fy=parseInt(document.getElementById('xbrl-year').value)||new Date().getFullYear();
+  const s=DB.settings||{};
+
+  // P&L for FY
+  const invFY=DB.invoices.filter(i=>i.status!=='draft'&&new Date(i.date).getFullYear()===fy);
+  const expFY=DB.expenses.filter(e=>new Date(e.date).getFullYear()===fy);
+  const billFY=DB.bills.filter(b=>b.status==='paid'&&new Date(b.due).getFullYear()===fy);
+  const payFY=DB.payments.filter(p=>new Date(p.date).getFullYear()===fy);
+
+  const revenue=invFY.reduce((s,i)=>{
+    return s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)),0);
+  },0);
+  const totalExp=expFY.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0)
+    +billFY.reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
+  const netProfit=revenue-totalExp;
+  const corpTax=Math.max(0,netProfit)*0.17;
+  const netProfitAfterTax=netProfit-corpTax;
+
+  // Balance Sheet estimates
+  const ar=DB.invoices.filter(i=>i.status!=='paid'&&i.status!=='draft').reduce((s,i)=>{
+    return s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)*(1+(l.tax||0)/100)),0);
+  },0);
+  const payRec=payFY.reduce((s,p)=>s+_toSGD(p.amount||0,p.currency||'SGD'),0);
+  const cash=payRec-totalExp;
+  const totalAssets=Math.max(0,cash)+ar;
+  const totalLiab=DB.bills.filter(b=>b.status==='pending').reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
+  const equity=totalAssets-totalLiab;
+
+  el.innerHTML=`
+    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">UEN: ${s.reg||'—'} &nbsp;|&nbsp; ACRA Filing</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">XBRL Financial Report</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">Financial Year: ${fy}</div>
+        <div style="font-size:.8rem;color:var(--text-muted)">Singapore Financial Reporting Standards (SFRS)</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div>
+        <h4 style="color:var(--primary);margin:0 0 10px">Statement of Comprehensive Income</h4>
+        ${_taxTbl([
+          ['Revenue',_fmtSGD(revenue)],
+          ['Cost of Sales','S$0'],
+          ['Gross Profit',_fmtSGD(revenue)],
+          ['Other Income','S$0'],
+          ['Distribution Costs','S$0'],
+          ['Administrative Expenses',`(${_fmtSGD(totalExp)})`],
+          ['Other Expenses','S$0'],
+          ['Finance Costs','S$0'],
+          ['Profit / (Loss) Before Tax',_fmtSGD(netProfit)],
+          ['Income Tax Expense',`(${_fmtSGD(corpTax)})`],
+          ['Net Profit / (Loss) After Tax',_fmtSGD(netProfitAfterTax)],
+        ],true)}
+      </div>
+      <div>
+        <h4 style="color:var(--primary);margin:0 0 10px">Statement of Financial Position</h4>
+        ${_taxTbl([
+          ['ASSETS',''],
+          ['Cash &amp; Cash Equivalents',_fmtSGD(Math.max(0,cash))],
+          ['Trade Receivables',_fmtSGD(ar)],
+          ['Other Current Assets','S$0'],
+          ['Total Assets',_fmtSGD(totalAssets)],
+          ['LIABILITIES',''],
+          ['Trade Payables',_fmtSGD(totalLiab)],
+          ['Other Liabilities','S$0'],
+          ['Total Liabilities',_fmtSGD(totalLiab)],
+          ['EQUITY',''],
+          ['Share Capital','S$0'],
+          ['Retained Earnings',_fmtSGD(equity)],
+          ['Total Equity',_fmtSGD(equity)],
+        ],false)}
+      </div>
+    </div>
+
+    <h4 style="color:var(--primary);margin:0 0 10px">XBRL Export Preview (Inline XBRL)</h4>
+    <div style="background:#1e293b;border-radius:8px;padding:14px;overflow-x:auto;font-family:monospace;font-size:.72rem;color:#a3e635;max-height:260px;overflow-y:auto">
+      <pre style="margin:0;white-space:pre">${_buildXBRL(s,fy,revenue,totalExp,netProfit,corpTax,netProfitAfterTax,totalAssets,totalLiab,equity,cash,ar)}</pre>
+    </div>
+
+    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
+      <strong>Note:</strong> XBRL filing is required for companies with revenue ≥ S$500,000 filing with ACRA. Use BizFinx Preparation Tool (acra.gov.sg) for official submission. This export provides the structured data for import into BizFinx. Taxonomy: ACRA XBRL Financial Reporting Taxonomy (AXT).
+    </div>
+  `;
+}
+
+function _buildXBRL(s,fy,revenue,totalExp,netProfit,corpTax,netPAT,totalAssets,totalLiab,equity,cash,ar){
+  const d=fy+'-12-31';
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<xbrli:xbrl xmlns:xbrli="http://www.xbrl.org/2003/instance"
+  xmlns:acra="http://www.acra.gov.sg/taxonomy/${fy}"
+  xmlns:xbrldei="http://xbrl.org/2006/xbrldei"
+  contextRef="FY${fy}">
+
+  <!-- Entity Information -->
+  <xbrldei:EntityRegistrationName>${s.company||'Company'}</xbrldei:EntityRegistrationName>
+  <xbrldei:EntityUniqueNumberIdentifier>${s.reg||''}</xbrldei:EntityUniqueNumberIdentifier>
+
+  <!-- Income Statement -->
+  <acra:Revenue contextRef="FY${fy}" decimals="2">${revenue.toFixed(2)}</acra:Revenue>
+  <acra:CostOfSales contextRef="FY${fy}" decimals="2">0.00</acra:CostOfSales>
+  <acra:GrossProfit contextRef="FY${fy}" decimals="2">${revenue.toFixed(2)}</acra:GrossProfit>
+  <acra:AdministrativeExpenses contextRef="FY${fy}" decimals="2">${totalExp.toFixed(2)}</acra:AdministrativeExpenses>
+  <acra:ProfitLossBeforeTax contextRef="FY${fy}" decimals="2">${netProfit.toFixed(2)}</acra:ProfitLossBeforeTax>
+  <acra:IncomeTaxExpense contextRef="FY${fy}" decimals="2">${corpTax.toFixed(2)}</acra:IncomeTaxExpense>
+  <acra:ProfitLoss contextRef="FY${fy}" decimals="2">${netPAT.toFixed(2)}</acra:ProfitLoss>
+
+  <!-- Balance Sheet -->
+  <acra:CashAndCashEquivalents contextRef="${d}" decimals="2">${Math.max(0,cash).toFixed(2)}</acra:CashAndCashEquivalents>
+  <acra:TradeAndOtherReceivablesCurrent contextRef="${d}" decimals="2">${ar.toFixed(2)}</acra:TradeAndOtherReceivablesCurrent>
+  <acra:Assets contextRef="${d}" decimals="2">${totalAssets.toFixed(2)}</acra:Assets>
+  <acra:TradeAndOtherPayablesCurrent contextRef="${d}" decimals="2">${totalLiab.toFixed(2)}</acra:TradeAndOtherPayablesCurrent>
+  <acra:Liabilities contextRef="${d}" decimals="2">${totalLiab.toFixed(2)}</acra:Liabilities>
+  <acra:Equity contextRef="${d}" decimals="2">${equity.toFixed(2)}</acra:Equity>
+
+</xbrli:xbrl>`;
+}
+
+function exportXBRL(){
+  const fy=parseInt(document.getElementById('xbrl-year').value)||new Date().getFullYear();
+  const s=DB.settings||{};
+  const invFY=DB.invoices.filter(i=>i.status!=='draft'&&new Date(i.date).getFullYear()===fy);
+  const expFY=DB.expenses.filter(e=>new Date(e.date).getFullYear()===fy);
+  const billFY=DB.bills.filter(b=>b.status==='paid'&&new Date(b.due).getFullYear()===fy);
+  const payFY=DB.payments.filter(p=>new Date(p.date).getFullYear()===fy);
+  const revenue=invFY.reduce((s,i)=>(s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)),0)),0);
+  const totalExp=expFY.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0)+billFY.reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
+  const netProfit=revenue-totalExp;
+  const corpTax=Math.max(0,netProfit)*0.17;
+  const netPAT=netProfit-corpTax;
+  const ar=DB.invoices.filter(i=>i.status!=='paid'&&i.status!=='draft').reduce((s,i)=>(s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)*(1+(l.tax||0)/100)),0)),0);
+  const cash=payFY.reduce((s,p)=>s+_toSGD(p.amount||0,p.currency||'SGD'),0)-totalExp;
+  const totalAssets=Math.max(0,cash)+ar;
+  const totalLiab=DB.bills.filter(b=>b.status==='pending').reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
+  const equity=totalAssets-totalLiab;
+  const xml=_buildXBRL(s,fy,revenue,totalExp,netProfit,corpTax,netPAT,totalAssets,totalLiab,equity,cash,ar);
+  const blob=new Blob([xml],{type:'application/xml'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='Fintiv_XBRL_FY'+fy+'_'+new Date().toISOString().slice(0,10)+'.xml';
+  a.click();
+}
 
 (async function initApp(){
   const sbReady = _initSupabase();
