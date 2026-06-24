@@ -2705,10 +2705,14 @@ async function doLogin(){
   btn.textContent='Signing in…'; btn.disabled=true;
   let signInData, error;
   try {
-    const res = await _sb.auth.signInWithPassword({email,password:pw});
+    const res = await Promise.race([
+      _sb.auth.signInWithPassword({email,password:pw}),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('Request timed out. Check your internet connection and try again.')),12000))
+    ]);
     signInData = res.data; error = res.error;
   } catch(e) {
-    err.textContent='Network error: ' + e.message; err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; return;
+    err.textContent= e.message || 'Network error. Please check your connection and try again.';
+    err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; return;
   }
   if(error){ err.textContent=error.message; err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; return; }
   // Login succeeded — go straight to app (no onAuthStateChange dependency)
