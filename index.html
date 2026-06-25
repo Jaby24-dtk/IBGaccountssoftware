@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fintiv — I-BG Group of Companies</title>
+<title>Fintiv</title>
+<link rel="icon" href="/ibg-logo.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js" integrity="sha384-llrj4SUC221pVa/E3xKZwmp2zd8q9ReUcs9N37u6A5pQhjiymLsQRg+1AysLVKOZ" crossorigin="anonymous"></script>
 <style>
 :root {
   --primary: #3B1F2B;
@@ -184,15 +185,15 @@ tr:hover td{background:var(--surface2)}
 .camera-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.82rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:8px;color:var(--primary)}
 .camera-btn:hover{background:var(--surface2)}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.108.2" integrity="sha384-JWEyvHh+lRf0sN/WWY+QTQwX+CyWqmNg4tkc8GQzAMEtR2wGNrCJlvnu1lHD1kDm" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <!-- ===== LOGIN SCREEN ===== -->
-<div id="login-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
+<div id="login-screen" style="display:flex;position:fixed;inset:0;background:var(--bg);z-index:9999;align-items:center;justify-content:center;flex-direction:column">
   <div style="background:var(--surface);border-radius:20px;padding:40px 48px;width:min(420px,92vw);box-shadow:0 24px 64px rgba(59,31,43,.18);border:1px solid var(--border)">
     <div style="text-align:center;margin-bottom:28px">
-      <img id="login-logo" style="height:54px;width:auto;margin:0 auto 12px;display:block" alt="I-BG Group">
+      <img id="login-logo" src="/ibg-logo.png" style="height:54px;width:auto;margin:0 auto 12px;display:block" alt="I-BG Group">
       <h2 style="font-family:'Playfair Display',serif;color:var(--primary);font-size:1.45rem;margin:0 0 6px">Fintiv</h2>
       <p style="color:var(--text-muted);font-size:.82rem;margin:0">Sign in to access your accounts</p>
     </div>
@@ -209,9 +210,6 @@ tr:hover td{background:var(--surface2)}
     <p style="text-align:center;margin:14px 0 0;font-size:.76rem;color:var(--text-muted)">
       <a href="#" onclick="showForgotPw(event)" style="color:var(--primary-light);text-decoration:none">Forgot password?</a>
     </p>
-    <div id="local-mode-bar" style="display:none;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);text-align:center">
-      <p style="font-size:.74rem;color:var(--text-muted);margin:0">Cloud not configured — <a href="#" onclick="startLocalMode(event)" style="color:var(--primary-light);text-decoration:none">continue in local mode →</a></p>
-    </div>
   </div>
   <p style="margin-top:20px;font-size:.72rem;color:var(--text-muted);opacity:.7">I-BG Group · Confidential</p>
 </div>
@@ -260,7 +258,7 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <!-- SIDEBAR -->
-<div id="sidebar">
+<div id="sidebar" style="display:none">
   <div class="logo">
     <img class="logo-img" src="data:image/png;base64,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" alt="I-BG Group">
     <span>Financial Management Suite</span>
@@ -308,11 +306,7 @@ tr:hover td{background:var(--surface2)}
       </a>
       <a onclick="showPage('journal')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-        Journal
-      </a>
-      <a onclick="showPage('gl')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
-        General Ledger
+        Journal / Ledger
       </a>
       <a onclick="showPage('coa')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
@@ -337,53 +331,6 @@ tr:hover td{background:var(--surface2)}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         Budget vs Actual
       </a>
-      <a onclick="showPage('gl-detail')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></svg>
-        GL Detail
-      </a>
-      <a onclick="showPage('gl-summary')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>
-        GL Summary
-      </a>
-      <a onclick="showPage('trial-balance')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><path d="M8 12L5 6l-2 6h10"/><path d="M16 12l-3-6-2 6h10"/><line x1="5" y1="18" x2="19" y2="18"/></svg>
-        Trial Balance
-      </a>
-      <a onclick="showPage('sales-tax')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14l6-6"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><rect x="2" y="2" width="20" height="20" rx="3"/></svg>
-        Sales Tax
-      </a>
-    </div>
-    <div class="nav-section" onclick="toggleNavGroup(this)">Tax &amp; Compliance <span class="nav-arrow">▼</span></div>
-    <div class="nav-group">
-      <a onclick="showPage('gst')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14l6-6"/><circle cx="8" cy="8" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><rect x="2" y="2" width="20" height="20" rx="3"/></svg>
-        GST F5 Return
-      </a>
-      <a onclick="showPage('corptax')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Corporate Tax
-      </a>
-      <a onclick="showPage('ir8a')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-        IR8A — Employee Income
-      </a>
-      <a onclick="showPage('ir21')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
-        IR21 — Ceased Employment
-      </a>
-      <a onclick="showPage('grants')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        Govt Rebates &amp; Grants
-      </a>
-      <a onclick="showPage('xbrl')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        XBRL Filing Report
-      </a>
-      <a onclick="showPage('eci')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        ECI Filing
-      </a>
     </div>
     <div class="nav-section" onclick="toggleNavGroup(this)">Settings <span class="nav-arrow">▼</span></div>
     <div class="nav-group">
@@ -397,7 +344,7 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <!-- MAIN -->
-<div id="main">
+<div id="main" style="display:none">
   <div id="topbar">
     <h2 id="page-title">Dashboard</h2>
     <div class="topbar-right">
@@ -848,396 +795,6 @@ tr:hover td{background:var(--surface2)}
       </div>
     </div>
 
-    <!-- ===== GST F5 RETURN ===== -->
-    <div id="page-gst" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>GST F5 Return — Singapore (9%)</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Quarter:</label>
-            <select id="gst-quarter" onchange="renderGST()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem">
-              <option value="Q1">Q1 (Jan–Mar)</option>
-              <option value="Q2">Q2 (Apr–Jun)</option>
-              <option value="Q3">Q3 (Jul–Sep)</option>
-              <option value="Q4">Q4 (Oct–Dec)</option>
-            </select>
-            <select id="gst-year" onchange="renderGST()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('gst')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body" id="gst-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== CORPORATE TAX ===== -->
-    <div id="page-corptax" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>Corporate Income Tax — Singapore (17%)</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Year of Assessment:</label>
-            <select id="corptax-ya" onchange="renderCorpTax()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('corptax')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body" id="corptax-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== IR8A ===== -->
-    <div id="page-ir8a" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>IR8A — Return of Employee's Remuneration</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Year of Assessment:</label>
-            <select id="ir8a-ya" onchange="renderIR8A()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('ir8a')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body" id="ir8a-content"></div>
-      </div>
-      <!-- IR8A Employee Add/Edit Modal trigger -->
-      <div class="card mt-4" id="ir8a-employees-card">
-        <div class="card-header">
-          <h3>Employee Remuneration Data</h3>
-          <button class="btn btn-primary btn-sm" onclick="openIR8AModal()">+ Add / Edit Employee</button>
-        </div>
-        <div class="card-body" id="ir8a-employees-list"></div>
-      </div>
-    </div>
-
-    <!-- ===== IR21 ===== -->
-    <div id="page-ir21" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>IR21 — Notification of Employee's Cessation of Employment</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <button class="btn btn-primary btn-sm" onclick="openIR21Modal()">+ New IR21 Filing</button>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print Selected</button>
-          </div>
-        </div>
-        <div class="card-body" id="ir21-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== GOVT REBATES & GRANTS ===== -->
-    <div id="page-grants" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>Government Rebates &amp; Grants Tracker</h3>
-          <button class="btn btn-primary btn-sm" onclick="openGrantModal()">+ Record Grant / Rebate</button>
-        </div>
-        <div class="card-body" id="grants-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== XBRL FILING REPORT ===== -->
-    <div id="page-xbrl" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>XBRL Filing Report — ACRA</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Financial Year End:</label>
-            <select id="xbrl-year" onchange="renderXBRL()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportXBRL()">⬇ Export XBRL (XML)</button>
-          </div>
-        </div>
-        <div class="card-body" id="xbrl-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== GENERAL LEDGER ===== -->
-    <div id="page-gl" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>General Ledger</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Account:</label>
-            <select id="gl-account" onchange="renderGL()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;min-width:200px"></select>
-            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
-            <select id="gl-year" onchange="renderGL()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-          </div>
-        </div>
-        <div class="card-body" id="gl-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== GL DETAIL ===== -->
-    <div id="page-gl-detail" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>General Ledger — Detail</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
-            <select id="gld-year" onchange="renderGLDetail()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportReport('gld-content')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body" id="gld-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== GL SUMMARY ===== -->
-    <div id="page-gl-summary" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>General Ledger — Summary</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
-            <select id="gls-year" onchange="renderGLSummary()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportReport('gls-content')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body" id="gls-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== TRIAL BALANCE ===== -->
-    <div id="page-trial-balance" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>Trial Balance</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">As of Year:</label>
-            <select id="tb-year" onchange="renderTrialBalance()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportReport('tb-content')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body" id="tb-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== SALES TAX ===== -->
-    <div id="page-sales-tax" class="page">
-      <div class="card">
-        <div class="card-header">
-          <h3>Sales Tax Report</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Period:</label>
-            <select id="stax-year" onchange="renderSalesTax()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportReport('stax-content')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body" id="stax-content"></div>
-      </div>
-    </div>
-
-    <!-- ===== ECI FILING ===== -->
-    <div id="page-eci" class="page">
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-header">
-          <h3>Estimated Chargeable Income (ECI) — IRAS Filing</h3>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <label style="font-size:.8rem;color:var(--text-muted)">Year of Assessment:</label>
-            <select id="eci-ya" onchange="renderECI()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem"></select>
-            <label style="font-size:.8rem;color:var(--text-muted)">Company Type:</label>
-            <select id="eci-scheme" onchange="renderECI()" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:.83rem">
-              <option value="partial">Partial Tax Exemption</option>
-              <option value="startup">New Start-Up (first 3 YAs)</option>
-            </select>
-            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
-            <button class="btn btn-primary btn-sm" onclick="exportTaxReport('eci-result')">⬇ Export</button>
-          </div>
-        </div>
-        <div class="card-body">
-          <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:16px">
-            ECI must be filed within 3 months from your financial year end. Companies with annual revenue ≤ S$5 million and ECI = NIL are exempt from filing.
-          </p>
-          <!-- Adjustments input panel -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-            <div class="card" style="margin-bottom:0">
-              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">➕ Disallowable Expenses (add back)</h3></div>
-              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Depreciation (book)</label>
-                  <input type="number" id="eci-dep" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">S-plated car transport (disallowed)</label>
-                  <input type="number" id="eci-car" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Rental property tax (disallowed)</label>
-                  <input type="number" id="eci-rptax" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Other disallowable expenses</label>
-                  <input type="number" id="eci-other-dis" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-              </div>
-            </div>
-            <div class="card" style="margin-bottom:0">
-              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">➖ Capital Allowances (s19/s19A)</h3></div>
-              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Low-value assets ≤S$1,000 (100%)</label>
-                  <input type="number" id="eci-ca-lva" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Computers / Automation (100%)</label>
-                  <input type="number" id="eci-ca-comp" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">3-year write-off (1/3 this YA)</label>
-                  <input type="number" id="eci-ca-3yr" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Unutilised CA b/f from prior YA</label>
-                  <input type="number" id="eci-ca-bf" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-              </div>
-            </div>
-            <div class="card" style="margin-bottom:0">
-              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">🏠 Separate Source Income</h3></div>
-              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Rental income (gross)</label>
-                  <input type="number" id="eci-rental" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Rental property expenses (deductible)</label>
-                  <input type="number" id="eci-rental-exp" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Interest income (foreign-sourced)</label>
-                  <input type="number" id="eci-interest" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-              </div>
-            </div>
-            <div class="card" style="margin-bottom:0">
-              <div class="card-header" style="padding:12px 16px"><h3 style="font-size:.85rem">🌏 Foreign Tax Credit (if claiming)</h3></div>
-              <div class="card-body" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
-                <div style="display:flex;align-items:center;gap:8px;font-size:.83rem">
-                  <label style="flex:1;color:var(--text-muted)">Foreign withholding tax paid</label>
-                  <input type="number" id="eci-ftc" value="0" step="0.01" style="width:130px;padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:.83rem;text-align:right" oninput="renderECI()">
-                </div>
-                <p style="font-size:.75rem;color:var(--text-muted);margin-top:4px">If claiming FTC, IRAS requires you to back-calculate ECI using the ETP formula. The system will compute this automatically.</p>
-              </div>
-            </div>
-          </div>
-          <!-- Result -->
-          <div id="eci-result"></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ===== IR8A EMPLOYEE MODAL ===== -->
-<div class="modal-overlay" id="modal-ir8a-emp">
-  <div class="modal" style="max-width:620px">
-    <div class="modal-header"><h3 id="ir8a-modal-title">Add Employee IR8A Data</h3><button class="modal-close" onclick="closeModal('modal-ir8a-emp')">&times;</button></div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group"><label>Employee Name *</label><input type="text" id="ir8a-emp-name" placeholder="Full name as per NRIC"></div>
-        <div class="form-group"><label>NRIC / FIN</label><input type="text" id="ir8a-emp-nric" placeholder="S1234567A"></div>
-        <div class="form-group"><label>Date of Birth</label><input type="date" id="ir8a-emp-dob"></div>
-        <div class="form-group"><label>Designation</label><input type="text" id="ir8a-emp-desig" placeholder="Job title"></div>
-        <div class="form-group"><label>Gross Salary (annual)</label><input type="number" id="ir8a-emp-salary" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Bonus</label><input type="number" id="ir8a-emp-bonus" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Director's Fees</label><input type="number" id="ir8a-emp-dirfee" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Allowances (transport, etc.)</label><input type="number" id="ir8a-emp-allow" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Benefits-in-Kind</label><input type="number" id="ir8a-emp-bik" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Employer CPF</label><input type="number" id="ir8a-emp-cpf-er" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Employee CPF</label><input type="number" id="ir8a-emp-cpf-ee" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Fund (CDAC/MBMF/SINDA/ECF)</label><input type="number" id="ir8a-emp-fund" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Year of Assessment</label><input type="number" id="ir8a-emp-ya" placeholder="2026" min="2020" max="2030"></div>
-        <input type="hidden" id="ir8a-emp-id">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-ir8a-emp')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveIR8AEmployee()">Save</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== IR21 FILING MODAL ===== -->
-<div class="modal-overlay" id="modal-ir21">
-  <div class="modal" style="max-width:700px">
-    <div class="modal-header"><h3>IR21 — Ceased Employment Filing</h3><button class="modal-close" onclick="closeModal('modal-ir21')">&times;</button></div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group"><label>Employee Name *</label><input type="text" id="ir21-emp-name" placeholder="Full name as per NRIC"></div>
-        <div class="form-group"><label>NRIC / FIN / Passport</label><input type="text" id="ir21-emp-nric" placeholder="S1234567A"></div>
-        <div class="form-group"><label>Date of Birth</label><input type="date" id="ir21-emp-dob"></div>
-        <div class="form-group"><label>Nationality</label><input type="text" id="ir21-emp-nat" placeholder="e.g. Singapore, Filipino"></div>
-        <div class="form-group"><label>Designation</label><input type="text" id="ir21-emp-desig" placeholder="Job title"></div>
-        <div class="form-group"><label>Date of Commencement</label><input type="date" id="ir21-emp-start"></div>
-        <div class="form-group"><label>Date of Cessation *</label><input type="date" id="ir21-emp-end"></div>
-        <div class="form-group"><label>Reason for Cessation</label>
-          <select id="ir21-emp-reason">
-            <option value="Resignation">Resignation</option>
-            <option value="Retrenchment">Retrenchment</option>
-            <option value="Contract Expiry">Contract Expiry</option>
-            <option value="Retirement">Retirement</option>
-            <option value="Dismissal">Dismissal</option>
-            <option value="Death">Death</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Last Monthly Salary</label><input type="number" id="ir21-emp-salary" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Gross Income (year of cessation)</label><input type="number" id="ir21-emp-grossinc" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Bonus / AWS</label><input type="number" id="ir21-emp-bonus" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Director's Fees</label><input type="number" id="ir21-emp-dirfee" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Gratuity / Ex-Gratia</label><input type="number" id="ir21-emp-gratia" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Leave Pay (unused)</label><input type="number" id="ir21-emp-leavepay" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Notice Pay in Lieu</label><input type="number" id="ir21-emp-noticepay" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Benefits-in-Kind (annual)</label><input type="number" id="ir21-emp-bik" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Employer CPF (year total)</label><input type="number" id="ir21-emp-cpf-er" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Employee CPF (year total)</label><input type="number" id="ir21-emp-cpf-ee" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Estimated Tax to Withhold</label><input type="number" id="ir21-emp-withheld" step="0.01" placeholder="0.00"></div>
-        <input type="hidden" id="ir21-emp-id">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-ir21')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveIR21Filing()">Save IR21 Filing</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== GRANT / REBATE MODAL ===== -->
-<div class="modal-overlay" id="modal-grant">
-  <div class="modal" style="max-width:560px">
-    <div class="modal-header"><h3>Record Government Grant / Rebate</h3><button class="modal-close" onclick="closeModal('modal-grant')">&times;</button></div>
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group" style="grid-column:1/-1"><label>Grant / Rebate Name *</label>
-          <input type="text" id="grant-name" placeholder="e.g. Corporate Income Tax Rebate, Jobs Credit Scheme">
-        </div>
-        <div class="form-group"><label>Type</label>
-          <select id="grant-type">
-            <option>Tax Rebate</option>
-            <option>Cash Grant</option>
-            <option>Jobs Credit</option>
-            <option>Enterprise Development</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Amount (SGD)</label><input type="number" id="grant-amount" step="0.01" placeholder="0.00"></div>
-        <div class="form-group"><label>Date Received / Approved</label><input type="date" id="grant-date"></div>
-        <div class="form-group"><label>Year of Assessment / Period</label><input type="text" id="grant-period" placeholder="e.g. YA 2026, Q1 2026"></div>
-        <div class="form-group" style="grid-column:1/-1"><label>Reference / Approval No.</label><input type="text" id="grant-ref" placeholder="IRAS reference number"></div>
-        <div class="form-group" style="grid-column:1/-1"><label>Notes</label><textarea id="grant-notes" placeholder="Additional details..."></textarea></div>
-        <input type="hidden" id="grant-id">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-grant')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveGrant()">Save</button>
-    </div>
   </div>
 </div>
 
@@ -1470,10 +1027,9 @@ tr:hover td{background:var(--surface2)}
 <!-- Journal Modal -->
 <div class="modal-overlay" id="modal-journal">
   <div class="modal">
-    <div class="modal-header"><h3 id="jrn-modal-title">Journal Entry</h3><button class="modal-close" onclick="closeModal('modal-journal')">&times;</button></div>
+    <div class="modal-header"><h3>Journal Entry</h3><button class="modal-close" onclick="closeModal('modal-journal')">&times;</button></div>
     <div class="modal-body">
       <div class="form-grid">
-        <input type="hidden" id="jrn-edit-id">
         <div class="form-group"><label>Date *</label><input type="date" id="jrn-date"></div>
         <div class="form-group"><label>Entry Type</label>
           <select id="jrn-type"><option>General</option><option>Opening</option><option>Adjustment</option><option>Closing</option><option>Accrual</option></select>
@@ -1596,6 +1152,20 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <script>
+// ── HTML escape helper ──────────────────────────
+function esc(s){
+  return String(s==null?'':s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── Brute-force login protection ────────────────
+const _BF_MAX = 5, _BF_MS = 15 * 60 * 1000;
+function _bfGet(){ try{ return JSON.parse(sessionStorage.getItem('_lka')||'{}'); }catch{ return {}; } }
+function _bfFail(){ const d=_bfGet(); d.n=(d.n||0)+1; if(d.n>=_BF_MAX) d.u=Date.now()+_BF_MS; sessionStorage.setItem('_lka',JSON.stringify(d)); }
+function _bfReset(){ sessionStorage.removeItem('_lka'); }
+function _bfMinsLeft(){ const d=_bfGet(); return (d.u&&Date.now()<d.u)?Math.ceil((d.u-Date.now())/60000):0; }
+
 // Sidebar init: ensure nav-groups have explicit display state on load
 document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.nav-group').forEach(function(g){ g.style.display = ''; });
@@ -1622,7 +1192,9 @@ let _isAdmin = false;   // signed-in user
 
 function _initSupabase(){
   if(SUPABASE_URL && SUPABASE_ANON){
-    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: { persistSession: false }
+    });
     return true;
   }
   return false;
@@ -1734,7 +1306,6 @@ function defaultDB(){
     nextExpNum: 1,
     nextBillNum: 1,
     nextJrnNum: 1,
-    taxData: { ir8aEmployees: [], ir21Filings: [], grants: [] },
   };
 }
 
@@ -1886,16 +1457,8 @@ const PAGE_TITLES = {
   dashboard:'Dashboard',invoices:'Invoices',payments:'Payments Received',
   expenses:'Expense Register',bills:'Bills & Payables',clients:'Clients & Accounts',
   coa:'Chart of Accounts',
-  journal:'General Journal',gl:'General Ledger',
-  'gl-detail':'GL Detail Report','gl-summary':'GL Summary Report',
-  'trial-balance':'Trial Balance','sales-tax':'Sales Tax Report',
-  pnl:'P&L Statement',balance:'Balance Sheet',
-  cashflow:'Cash Flow Statement',quotes:'Quotes & Estimates',purchaseorders:'Purchase Orders',budgets:'Budget vs Actual',settings:'Company Settings',
-  // Tax & Compliance
-  gst:'GST F5 Return',corptax:'Corporate Tax (Form C-S)',
-  ir8a:'IR8A — Employee Remuneration',ir21:'IR21 — Cessation of Employment',
-  grants:'Govt Rebates & Grants',xbrl:'XBRL Filing Report',
-  eci:'ECI Filing — IRAS',
+  journal:'General Journal',pnl:'P&L Statement',balance:'Balance Sheet',
+  cashflow:'Cash Flow Statement',quotes:'Quotes & Estimates',purchaseorders:'Purchase Orders',budgets:'Budget vs Actual',settings:'Company Settings'
 };
 
 function confirmResetAllData(){
@@ -1942,11 +1505,6 @@ function showPage(name){
   if(name==='clients') renderClients();
   if(name==='coa') renderCOA();
   if(name==='journal') renderJournal();
-  if(name==='gl') renderGL();
-  if(name==='gl-detail') renderGLDetail();
-  if(name==='gl-summary') renderGLSummary();
-  if(name==='trial-balance') renderTrialBalance();
-  if(name==='sales-tax') renderSalesTax();
   if(name==='pnl') renderPnL();
   if(name==='balance') renderBalance();
   if(name==='cashflow') renderCashflow();
@@ -1954,14 +1512,6 @@ function showPage(name){
   if(name==='purchaseorders') renderPurchaseOrders();
   if(name==='budgets') renderBudgets();
   if(name==='settings' && _sb) loadMFAStatus();
-  // Tax & Compliance
-  if(name==='gst') renderGST();
-  if(name==='corptax') renderCorpTax();
-  if(name==='ir8a') renderIR8A();
-  if(name==='ir21') renderIR21();
-  if(name==='grants') renderGrants();
-  if(name==='xbrl') renderXBRL();
-  if(name==='eci') renderECI();
 }
 
 // ===================== HELPERS =====================
@@ -2037,8 +1587,8 @@ function renderDashboard(){
   document.getElementById('recent-invoices-table').innerHTML = `
     <table><thead><tr><th>Invoice</th><th>Client</th><th>Amount</th><th>Status</th></tr></thead>
     <tbody>${ri.map(i=>`<tr>
-      <td class="fw-bold">${i.id}</td>
-      <td>${getClientName(i.clientId)}</td>
+      <td class="fw-bold">${esc(i.id)}</td>
+      <td>${esc(getClientName(i.clientId))}</td>
       <td>${fmt(getInvoiceTotal(i),i.currency)}</td>
       <td>${statusBadge(i.status)}</td>
     </tr>`).join('')}</tbody></table>`;
@@ -2048,8 +1598,8 @@ function renderDashboard(){
   document.getElementById('recent-bills-table').innerHTML = `
     <table><thead><tr><th>Bill</th><th>Vendor</th><th>Due</th><th>Amount</th></tr></thead>
     <tbody>${rb.map(b=>`<tr>
-      <td class="fw-bold">${b.ref}</td><td>${b.vendor}</td>
-      <td style="color:${b.status==='overdue'?'var(--danger)':'inherit'}">${b.due}</td>
+      <td class="fw-bold">${esc(b.ref)}</td><td>${esc(b.vendor)}</td>
+      <td style="color:${b.status==='overdue'?'var(--danger)':'inherit'}">${esc(b.due)}</td>
       <td>${fmt(b.amount,b.currency)}</td>
     </tr>`).join('')}</tbody></table>`;
   renderActivityLog();
@@ -2144,10 +1694,10 @@ function renderInvoices(){
   document.getElementById('invoices-table').innerHTML=list.length?`
     <table><thead><tr><th>Invoice #</th><th>Client</th><th>Date</th><th>Due</th><th>Amount</th><th>Paid</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead>
     <tbody>${list.map(i=>`<tr>
-      <td class="fw-bold">${i.id}</td>
-      <td>${getClientName(i.clientId)}</td>
-      <td>${i.date}</td>
-      <td style="color:${i.status==='overdue'?'var(--danger)':'inherit'}">${i.due}</td>
+      <td class="fw-bold">${esc(i.id)}</td>
+      <td>${esc(getClientName(i.clientId))}</td>
+      <td>${esc(i.date)}</td>
+      <td style="color:${i.status==='overdue'?'var(--danger)':'inherit'}">${esc(i.due)}</td>
       <td>${fmt(getInvoiceTotal(i),i.currency)}</td>
       <td style="color:var(--accent2)">${fmt(i.paid||0,i.currency)}</td>
       <td style="color:${getInvoiceBalance(i)>0?'var(--warning)':'var(--accent2)'}">${fmt(getInvoiceBalance(i),i.currency)}</td>
@@ -2168,7 +1718,7 @@ function openInvoiceModal(editId=null){
   document.getElementById('inv-modal-title').textContent=editId?'Edit Invoice':'New Invoice';
   // Populate client dropdown
   const csel=document.getElementById('inv-client');
-  csel.innerHTML='<option value="">Select client...</option>'+DB.clients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  csel.innerHTML='<option value="">Select client...</option>'+DB.clients.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
   if(editId){
     const inv=DB.invoices.find(i=>i.id===editId);
     if(!inv) return;
@@ -2202,7 +1752,7 @@ function openInvoiceModal(editId=null){
 function addInvoiceLine(line=null){
   const tr=document.createElement('tr');
   tr.innerHTML=`
-    <td><input class="inv-line" type="text" placeholder="Service / product description" value="${line?line.desc:''}" style="width:100%;padding:5px;border:1px solid var(--border);border-radius:5px;font-size:.82rem"></td>
+    <td><input class="inv-line" type="text" placeholder="Service / product description" value="${esc(line?line.desc:'')}" style="width:100%;padding:5px;border:1px solid var(--border);border-radius:5px;font-size:.82rem"></td>
     <td><input class="inv-qty" type="number" value="${line?line.qty:1}" min="0" step="0.01" style="width:70px;padding:5px;border:1px solid var(--border);border-radius:5px;font-size:.82rem" oninput="calcInvoiceTotals()"></td>
     <td><input class="inv-price" type="number" value="${line?line.price:0}" min="0" step="0.01" style="width:110px;padding:5px;border:1px solid var(--border);border-radius:5px;font-size:.82rem" oninput="calcInvoiceTotals()"></td>
     <td><input class="inv-tax" type="number" value="${line?line.tax:DB.settings.taxRate}" min="0" max="100" step=".5" style="width:60px;padding:5px;border:1px solid var(--border);border-radius:5px;font-size:.82rem" oninput="calcInvoiceTotals()"></td>
@@ -2288,13 +1838,13 @@ function renderPayments(){
   document.getElementById('payments-table').innerHTML=list.length?`
     <table><thead><tr><th>Ref</th><th>Invoice</th><th>Client</th><th>Date</th><th>Amount</th><th>Method</th><th>TXN Ref</th></tr></thead>
     <tbody>${list.map(p=>`<tr>
-      <td class="fw-bold">${p.id}</td>
-      <td>${p.invoiceId}</td>
-      <td>${getClientName(p.clientId)}</td>
-      <td>${p.date}</td>
+      <td class="fw-bold">${esc(p.id)}</td>
+      <td>${esc(p.invoiceId)}</td>
+      <td>${esc(getClientName(p.clientId))}</td>
+      <td>${esc(p.date)}</td>
       <td style="color:var(--accent2);font-weight:700">${fmt(p.amount,p.currency)}</td>
-      <td>${p.method}</td>
-      <td class="text-muted">${p.ref||'—'}</td>
+      <td>${esc(p.method)}</td>
+      <td class="text-muted">${esc(p.ref||'—')}</td>
     </tr>`).join('')}</tbody></table>`
   :'<div class="empty-state"><p>No payments recorded.</p></div>';
 }
@@ -2312,7 +1862,7 @@ function openPaymentModal(){
   const sel=document.getElementById('pay-invoice');
   sel.innerHTML='<option value="">Select invoice...</option>'+
     DB.invoices.filter(i=>i.status!=='paid'&&i.status!=='draft').map(i=>
-      `<option value="${i.id}">${i.id} - ${getClientName(i.clientId)} - ${fmt(getInvoiceBalance(i),i.currency)}</option>`
+      `<option value="${esc(i.id)}">${esc(i.id)} - ${esc(getClientName(i.clientId))} - ${fmt(getInvoiceBalance(i),i.currency)}</option>`
     ).join('');
   sel.onchange=function(){
     const inv=DB.invoices.find(i=>i.id===this.value);
@@ -2376,14 +1926,14 @@ function renderExpenses(){
   document.getElementById('expenses-table').innerHTML=list.length?`
     <table><thead><tr><th>Description</th><th>Category</th><th>Date</th><th>Vendor</th><th>Amount</th><th>Tax</th><th>Method</th><th>Project</th><th></th></tr></thead>
     <tbody>${list.map(e=>`<tr>
-      <td class="fw-bold">${e.desc}</td>
-      <td><span class="pill">${e.cat}</span></td>
-      <td>${e.date}</td>
-      <td>${e.vendor||'—'}</td>
+      <td class="fw-bold">${esc(e.desc)}</td>
+      <td><span class="pill">${esc(e.cat)}</span></td>
+      <td>${esc(e.date)}</td>
+      <td>${esc(e.vendor||'—')}</td>
       <td style="color:var(--danger);font-weight:600">${fmt(e.amount,e.currency)}</td>
       <td>${e.tax?fmt(e.tax,e.currency):'—'}</td>
-      <td>${e.method}</td>
-      <td class="text-muted">${e.project||'—'}</td>
+      <td>${esc(e.method)}</td>
+      <td class="text-muted">${esc(e.project||'—')}</td>
       <td>
         <button class="btn btn-outline btn-sm" onclick="editExpense('${e.id}')">Edit</button>
         <button class="btn btn-danger btn-sm" onclick="deleteExpense('${e.id}')">✕</button>
@@ -2547,7 +2097,7 @@ function renderClients(){
       const cinv=DB.invoices.filter(i=>i.clientId===c.id);
       const outstanding=cinv.filter(i=>i.status!=='paid'&&i.status!=='draft').reduce((s,i)=>s+getInvoiceBalance(i),0);
       return `<tr>
-        <td class="fw-bold">${c.name}</td>
+        <td class="fw-bold">${esc(c.name)}</td>
         <td>${c.contact||'—'}</td>
         <td><a href="mailto:${c.email}" style="color:var(--primary-light)">${c.email||'—'}</a></td>
         <td>${c.country}</td>
@@ -2628,61 +2178,35 @@ function deleteClient(id){
 // ===================== JOURNAL =====================
 function renderJournal(){
   const q=(document.getElementById('jrn-search').value||'').toLowerCase();
-  const list=DB.journal.filter(j=>(j.desc+j.debitAcc+j.creditAcc+(j.ref||'')).toLowerCase().includes(q));
+  const list=DB.journal.filter(j=>(j.desc+j.debitAcc+j.creditAcc+j.ref).toLowerCase().includes(q));
   document.getElementById('journal-table').innerHTML=list.length?`
     <table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Debit Account</th><th>Debit</th><th>Credit Account</th><th>Credit</th><th>Ref</th><th></th></tr></thead>
     <tbody>${list.map(j=>`<tr>
-      <td>${j.date||''}</td>
-      <td><span class="pill">${j.type||'General'}</span></td>
-      <td>${j.desc||''}</td>
-      <td style="font-size:.8rem">${_codeToName(j.debitAcc)} <span style="opacity:.5">(${j.debitAcc})</span></td>
-      <td style="color:var(--primary-light);font-weight:600;text-align:right">${fmt(j.debitAmt,j.currency)}</td>
-      <td style="font-size:.8rem">${_codeToName(j.creditAcc)} <span style="opacity:.5">(${j.creditAcc})</span></td>
-      <td style="color:var(--danger);font-weight:600;text-align:right">${fmt(j.creditAmt,j.currency)}</td>
-      <td class="text-muted">${j.ref||'—'}</td>
-      <td style="display:flex;gap:4px">
-        <button class="btn btn-outline btn-sm" onclick="editJournal('${j.id}')" title="Edit">✏</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteJournal('${j.id}')">✕</button>
-      </td>
+      <td>${esc(j.date)}</td>
+      <td><span class="pill">${esc(j.type)}</span></td>
+      <td>${esc(j.desc)}</td>
+      <td>${esc(j.debitAcc)}</td>
+      <td style="color:var(--primary-light);font-weight:600">${fmt(j.debitAmt,j.currency)}</td>
+      <td>${esc(j.creditAcc)}</td>
+      <td style="color:var(--danger);font-weight:600">${fmt(j.creditAmt,j.currency)}</td>
+      <td class="text-muted">${esc(j.ref||'—')}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteJournal('${j.id}')">✕</button></td>
     </tr>`).join('')}</tbody></table>`
-  :'<div class="empty-state"><p>No journal entries. Click "+ Journal Entry" to add one.</p></div>';
+  :'<div class="empty-state"><p>No journal entries.</p></div>';
 }
 
 function openJournalModal(){
   populateCOASelects();
-  document.getElementById('jrn-modal-title').textContent='New Journal Entry';
-  document.getElementById('jrn-edit-id').value='';
   document.getElementById('jrn-date').value=new Date().toISOString().slice(0,10);
-  ['jrn-desc','jrn-ref'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('jrn-debit-acc').value='';
-  document.getElementById('jrn-credit-acc').value='';
+  ['jrn-desc','jrn-debit-acc','jrn-credit-acc','jrn-ref'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('jrn-debit-amt').value='';
   document.getElementById('jrn-credit-amt').value='';
-  document.getElementById('jrn-type').value='General';
-  document.getElementById('modal-journal').classList.add('open');
-}
-
-function editJournal(id){
-  const j=DB.journal.find(x=>x.id===id);
-  if(!j) return;
-  populateCOASelects();
-  document.getElementById('jrn-modal-title').textContent='Edit Journal Entry';
-  document.getElementById('jrn-edit-id').value=id;
-  document.getElementById('jrn-date').value=j.date||'';
-  document.getElementById('jrn-type').value=j.type||'General';
-  document.getElementById('jrn-desc').value=j.desc||'';
-  document.getElementById('jrn-debit-acc').value=j.debitAcc||'';
-  document.getElementById('jrn-debit-amt').value=j.debitAmt||'';
-  document.getElementById('jrn-credit-acc').value=j.creditAcc||'';
-  document.getElementById('jrn-credit-amt').value=j.creditAmt||'';
-  document.getElementById('jrn-currency').value=j.currency||'SGD';
-  document.getElementById('jrn-ref').value=j.ref||'';
   document.getElementById('modal-journal').classList.add('open');
 }
 
 function saveJournalEntry(){
-  const editId=document.getElementById('jrn-edit-id').value;
-  const data={
+  const j={
+    id:`JRN-${String(DB.nextJrnNum).padStart(3,'0')}`,
     date:document.getElementById('jrn-date').value,
     type:document.getElementById('jrn-type').value,
     desc:document.getElementById('jrn-desc').value,
@@ -2693,14 +2217,8 @@ function saveJournalEntry(){
     currency:document.getElementById('jrn-currency').value,
     ref:document.getElementById('jrn-ref').value,
   };
-  if(!data.desc){alert('Description required.');return;}
-  if(editId){
-    const idx=DB.journal.findIndex(j=>j.id===editId);
-    if(idx>-1) DB.journal[idx]={...DB.journal[idx],...data};
-  } else {
-    DB.journal.push({id:`JRN-${String(DB.nextJrnNum).padStart(3,'0')}`,...data});
-    DB.nextJrnNum++;
-  }
+  if(!j.desc){alert('Description required.');return;}
+  DB.journal.push(j); DB.nextJrnNum++;
   saveDB(); closeModal('modal-journal'); renderJournal();
 }
 
@@ -3196,30 +2714,26 @@ async function doLogin(){
   const err   = document.getElementById('login-error');
   const btn   = document.getElementById('login-btn');
   err.style.display='none';
+  const locked = _bfMinsLeft();
+  if(locked>0){ err.textContent=`Too many failed attempts. Try again in ${locked} minute${locked>1?'s':''}.`; err.style.display='block'; return; }
   if(!email||!pw){ err.textContent='Please enter email and password.'; err.style.display='block'; return; }
-  if(!_sb){ err.textContent='Connection error: Supabase not initialized. Reload the page.'; err.style.display='block'; return; }
   btn.textContent='Signing in…'; btn.disabled=true;
-  let signInData, error;
-  try {
-    const res = await Promise.race([
-      _sb.auth.signInWithPassword({email,password:pw}),
-      new Promise((_,rej)=>setTimeout(()=>rej(new Error('Request timed out. Check your internet connection and try again.')),12000))
-    ]);
-    signInData = res.data; error = res.error;
-  } catch(e) {
-    err.textContent= e.message || 'Network error. Please check your connection and try again.';
-    err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; return;
+  const {error} = await _sb.auth.signInWithPassword({email,password:pw});
+  if(error){ _bfFail(); const m=_bfMinsLeft(); err.textContent=m>0?`Too many failed attempts. Try again in ${m} minute${m>1?'s':''}.`:error.message; err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; return; }
+  _bfReset();
+  // Check if MFA is required
+  const {data:aalData} = await _sb.auth.mfa.getAuthenticatorAssuranceLevel();
+  if(aalData && aalData.nextLevel==='aal2' && aalData.nextLevel!==aalData.currentLevel){
+    // MFA required — show 2FA screen
+    btn.textContent='Sign In'; btn.disabled=false;
+    document.getElementById('login-screen').style.display='none';
+    const mfaScr = document.getElementById('mfa-screen');
+    mfaScr.style.display='flex';
+    document.getElementById('mfa-code').value='';
+    document.getElementById('mfa-error').style.display='none';
+    document.getElementById('mfa-code').focus();
   }
-  if(error){ err.textContent=error.message; err.style.display='block'; btn.textContent='Sign In'; btn.disabled=false; return; }
-  // Login succeeded — go straight to app (no onAuthStateChange dependency)
-  btn.textContent='Sign In'; btn.disabled=false;
-  _user = signInData.user;
-  if(!_user){ err.textContent='Login failed: no user returned. Please try again.'; err.style.display='block'; return; }
-  _isAdmin = (_user.app_metadata && _user.app_metadata.role === 'admin');
-  loadDB();
-  await _pullDown();
-  _showApp(_user.email);
-  renderDashboard();
+  // else: onAuthStateChange fires → _showApp
 }
 async function doLogout(){
   if(_sb){ await _sb.auth.signOut(); }
@@ -3260,8 +2774,17 @@ async function verifyMFACode(){
     if(chErr) throw chErr;
     const {error:vErr} = await _sb.auth.mfa.verify({factorId:totp.id, challengeId:ch.id, code});
     if(vErr) throw vErr;
-    // MFA verified — auth state change will fire _showApp
+    // MFA verified — manually show app (onAuthStateChange was blocked waiting for aal2)
     document.getElementById('mfa-screen').style.display='none';
+    const {data:{session:mfaSess}} = await _sb.auth.getSession();
+    if(mfaSess){
+      _user = mfaSess.user;
+      _isAdmin = (_user.app_metadata && _user.app_metadata.role === 'admin');
+      loadDB();
+      await _pullDown();
+      _showApp(_user.email);
+      renderDashboard();
+    }
   }catch(e){
     err.textContent = e.message||'Invalid code. Try again.';
     err.style.display='block';
@@ -3440,12 +2963,12 @@ function renderQuotes(){
     <table>
       <thead><tr><th>Quote #</th><th>Client</th><th>Date</th><th>Valid Until</th><th>Total</th><th>Status</th><th></th></tr></thead>
       <tbody>${rows.map(q=>`<tr>
-        <td class="fw-bold">${q.num||'—'}</td>
-        <td>${getClientName(q.clientId)}</td>
-        <td>${q.date||'—'}</td>
-        <td>${q.valid||'—'}</td>
+        <td class="fw-bold">${esc(q.num||'—')}</td>
+        <td>${esc(getClientName(q.clientId))}</td>
+        <td>${esc(q.date||'—')}</td>
+        <td>${esc(q.valid||'—')}</td>
         <td>${fmt(q.total||0,q.currency||'SGD')}</td>
-        <td><span class="status ${sc[q.status]||'draft'}">${q.status}</span></td>
+        <td><span class="status ${sc[q.status]||'draft'}">${esc(q.status)}</span></td>
         <td>
           <button class="btn btn-outline btn-sm" onclick="openQuoteModal('${q.id}')">Edit</button>
           <button class="btn btn-danger btn-sm" onclick="deleteQuote('${q.id}')">✕</button>
@@ -3460,7 +2983,7 @@ function openQuoteModal(id){
   const valid30=new Date(Date.now()+30*864e5).toISOString().slice(0,10);
   const q=id?DB.quotes.find(x=>x.id===id):null;
   document.getElementById('q-client').innerHTML='<option value="">Select client...</option>'+
-    DB.clients.map(c=>`<option value="${c.id}"${q?.clientId===c.id?' selected':''}>${c.name}</option>`).join('');
+    DB.clients.map(c=>`<option value="${esc(c.id)}"${q?.clientId===c.id?' selected':''}>${esc(c.name)}</option>`).join('');
   document.getElementById('q-id').value=id||'';
   const pfx=DB.settings.invPrefix.replace(/INV/i,'QTE');
   document.getElementById('q-num').value=q?.num||(pfx+String(DB.nextQuoteNum||1).padStart(3,'0'));
@@ -3562,12 +3085,12 @@ function renderPurchaseOrders(){
     <table>
       <thead><tr><th>PO #</th><th>Vendor</th><th>Date</th><th>Delivery</th><th>Total</th><th>Status</th><th></th></tr></thead>
       <tbody>${rows.map(p=>`<tr>
-        <td class="fw-bold">${p.num||'—'}</td>
-        <td>${p.vendor||'—'}</td>
-        <td>${p.date||'—'}</td>
-        <td>${p.delivery||'—'}</td>
+        <td class="fw-bold">${esc(p.num||'—')}</td>
+        <td>${esc(p.vendor||'—')}</td>
+        <td>${esc(p.date||'—')}</td>
+        <td>${esc(p.delivery||'—')}</td>
         <td>${fmt(p.total||0,p.currency||'SGD')}</td>
-        <td><span class="status ${sc[p.status]||'draft'}">${p.status}</span></td>
+        <td><span class="status ${sc[p.status]||'draft'}">${esc(p.status)}</span></td>
         <td>
           <button class="btn btn-outline btn-sm" onclick="openPOModal('${p.id}')">Edit</button>
           ${p.status==='sent'?`<button class="btn btn-success btn-sm" onclick="approvePO('${p.id}')">✔ Approve</button>`:''}
@@ -3678,7 +3201,7 @@ function renderBudgets(){
     const barW=bAmt>0?Math.min(100,actual/bAmt*100):0;
     const varColor=variance<0?'var(--danger)':'var(--accent2)';
     return `<tr>
-      <td><strong>${cat}</strong></td>
+      <td><strong>${esc(cat)}</strong></td>
       <td>${bAmt>0?sym+Math.round(bAmt).toLocaleString():'<span style="color:var(--text-muted)">Not set</span>'}</td>
       <td>${sym}${Math.round(actual).toLocaleString()}</td>
       <td style="color:${varColor};font-weight:600">${bAmt>0?(variance>0?'+ '+sym+Math.round(variance).toLocaleString()+' under':variance<0?'− '+sym+Math.round(-variance).toLocaleString()+' over':'On budget'):'—'}</td>
@@ -3785,1366 +3308,35 @@ function renderCashflowForecast(){
 }
 
 
-// ===================== SINGAPORE TAX MODULE =====================
-
-// ---- Shared helpers ----
-function _taxYears(){
-  const now = new Date().getFullYear();
-  const arr=[];
-  for(let y=now+1;y>=now-3;y--) arr.push(y);
-  return arr;
-}
-function _taxSym(){
-  return 'S$';
-}
-function _fmtSGD(v){
-  return 'S$'+Math.round(v).toLocaleString();
-}
-function _taxTbl(rows, boldLast){
-  // rows: [[label, value], ...]
-  let html='<table style="width:100%;border-collapse:collapse;font-size:.875rem">';
-  rows.forEach((r,i)=>{
-    const last = boldLast && i===rows.length-1;
-    html+=`<tr style="border-bottom:1px solid var(--border)${last?';background:var(--surface2)':''}">
-      <td style="padding:8px 12px;${last?'font-weight:700;color:var(--primary)':''}">${r[0]}</td>
-      <td style="padding:8px 12px;text-align:right;font-weight:${last?700:400};${last?'color:var(--primary)':''}">${r[1]}</td>
-    </tr>`;
-  });
-  html+='</table>';
-  return html;
-}
-function exportTaxReport(type){
-  const el=document.getElementById(type+'-content');
-  if(!el) return;
-  const content=el.innerText;
-  const blob=new Blob([content],{type:'text/plain'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='Fintiv_'+type.toUpperCase()+'_'+new Date().toISOString().slice(0,10)+'.txt';
-  a.click();
-}
-
-// ---- Currency helpers (reuse existing toBase if defined, else SGD passthrough) ----
-function _toSGD(amount, currency){
-  if(typeof toBase === 'function') return toBase(amount, currency);
-  return amount;
-}
-
-// ===================== GST F5 RETURN =====================
-function _initGSTYears(){
-  const sel=document.getElementById('gst-year');
-  if(!sel||sel.options.length>0) return;
-  _taxYears().forEach(y=>{
-    const o=document.createElement('option');
-    o.value=y; o.text=y;
-    sel.appendChild(o);
-  });
-  // Set current quarter by default
-  const m=new Date().getMonth();
-  const q=['Q1','Q2','Q3','Q4'][Math.floor(m/3)];
-  document.getElementById('gst-quarter').value=q;
-}
-
-function renderGST(){
-  _initGSTYears();
-  const el=document.getElementById('gst-content');
-  if(!el) return;
-  const quarter=document.getElementById('gst-quarter').value||'Q1';
-  const year=parseInt(document.getElementById('gst-year').value)||new Date().getFullYear();
-  const qMonths={Q1:[0,1,2],Q2:[3,4,5],Q3:[6,7,8],Q4:[9,10,11]};
-  const months=qMonths[quarter];
-  const s=DB.settings||{};
-  const gstRate=(s.taxRate||9)/100;
-
-  // Filter invoices & expenses in this quarter+year
-  const invInPeriod=DB.invoices.filter(inv=>{
-    const d=new Date(inv.date);
-    return d.getFullYear()===year && months.includes(d.getMonth());
-  });
-  const expInPeriod=DB.expenses.filter(exp=>{
-    const d=new Date(exp.date);
-    return d.getFullYear()===year && months.includes(d.getMonth());
-  });
-
-  // Box 1: Standard-rated supplies (taxable revenue)
-  const box1=invInPeriod.filter(i=>i.status!=='draft').reduce((s,i)=>{
-    const subtotal=(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)),0);
-    return s+_toSGD(subtotal,i.currency||'SGD');
-  },0);
-  // Box 2: Zero-rated supplies (exports) — flagged on invoice if currency!=SGD or marked export
-  const box2=0; // Manual entry — not enough data to auto-detect
-  // Box 3: Exempt supplies
-  const box3=0;
-  // Box 4 = 1+2+3
-  const box4=box1+box2+box3;
-  // Box 5: Taxable purchases (expenses with GST)
-  const box5=expInPeriod.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0);
-  // Box 6: Output tax due (9% of box1)
-  const box6=box1*gstRate;
-  // Box 7: Input tax claimable (9% of box5)
-  const box7=box5*gstRate;
-  // Box 8: Net GST payable / (refundable)
-  const box8=box6-box7;
-
-  const qLabel={Q1:'Jan – Mar',Q2:'Apr – Jun',Q3:'Jul – Sep',Q4:'Oct – Dec'};
-
-  el.innerHTML=`
-    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-      <div>
-        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">GST Reg. No.: ${s.tax||'—'} &nbsp;|&nbsp; UEN: ${s.reg||'—'}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">${s.address||''}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">GST F5 Return</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">${quarter} ${year} &nbsp;(${qLabel[quarter]} ${year})</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">GST Rate: ${(gstRate*100).toFixed(0)}%</div>
-      </div>
-    </div>
-
-    <h4 style="color:var(--primary);margin:0 0 10px">Part I — Declaration of Supplies</h4>
-    ${_taxTbl([
-      ['Box 1 — Total value of standard-rated supplies',_fmtSGD(box1)],
-      ['Box 2 — Total value of zero-rated supplies',_fmtSGD(box2)],
-      ['Box 3 — Total value of exempt supplies',_fmtSGD(box3)],
-      ['Box 4 — Total supplies (1+2+3)',_fmtSGD(box4)],
-    ],false)}
-
-    <h4 style="color:var(--primary);margin:14px 0 10px">Part II — Declaration of Purchases</h4>
-    ${_taxTbl([
-      ['Box 5 — Total value of taxable purchases',_fmtSGD(box5)],
-    ],false)}
-
-    <h4 style="color:var(--primary);margin:14px 0 10px">Part III — GST Computation</h4>
-    ${_taxTbl([
-      ['Box 6 — Output tax due (${(gstRate*100).toFixed(0)}% of Box 1)',_fmtSGD(box6)],
-      ['Box 7 — Less: Input tax and refunds claimed',_fmtSGD(box7)],
-      ['Box 8 — Net GST payable / (claimable)',_fmtSGD(box8)],
-    ],true)}
-
-    <div style="margin-top:18px;padding:12px 16px;border-radius:8px;background:${box8>=0?'#fef2f2':'#f0fdf4'};border:1px solid ${box8>=0?'#fecaca':'#bbf7d0'}">
-      <span style="font-weight:700;font-size:.9rem;color:${box8>=0?'#dc2626':'#16a34a'}">
-        ${box8>=0?'⚠ GST Payable to IRAS: ':'✅ GST Refund Claimable: '}${_fmtSGD(Math.abs(box8))}
-      </span>
-    </div>
-
-    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
-      <strong>Note:</strong> Auto-computed from invoices and expenses recorded in this period. Zero-rated and exempt supplies must be reviewed manually. Submit via myTax Portal by the last day of the month following the accounting period.
-    </div>
-  `;
-}
-
-// ===================== CORPORATE TAX =====================
-function _initCorpTaxYears(){
-  const sel=document.getElementById('corptax-ya');
-  if(!sel||sel.options.length>0) return;
-  _taxYears().forEach(y=>{
-    const o=document.createElement('option');
-    o.value=y; o.text='YA '+y;
-    sel.appendChild(o);
-  });
-}
-
-function renderCorpTax(){
-  _initCorpTaxYears();
-  const el=document.getElementById('corptax-content');
-  if(!el) return;
-  const ya=parseInt(document.getElementById('corptax-ya').value)||new Date().getFullYear();
-  const incomeYear=ya-1;
-  const s=DB.settings||{};
-  const corpTaxRate=0.17;
-
-  // P&L for income year
-  const invYear=DB.invoices.filter(i=>i.status!=='draft'&&new Date(i.date).getFullYear()===incomeYear);
-  const payYear=DB.payments.filter(p=>new Date(p.date).getFullYear()===incomeYear);
-  const expYear=DB.expenses.filter(e=>new Date(e.date).getFullYear()===incomeYear);
-  const billYear=DB.bills.filter(b=>b.status==='paid'&&new Date(b.due).getFullYear()===incomeYear);
-
-  const revenue=invYear.reduce((s,i)=>{
-    const total=(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)*(1+(l.tax||0)/100)),0);
-    return s+_toSGD(total,i.currency||'SGD');
-  },0);
-  const expenses=expYear.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0)
-    + billYear.reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
-  const netProfit=revenue-expenses;
-
-  // Taxable income adjustments (simplified)
-  const taxableIncome=Math.max(0,netProfit);
-  // Partial tax exemption: first S$10k @ 75%, next S$190k @ 50%
-  const ex1=Math.min(taxableIncome,10000)*0.75;
-  const ex2=Math.min(Math.max(taxableIncome-10000,0),190000)*0.50;
-  const totalExemption=ex1+ex2;
-  const chargeableIncome=Math.max(0,taxableIncome-totalExemption);
-  const taxBefore=chargeableIncome*corpTaxRate;
-  // CIT Rebate (check if applicable — using latest 50% rebate capped at S$40k for illustration)
-  const citRebate=Math.min(taxBefore*0.50,40000);
-  const taxPayable=Math.max(0,taxBefore-citRebate);
-
-  el.innerHTML=`
-    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-      <div>
-        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">UEN: ${s.reg||'—'} &nbsp;|&nbsp; Tax Ref: ${s.tax||'—'}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">Form C-S (Simplified)</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">Year of Assessment: YA ${ya}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">Income Year: ${incomeYear}</div>
-      </div>
-    </div>
-
-    <h4 style="color:var(--primary);margin:0 0 10px">Revenue &amp; Expenses (FY ${incomeYear})</h4>
-    ${_taxTbl([
-      ['Gross Revenue (Invoices)',_fmtSGD(revenue)],
-      ['Less: Business Expenses',`(${_fmtSGD(expenses)})`],
-      ['Net Profit / (Loss) Before Tax',_fmtSGD(netProfit)],
-    ],false)}
-
-    <h4 style="color:var(--primary);margin:14px 0 10px">Tax Computation</h4>
-    ${_taxTbl([
-      ['Chargeable Income (before exemption)',_fmtSGD(taxableIncome)],
-      ['Less: Partial Tax Exemption — 75% on first S$10,000',`(${_fmtSGD(ex1)})`],
-      ['Less: Partial Tax Exemption — 50% on next S$190,000',`(${_fmtSGD(ex2)})`],
-      ['Chargeable Income After Exemption',_fmtSGD(chargeableIncome)],
-      ['Tax @ 17%',_fmtSGD(taxBefore)],
-      ['Less: CIT Rebate (50%, capped S$40,000)',`(${_fmtSGD(citRebate)})`],
-      ['Estimated Corporate Tax Payable',_fmtSGD(taxPayable)],
-    ],true)}
-
-    <div style="margin-top:18px;padding:12px 16px;border-radius:8px;background:#fef2f2;border:1px solid #fecaca">
-      <span style="font-weight:700;font-size:.9rem;color:#dc2626">Estimated Tax Payable: ${_fmtSGD(taxPayable)}</span>
-    </div>
-
-    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
-      <strong>Note:</strong> This is a simplified estimate based on recorded transactions. Actual chargeable income may differ after IRAS adjustments, capital allowances, and non-deductible expenses. File Form C-S via myTax Portal by 30 November each year (e-filing). Consult your tax agent for final submission.
-    </div>
-  `;
-}
-
-// ===================== IR8A =====================
-function _initIR8AYears(){
-  const sel=document.getElementById('ir8a-ya');
-  if(!sel||sel.options.length>0) return;
-  _taxYears().forEach(y=>{
-    const o=document.createElement('option');
-    o.value=y; o.text='YA '+y;
-    sel.appendChild(o);
-  });
-}
-
-function openIR8AModal(id){
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const emp=id ? DB.taxData.ir8aEmployees.find(e=>e.id===id) : null;
-  document.getElementById('ir8a-modal-title').textContent=emp?'Edit Employee IR8A Data':'Add Employee IR8A Data';
-  const fields=['name','nric','desig','salary','bonus','dirfee','allow','bik','cpf-er','cpf-ee','fund','ya'];
-  if(emp){
-    fields.forEach(f=>{ const el=document.getElementById('ir8a-emp-'+f); if(el) el.value=emp[f.replace('-','_')]||''; });
-    document.getElementById('ir8a-emp-dob').value=emp.dob||'';
-    document.getElementById('ir8a-emp-id').value=emp.id||'';
-  } else {
-    fields.forEach(f=>{ const el=document.getElementById('ir8a-emp-'+f); if(el) el.value=''; });
-    document.getElementById('ir8a-emp-dob').value='';
-    document.getElementById('ir8a-emp-id').value='';
-    document.getElementById('ir8a-emp-ya').value=new Date().getFullYear();
-  }
-  document.getElementById('modal-ir8a-emp').classList.add('open');
-}
-
-function saveIR8AEmployee(){
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const id=document.getElementById('ir8a-emp-id').value||('ir8a_'+Date.now());
-  const rec={
-    id,
-    name:document.getElementById('ir8a-emp-name').value,
-    nric:document.getElementById('ir8a-emp-nric').value,
-    dob:document.getElementById('ir8a-emp-dob').value,
-    desig:document.getElementById('ir8a-emp-desig').value,
-    salary:parseFloat(document.getElementById('ir8a-emp-salary').value)||0,
-    bonus:parseFloat(document.getElementById('ir8a-emp-bonus').value)||0,
-    dirfee:parseFloat(document.getElementById('ir8a-emp-dirfee').value)||0,
-    allow:parseFloat(document.getElementById('ir8a-emp-allow').value)||0,
-    bik:parseFloat(document.getElementById('ir8a-emp-bik').value)||0,
-    cpf_er:parseFloat(document.getElementById('ir8a-emp-cpf-er').value)||0,
-    cpf_ee:parseFloat(document.getElementById('ir8a-emp-cpf-ee').value)||0,
-    fund:parseFloat(document.getElementById('ir8a-emp-fund').value)||0,
-    ya:parseInt(document.getElementById('ir8a-emp-ya').value)||new Date().getFullYear(),
-  };
-  if(!rec.name){ alert('Employee name is required.'); return; }
-  const idx=DB.taxData.ir8aEmployees.findIndex(e=>e.id===id);
-  if(idx>=0) DB.taxData.ir8aEmployees[idx]=rec; else DB.taxData.ir8aEmployees.push(rec);
-  saveDB();
-  closeModal('modal-ir8a-emp');
-  renderIR8A();
-}
-
-function deleteIR8AEmployee(id){
-  if(!confirm('Remove this employee IR8A record?')) return;
-  DB.taxData.ir8aEmployees=(DB.taxData.ir8aEmployees||[]).filter(e=>e.id!==id);
-  saveDB(); renderIR8A();
-}
-
-function renderIR8A(){
-  _initIR8AYears();
-  const el=document.getElementById('ir8a-content');
-  const listEl=document.getElementById('ir8a-employees-list');
-  if(!el) return;
-  const ya=parseInt(document.getElementById('ir8a-ya').value)||new Date().getFullYear();
-  const s=DB.settings||{};
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const emps=(DB.taxData.ir8aEmployees||[]).filter(e=>e.ya===ya);
-
-  el.innerHTML=`
-    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-      <div>
-        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">UEN: ${s.reg||'—'} &nbsp;|&nbsp; Tax Ref: ${s.tax||'—'}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">IRAS Form IR8A</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">Year of Assessment: YA ${ya}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">Income Year: ${ya-1}</div>
-      </div>
-    </div>
-    ${emps.length===0?`<div style="text-align:center;padding:30px;color:var(--text-muted)">No employee IR8A data for YA ${ya}.<br>Use the <strong>Employee Remuneration Data</strong> section below to add records.</div>`:`
-    <div style="overflow-x:auto">
-    <table style="width:100%;border-collapse:collapse;font-size:.8rem">
-      <thead>
-        <tr style="background:var(--primary);color:#fff">
-          <th style="padding:8px 10px;text-align:left">Employee</th>
-          <th style="padding:8px 10px;text-align:left">NRIC/FIN</th>
-          <th style="padding:8px 10px;text-align:right">Salary</th>
-          <th style="padding:8px 10px;text-align:right">Bonus</th>
-          <th style="padding:8px 10px;text-align:right">Dir.Fees</th>
-          <th style="padding:8px 10px;text-align:right">Allow.</th>
-          <th style="padding:8px 10px;text-align:right">BIK</th>
-          <th style="padding:8px 10px;text-align:right">Empr CPF</th>
-          <th style="padding:8px 10px;text-align:right">Empe CPF</th>
-          <th style="padding:8px 10px;text-align:right">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${emps.map(e=>{
-          const total=e.salary+e.bonus+e.dirfee+e.allow+e.bik;
-          return `<tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:8px 10px"><strong>${e.name}</strong><br><span style="color:var(--text-muted);font-size:.75rem">${e.desig||''}</span></td>
-            <td style="padding:8px 10px">${e.nric||'—'}</td>
-            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.salary)}</td>
-            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.bonus)}</td>
-            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.dirfee)}</td>
-            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.allow)}</td>
-            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.bik)}</td>
-            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.cpf_er)}</td>
-            <td style="padding:8px 10px;text-align:right">${_fmtSGD(e.cpf_ee)}</td>
-            <td style="padding:8px 10px;text-align:right;font-weight:700">${_fmtSGD(total)}</td>
-          </tr>`;
-        }).join('')}
-        <tr style="background:var(--surface2);font-weight:700;border-top:2px solid var(--primary)">
-          <td style="padding:8px 10px" colspan="2">TOTALS</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.salary,0))}</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.bonus,0))}</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.dirfee,0))}</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.allow,0))}</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.bik,0))}</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.cpf_er,0))}</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.cpf_ee,0))}</td>
-          <td style="padding:8px 10px;text-align:right">${_fmtSGD(emps.reduce((s,e)=>s+e.salary+e.bonus+e.dirfee+e.allow+e.bik,0))}</td>
-        </tr>
-      </tbody>
-    </table></div>
-    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
-      <strong>Note:</strong> Submit IR8A to IRAS via Auto-Inclusion Scheme (AIS) by 1 March each year. Hard-copy to employee by 1 March. Total employees: <strong>${emps.length}</strong>.
-    </div>`}
-  `;
-
-  if(listEl){
-    listEl.innerHTML=emps.length===0?`<p style="color:var(--text-muted);font-size:.85rem">No records. Click <strong>+ Add / Edit Employee</strong> to start.</p>`:`
-      <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.82rem">
-        <thead><tr style="background:var(--surface2)">
-          <th style="padding:7px 10px;text-align:left">Name</th><th style="padding:7px 10px;text-align:left">NRIC</th>
-          <th style="padding:7px 10px;text-align:right">Total Remuner.</th><th style="padding:7px 10px;text-align:right">Employer CPF</th>
-          <th style="padding:7px 10px"></th>
-        </tr></thead>
-        <tbody>${emps.map(e=>`<tr style="border-bottom:1px solid var(--border)">
-          <td style="padding:7px 10px">${e.name}</td><td style="padding:7px 10px">${e.nric||'—'}</td>
-          <td style="padding:7px 10px;text-align:right">${_fmtSGD(e.salary+e.bonus+e.dirfee+e.allow+e.bik)}</td>
-          <td style="padding:7px 10px;text-align:right">${_fmtSGD(e.cpf_er)}</td>
-          <td style="padding:7px 10px;text-align:right">
-            <button class="btn btn-outline btn-sm" onclick="openIR8AModal('${e.id}')">Edit</button>
-            <button class="btn btn-sm" style="background:#fee2e2;color:#dc2626;border:none;cursor:pointer;border-radius:6px;padding:4px 8px;font-size:.75rem" onclick="deleteIR8AEmployee('${e.id}')">✕</button>
-          </td>
-        </tr>`).join('')}</tbody>
-      </table></div>`;
-  }
-}
-
-// ===================== IR21 =====================
-function openIR21Modal(id){
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const rec=id ? DB.taxData.ir21Filings.find(r=>r.id===id) : null;
-  const fields=['emp-name','emp-nric','emp-nat','emp-desig','emp-start','emp-end','emp-salary','emp-grossinc','emp-bonus','emp-dirfee','emp-gratia','emp-leavepay','emp-noticepay','emp-bik','emp-cpf-er','emp-cpf-ee','emp-withheld'];
-  if(rec){
-    fields.forEach(f=>{ const el=document.getElementById('ir21-'+f); if(el) el.value=rec[f.replace(/-/g,'_')]||''; });
-    document.getElementById('ir21-emp-dob').value=rec.emp_dob||'';
-    document.getElementById('ir21-emp-reason').value=rec.emp_reason||'Resignation';
-    document.getElementById('ir21-emp-id').value=rec.id||'';
-  } else {
-    fields.forEach(f=>{ const el=document.getElementById('ir21-'+f); if(el) el.value=''; });
-    document.getElementById('ir21-emp-dob').value='';
-    document.getElementById('ir21-emp-reason').value='Resignation';
-    document.getElementById('ir21-emp-id').value='';
-  }
-  document.getElementById('modal-ir21').classList.add('open');
-}
-
-function saveIR21Filing(){
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const id=document.getElementById('ir21-emp-id').value||('ir21_'+Date.now());
-  const rec={
-    id,
-    emp_name:document.getElementById('ir21-emp-name').value,
-    emp_nric:document.getElementById('ir21-emp-nric').value,
-    emp_dob:document.getElementById('ir21-emp-dob').value,
-    emp_nat:document.getElementById('ir21-emp-nat').value,
-    emp_desig:document.getElementById('ir21-emp-desig').value,
-    emp_start:document.getElementById('ir21-emp-start').value,
-    emp_end:document.getElementById('ir21-emp-end').value,
-    emp_reason:document.getElementById('ir21-emp-reason').value,
-    emp_salary:parseFloat(document.getElementById('ir21-emp-salary').value)||0,
-    emp_grossinc:parseFloat(document.getElementById('ir21-emp-grossinc').value)||0,
-    emp_bonus:parseFloat(document.getElementById('ir21-emp-bonus').value)||0,
-    emp_dirfee:parseFloat(document.getElementById('ir21-emp-dirfee').value)||0,
-    emp_gratia:parseFloat(document.getElementById('ir21-emp-gratia').value)||0,
-    emp_leavepay:parseFloat(document.getElementById('ir21-emp-leavepay').value)||0,
-    emp_noticepay:parseFloat(document.getElementById('ir21-emp-noticepay').value)||0,
-    emp_bik:parseFloat(document.getElementById('ir21-emp-bik').value)||0,
-    emp_cpf_er:parseFloat(document.getElementById('ir21-emp-cpf-er').value)||0,
-    emp_cpf_ee:parseFloat(document.getElementById('ir21-emp-cpf-ee').value)||0,
-    emp_withheld:parseFloat(document.getElementById('ir21-emp-withheld').value)||0,
-    createdAt:new Date().toISOString().slice(0,10),
-  };
-  if(!rec.emp_name){ alert('Employee name is required.'); return; }
-  const idx=DB.taxData.ir21Filings.findIndex(r=>r.id===id);
-  if(idx>=0) DB.taxData.ir21Filings[idx]=rec; else DB.taxData.ir21Filings.push(rec);
-  saveDB();
-  closeModal('modal-ir21');
-  renderIR21();
-}
-
-function deleteIR21Filing(id){
-  if(!confirm('Remove this IR21 filing?')) return;
-  DB.taxData.ir21Filings=(DB.taxData.ir21Filings||[]).filter(r=>r.id!==id);
-  saveDB(); renderIR21();
-}
-
-function renderIR21(selectedId){
-  const el=document.getElementById('ir21-content');
-  if(!el) return;
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const filings=DB.taxData.ir21Filings||[];
-  const s=DB.settings||{};
-
-  if(filings.length===0){
-    el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--text-muted)">No IR21 filings yet.<br>Click <strong>+ New IR21 Filing</strong> to add a ceased employee.</div>`;
-    return;
-  }
-
-  const showId=selectedId||filings[0].id;
-  const rec=filings.find(r=>r.id===showId)||filings[0];
-  const totalIncome=rec.emp_grossinc+rec.emp_bonus+rec.emp_dirfee+rec.emp_gratia+rec.emp_leavepay+rec.emp_noticepay;
-
-  el.innerHTML=`
-    <!-- Filing list -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
-      ${filings.map(r=>`
-        <button onclick="renderIR21('${r.id}')" style="padding:6px 12px;border-radius:6px;font-size:.8rem;cursor:pointer;border:1px solid var(--border);background:${r.id===rec.id?'var(--primary)':'var(--surface2)'};color:${r.id===rec.id?'#fff':'var(--text)'};font-family:inherit">
-          ${r.emp_name}<br><span style="font-size:.7rem;opacity:.8">${r.emp_end||'—'}</span>
-        </button>`).join('')}
-      <button onclick="deleteIR21Filing('${rec.id}')" style="padding:6px 12px;border-radius:6px;font-size:.8rem;cursor:pointer;border:1px solid #fecaca;background:#fee2e2;color:#dc2626;font-family:inherit">🗑 Delete</button>
-      <button onclick="openIR21Modal('${rec.id}')" style="padding:6px 12px;border-radius:6px;font-size:.8rem;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:inherit">✏ Edit</button>
-    </div>
-
-    <!-- IR21 Form display -->
-    <div style="border:2px solid var(--primary);border-radius:10px;overflow:hidden">
-      <div style="background:var(--primary);color:#fff;padding:12px 18px;text-align:center">
-        <div style="font-weight:800;font-size:1rem;letter-spacing:.5px">FORM IR21</div>
-        <div style="font-size:.75rem;opacity:.85">Notification of Employee's Cessation of Employment</div>
-        <div style="font-size:.7rem;opacity:.7">IRAS — Inland Revenue Authority of Singapore</div>
-      </div>
-
-      <div style="padding:16px 18px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px">
-          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Employer Name</span><br><strong>${s.company||'—'}</strong></div>
-          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">UEN / Tax Ref</span><br><strong>${s.reg||'—'} / ${s.tax||'—'}</strong></div>
-          <div style="padding:8px 12px;border-right:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Employer Address</span><br><strong>${s.address||'—'}</strong></div>
-          <div style="padding:8px 12px"><span style="font-size:.72rem;color:var(--text-muted)">Date Filed</span><br><strong>${rec.createdAt||new Date().toISOString().slice(0,10)}</strong></div>
-        </div>
-
-        <h5 style="color:var(--primary);margin:0 0 8px;font-size:.85rem">PART A — EMPLOYEE PARTICULARS</h5>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px">
-          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Full Name</span><br><strong>${rec.emp_name}</strong></div>
-          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">NRIC / FIN / Passport</span><br><strong>${rec.emp_nric||'—'}</strong></div>
-          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Date of Birth</span><br><strong>${rec.emp_dob||'—'}</strong></div>
-          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Nationality</span><br><strong>${rec.emp_nat||'—'}</strong></div>
-          <div style="padding:8px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Designation</span><br><strong>${rec.emp_desig||'—'}</strong></div>
-          <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Reason for Cessation</span><br><strong>${rec.emp_reason||'—'}</strong></div>
-          <div style="padding:8px 12px;border-right:1px solid var(--border)"><span style="font-size:.72rem;color:var(--text-muted)">Date of Commencement</span><br><strong>${rec.emp_start||'—'}</strong></div>
-          <div style="padding:8px 12px"><span style="font-size:.72rem;color:var(--text-muted)">Date of Cessation</span><br><strong>${rec.emp_end||'—'}</strong></div>
-        </div>
-
-        <h5 style="color:var(--primary);margin:0 0 8px;font-size:.85rem">APPENDIX 1 — EMPLOYMENT INCOME</h5>
-        ${_taxTbl([
-          ['Gross Salary (year of cessation)',_fmtSGD(rec.emp_grossinc)],
-          ['Bonus / AWS',_fmtSGD(rec.emp_bonus)],
-          ['Director\'s Fees',_fmtSGD(rec.emp_dirfee)],
-          ['Gratuity / Ex-Gratia',_fmtSGD(rec.emp_gratia)],
-          ['Leave Pay (unused)',_fmtSGD(rec.emp_leavepay)],
-          ['Notice Pay in Lieu',_fmtSGD(rec.emp_noticepay)],
-          ['Total Employment Income',_fmtSGD(totalIncome)],
-        ],true)}
-
-        <div style="margin-top:12px"></div>
-        ${_taxTbl([
-          ['Benefits-in-Kind (Appendix 1)',_fmtSGD(rec.emp_bik)],
-          ['Employer\'s CPF Contributions',_fmtSGD(rec.emp_cpf_er)],
-          ['Employee\'s CPF Contributions',_fmtSGD(rec.emp_cpf_ee)],
-          ['Estimated Tax to Withhold',_fmtSGD(rec.emp_withheld)],
-        ],false)}
-
-        <div style="margin-top:16px;padding:12px;border:1px solid var(--border);border-radius:6px;font-size:.78rem;color:var(--text-muted)">
-          <strong>Declaration:</strong> I certify that the information given in this form is true and correct. Filed by ${s.company||'the employer'}.
-          <br><br><strong>Note:</strong> IR21 must be submitted at least 1 month before employee's last day (or 2 months for foreigners). Submit via myTax Portal (employers.iras.gov.sg).
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-// ===================== GOVT GRANTS =====================
-function openGrantModal(id){
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const rec=id ? DB.taxData.grants.find(g=>g.id===id) : null;
-  if(rec){
-    document.getElementById('grant-name').value=rec.name||'';
-    document.getElementById('grant-type').value=rec.type||'Tax Rebate';
-    document.getElementById('grant-amount').value=rec.amount||'';
-    document.getElementById('grant-date').value=rec.date||'';
-    document.getElementById('grant-period').value=rec.period||'';
-    document.getElementById('grant-ref').value=rec.ref||'';
-    document.getElementById('grant-notes').value=rec.notes||'';
-    document.getElementById('grant-id').value=rec.id||'';
-  } else {
-    ['name','amount','date','period','ref','notes'].forEach(f=>{ const el=document.getElementById('grant-'+f); if(el) el.value=''; });
-    document.getElementById('grant-type').value='Tax Rebate';
-    document.getElementById('grant-id').value='';
-  }
-  document.getElementById('modal-grant').classList.add('open');
-}
-
-function saveGrant(){
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const id=document.getElementById('grant-id').value||('grant_'+Date.now());
-  const rec={
-    id,
-    name:document.getElementById('grant-name').value,
-    type:document.getElementById('grant-type').value,
-    amount:parseFloat(document.getElementById('grant-amount').value)||0,
-    date:document.getElementById('grant-date').value,
-    period:document.getElementById('grant-period').value,
-    ref:document.getElementById('grant-ref').value,
-    notes:document.getElementById('grant-notes').value,
-  };
-  if(!rec.name){ alert('Grant/Rebate name is required.'); return; }
-  const idx=DB.taxData.grants.findIndex(g=>g.id===id);
-  if(idx>=0) DB.taxData.grants[idx]=rec; else DB.taxData.grants.push(rec);
-  saveDB();
-  closeModal('modal-grant');
-  renderGrants();
-}
-
-function deleteGrant(id){
-  if(!confirm('Remove this grant record?')) return;
-  DB.taxData.grants=(DB.taxData.grants||[]).filter(g=>g.id!==id);
-  saveDB(); renderGrants();
-}
-
-function renderGrants(){
-  const el=document.getElementById('grants-content');
-  if(!el) return;
-  if(!DB.taxData) DB.taxData={ir8aEmployees:[],ir21Filings:[],grants:[]};
-  const grants=DB.taxData.grants||[];
-  const total=grants.reduce((s,g)=>s+g.amount,0);
-
-  const typeColors={'Tax Rebate':'#dbeafe','Cash Grant':'#dcfce7','Jobs Credit':'#fef9c3','Enterprise Development':'#ede9fe','Other':'#f1f5f9'};
-
-  el.innerHTML=`
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px">
-      <div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-top:3px solid var(--accent2)">
-        <div style="font-size:.75rem;color:var(--text-muted)">Total Grants/Rebates</div>
-        <div style="font-size:1.3rem;font-weight:700;color:var(--accent2)">${_fmtSGD(total)}</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-top:3px solid var(--primary)">
-        <div style="font-size:.75rem;color:var(--text-muted)">No. of Records</div>
-        <div style="font-size:1.3rem;font-weight:700;color:var(--primary)">${grants.length}</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:10px;padding:14px 16px;border-top:3px solid var(--accent)">
-        <div style="font-size:.75rem;color:var(--text-muted)">Latest</div>
-        <div style="font-size:.9rem;font-weight:700;color:var(--accent)">${grants.length?grants[grants.length-1].name:'—'}</div>
-      </div>
-    </div>
-    ${grants.length===0?`<div style="text-align:center;padding:30px;color:var(--text-muted)">No grants recorded. Click <strong>+ Record Grant / Rebate</strong> to begin.</div>`:`
-    <table style="width:100%;border-collapse:collapse;font-size:.85rem">
-      <thead><tr style="background:var(--surface2)">
-        <th style="padding:8px 12px;text-align:left">Name</th>
-        <th style="padding:8px 12px;text-align:left">Type</th>
-        <th style="padding:8px 12px;text-align:left">Period</th>
-        <th style="padding:8px 12px;text-align:left">Date</th>
-        <th style="padding:8px 12px;text-align:right">Amount (SGD)</th>
-        <th style="padding:8px 12px;text-align:left">Ref</th>
-        <th style="padding:8px 12px"></th>
-      </tr></thead>
-      <tbody>${grants.map(g=>`
-        <tr style="border-bottom:1px solid var(--border)">
-          <td style="padding:8px 12px"><strong>${g.name}</strong>${g.notes?`<br><span style='font-size:.75rem;color:var(--text-muted)'>${g.notes}</span>`:''}</td>
-          <td style="padding:8px 12px"><span style="padding:2px 8px;border-radius:10px;font-size:.75rem;background:${typeColors[g.type]||'#f1f5f9'}">${g.type}</span></td>
-          <td style="padding:8px 12px">${g.period||'—'}</td>
-          <td style="padding:8px 12px">${g.date||'—'}</td>
-          <td style="padding:8px 12px;text-align:right;font-weight:700;color:var(--accent2)">${_fmtSGD(g.amount)}</td>
-          <td style="padding:8px 12px;font-size:.78rem;color:var(--text-muted)">${g.ref||'—'}</td>
-          <td style="padding:8px 12px;white-space:nowrap">
-            <button class="btn btn-outline btn-sm" onclick="openGrantModal('${g.id}')">Edit</button>
-            <button class="btn btn-sm" style="background:#fee2e2;color:#dc2626;border:none;cursor:pointer;border-radius:6px;padding:4px 8px;font-size:.75rem;margin-left:4px" onclick="deleteGrant('${g.id}')">✕</button>
-          </td>
-        </tr>`).join('')}
-      </tbody>
-      <tfoot>
-        <tr style="background:var(--surface2);font-weight:700;border-top:2px solid var(--primary)">
-          <td style="padding:8px 12px" colspan="4">TOTAL</td>
-          <td style="padding:8px 12px;text-align:right;color:var(--accent2)">${_fmtSGD(total)}</td>
-          <td colspan="2"></td>
-        </tr>
-      </tfoot>
-    </table>`}
-  `;
-}
-
-// ===================== XBRL FILING =====================
-function _initXBRLYears(){
-  const sel=document.getElementById('xbrl-year');
-  if(!sel||sel.options.length>0) return;
-  _taxYears().forEach(y=>{
-    const o=document.createElement('option');
-    o.value=y; o.text='FY '+y;
-    sel.appendChild(o);
-  });
-}
-
-function renderXBRL(){
-  _initXBRLYears();
-  const el=document.getElementById('xbrl-content');
-  if(!el) return;
-  const fy=parseInt(document.getElementById('xbrl-year').value)||new Date().getFullYear();
-  const s=DB.settings||{};
-
-  // P&L for FY
-  const invFY=DB.invoices.filter(i=>i.status!=='draft'&&new Date(i.date).getFullYear()===fy);
-  const expFY=DB.expenses.filter(e=>new Date(e.date).getFullYear()===fy);
-  const billFY=DB.bills.filter(b=>b.status==='paid'&&new Date(b.due).getFullYear()===fy);
-  const payFY=DB.payments.filter(p=>new Date(p.date).getFullYear()===fy);
-
-  const revenue=invFY.reduce((s,i)=>{
-    return s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)),0);
-  },0);
-  const totalExp=expFY.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0)
-    +billFY.reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
-  const netProfit=revenue-totalExp;
-  const corpTax=Math.max(0,netProfit)*0.17;
-  const netProfitAfterTax=netProfit-corpTax;
-
-  // Balance Sheet estimates
-  const ar=DB.invoices.filter(i=>i.status!=='paid'&&i.status!=='draft').reduce((s,i)=>{
-    return s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)*(1+(l.tax||0)/100)),0);
-  },0);
-  const payRec=payFY.reduce((s,p)=>s+_toSGD(p.amount||0,p.currency||'SGD'),0);
-  const cash=payRec-totalExp;
-  const totalAssets=Math.max(0,cash)+ar;
-  const totalLiab=DB.bills.filter(b=>b.status==='pending').reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
-  const equity=totalAssets-totalLiab;
-
-  el.innerHTML=`
-    <div style="background:var(--surface2);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-      <div>
-        <div style="font-weight:700;font-size:1rem;color:var(--primary)">${s.company||'Company'}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">UEN: ${s.reg||'—'} &nbsp;|&nbsp; ACRA Filing</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-weight:700;font-size:.9rem;color:var(--primary)">XBRL Financial Report</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">Financial Year: ${fy}</div>
-        <div style="font-size:.8rem;color:var(--text-muted)">Singapore Financial Reporting Standards (SFRS)</div>
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-      <div>
-        <h4 style="color:var(--primary);margin:0 0 10px">Statement of Comprehensive Income</h4>
-        ${_taxTbl([
-          ['Revenue',_fmtSGD(revenue)],
-          ['Cost of Sales','S$0'],
-          ['Gross Profit',_fmtSGD(revenue)],
-          ['Other Income','S$0'],
-          ['Distribution Costs','S$0'],
-          ['Administrative Expenses',`(${_fmtSGD(totalExp)})`],
-          ['Other Expenses','S$0'],
-          ['Finance Costs','S$0'],
-          ['Profit / (Loss) Before Tax',_fmtSGD(netProfit)],
-          ['Income Tax Expense',`(${_fmtSGD(corpTax)})`],
-          ['Net Profit / (Loss) After Tax',_fmtSGD(netProfitAfterTax)],
-        ],true)}
-      </div>
-      <div>
-        <h4 style="color:var(--primary);margin:0 0 10px">Statement of Financial Position</h4>
-        ${_taxTbl([
-          ['ASSETS',''],
-          ['Cash &amp; Cash Equivalents',_fmtSGD(Math.max(0,cash))],
-          ['Trade Receivables',_fmtSGD(ar)],
-          ['Other Current Assets','S$0'],
-          ['Total Assets',_fmtSGD(totalAssets)],
-          ['LIABILITIES',''],
-          ['Trade Payables',_fmtSGD(totalLiab)],
-          ['Other Liabilities','S$0'],
-          ['Total Liabilities',_fmtSGD(totalLiab)],
-          ['EQUITY',''],
-          ['Share Capital','S$0'],
-          ['Retained Earnings',_fmtSGD(equity)],
-          ['Total Equity',_fmtSGD(equity)],
-        ],false)}
-      </div>
-    </div>
-
-    <h4 style="color:var(--primary);margin:0 0 10px">XBRL Export Preview (Inline XBRL)</h4>
-    <div style="background:#1e293b;border-radius:8px;padding:14px;overflow-x:auto;font-family:monospace;font-size:.72rem;color:#a3e635;max-height:260px;overflow-y:auto">
-      <pre style="margin:0;white-space:pre">${_buildXBRL(s,fy,revenue,totalExp,netProfit,corpTax,netProfitAfterTax,totalAssets,totalLiab,equity,cash,ar)}</pre>
-    </div>
-
-    <div style="margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:8px;font-size:.78rem;color:var(--text-muted)">
-      <strong>Note:</strong> XBRL filing is required for companies with revenue ≥ S$500,000 filing with ACRA. Use BizFinx Preparation Tool (acra.gov.sg) for official submission. This export provides the structured data for import into BizFinx. Taxonomy: ACRA XBRL Financial Reporting Taxonomy (AXT).
-    </div>
-  `;
-}
-
-function _buildXBRL(s,fy,revenue,totalExp,netProfit,corpTax,netPAT,totalAssets,totalLiab,equity,cash,ar){
-  const d=fy+'-12-31';
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<xbrli:xbrl xmlns:xbrli="http://www.xbrl.org/2003/instance"
-  xmlns:acra="http://www.acra.gov.sg/taxonomy/${fy}"
-  xmlns:xbrldei="http://xbrl.org/2006/xbrldei"
-  contextRef="FY${fy}">
-
-  <!-- Entity Information -->
-  <xbrldei:EntityRegistrationName>${s.company||'Company'}</xbrldei:EntityRegistrationName>
-  <xbrldei:EntityUniqueNumberIdentifier>${s.reg||''}</xbrldei:EntityUniqueNumberIdentifier>
-
-  <!-- Income Statement -->
-  <acra:Revenue contextRef="FY${fy}" decimals="2">${revenue.toFixed(2)}</acra:Revenue>
-  <acra:CostOfSales contextRef="FY${fy}" decimals="2">0.00</acra:CostOfSales>
-  <acra:GrossProfit contextRef="FY${fy}" decimals="2">${revenue.toFixed(2)}</acra:GrossProfit>
-  <acra:AdministrativeExpenses contextRef="FY${fy}" decimals="2">${totalExp.toFixed(2)}</acra:AdministrativeExpenses>
-  <acra:ProfitLossBeforeTax contextRef="FY${fy}" decimals="2">${netProfit.toFixed(2)}</acra:ProfitLossBeforeTax>
-  <acra:IncomeTaxExpense contextRef="FY${fy}" decimals="2">${corpTax.toFixed(2)}</acra:IncomeTaxExpense>
-  <acra:ProfitLoss contextRef="FY${fy}" decimals="2">${netPAT.toFixed(2)}</acra:ProfitLoss>
-
-  <!-- Balance Sheet -->
-  <acra:CashAndCashEquivalents contextRef="${d}" decimals="2">${Math.max(0,cash).toFixed(2)}</acra:CashAndCashEquivalents>
-  <acra:TradeAndOtherReceivablesCurrent contextRef="${d}" decimals="2">${ar.toFixed(2)}</acra:TradeAndOtherReceivablesCurrent>
-  <acra:Assets contextRef="${d}" decimals="2">${totalAssets.toFixed(2)}</acra:Assets>
-  <acra:TradeAndOtherPayablesCurrent contextRef="${d}" decimals="2">${totalLiab.toFixed(2)}</acra:TradeAndOtherPayablesCurrent>
-  <acra:Liabilities contextRef="${d}" decimals="2">${totalLiab.toFixed(2)}</acra:Liabilities>
-  <acra:Equity contextRef="${d}" decimals="2">${equity.toFixed(2)}</acra:Equity>
-
-</xbrli:xbrl>`;
-}
-
-// ===================== LEDGER ENGINE =====================
-function _codeToName(code){
-  if(!code) return '—';
-  const acc=(DB.chartOfAccounts||[]).find(a=>a.code===code);
-  return acc?acc.name:code;
-}
-
-function _catToAccount(cat){
-  if(!cat) return '6900';
-  const c=cat.toLowerCase();
-  if(c.includes('salary')||c.includes('wage')||c.includes('payroll')) return '6000';
-  if(c.includes('cpf')||c.includes('benefit')) return '6010';
-  if(c.includes('rent')||c.includes('utility')||c.includes('electric')||c.includes('water')) return '6100';
-  if(c.includes('office')||c.includes('stationery')||c.includes('supply')) return '6110';
-  if(c.includes('travel')||c.includes('transport')||c.includes('meal')||c.includes('entertain')) return '6200';
-  if(c.includes('market')||c.includes('advertis')||c.includes('promot')) return '6300';
-  if(c.includes('legal')||c.includes('secretar')) return '6410';
-  if(c.includes('audit')||c.includes('account')||c.includes('tax')) return '6420';
-  if(c.includes('professional')||c.includes('consult')) return '6400';
-  if(c.includes('tech')||c.includes('software')||c.includes('it')||c.includes('subscript')) return '6500';
-  if(c.includes('depreciat')||c.includes('amortis')) return '6600';
-  if(c.includes('insur')) return '6700';
-  if(c.includes('bank')||c.includes('interest')) return '6800';
-  if(c.includes('cogs')||c.includes('cost of goods')) return '5000';
-  if(c.includes('labor')||c.includes('labour')) return '5100';
-  if(c.includes('subcontract')) return '5200';
-  return '6900';
-}
-
-// Build all ledger postings as individual account lines
-function _buildLedgerPostings(yearFilter){
-  const posts=[];
-  const yr=yearFilter?parseInt(yearFilter):null;
-  const inYr=d=>{if(!yr)return true;return new Date(d||'').getFullYear()===yr;};
-  const add=(date,ref,desc,code,debit,credit,src)=>{
-    const name=_codeToName(code);
-    posts.push({date:date||'',ref:ref||'',desc,accountCode:code,accountName:name,debit:Math.max(0,debit||0),credit:Math.max(0,credit||0),source:src});
-  };
-
-  // Invoices → DR: AR(1100), CR: Revenue(4100) + CR: GST Payable(2200)
-  (DB.invoices||[]).forEach(inv=>{
-    if(!inYr(inv.date)) return;
-    const net=inv.lines?inv.lines.reduce((s,l)=>s+l.qty*l.price,0):0;
-    const taxAmt=inv.lines?inv.lines.reduce((s,l)=>s+(l.qty*l.price*(l.tax||0)/100),0):0;
-    const total=net+taxAmt;
-    const label=`Invoice ${inv.id} — ${getClientName(inv.clientId)||''}`;
-    add(inv.date,inv.id,label,'1100',total,0,'invoice');
-    add(inv.date,inv.id,label,'4100',0,net,'invoice');
-    if(taxAmt>0) add(inv.date,inv.id,`GST on ${inv.id}`,'2200',0,taxAmt,'invoice');
-  });
-
-  // Payments received → DR: Cash(1000), CR: AR(1100)
-  (DB.payments||[]).forEach(p=>{
-    if(!inYr(p.date)) return;
-    const amt=toBase(p.amount,p.currency);
-    const label=`Payment ${p.id}`;
-    add(p.date,p.id,label,'1000',amt,0,'payment');
-    add(p.date,p.id,label,'1100',0,amt,'payment');
-  });
-
-  // Expenses → DR: Expense acct, CR: AP(2000); GST → DR: GST Recv(2210)
-  (DB.expenses||[]).forEach(e=>{
-    if(!inYr(e.date)) return;
-    const amt=toBase(e.amount,e.currency);
-    const taxAmt=e.tax?toBase(e.tax,e.currency):0;
-    const code=_catToAccount(e.cat);
-    const label=e.desc||e.cat||e.id;
-    add(e.date,e.id,label,code,amt,0,'expense');
-    add(e.date,e.id,label,'2000',0,taxAmt>0?amt+taxAmt:amt,'expense');
-    if(taxAmt>0) add(e.date,e.id,`GST on ${e.id}`,'2210',taxAmt,0,'expense');
-  });
-
-  // Bills → DR: Expense acct, CR: AP(2000)
-  (DB.bills||[]).forEach(b=>{
-    if(!inYr(b.date)) return;
-    const amt=toBase(b.amount,b.currency);
-    const code=_catToAccount(b.cat);
-    const label=b.desc||b.vendor||b.id;
-    add(b.date,b.id,label,code,amt,0,'bill');
-    add(b.date,b.id,label,'2000',0,amt,'bill');
-  });
-
-  // Manual journal entries
-  (DB.journal||[]).forEach(j=>{
-    if(!inYr(j.date)) return;
-    const da=toBase(j.debitAmt||0,j.currency||'SGD');
-    const ca=toBase(j.creditAmt||0,j.currency||'SGD');
-    if(j.debitAcc)  add(j.date,j.id,j.desc,j.debitAcc,da,0,'journal');
-    if(j.creditAcc) add(j.date,j.id,j.desc,j.creditAcc,0,ca,'journal');
-  });
-
-  return posts.sort((a,b)=>new Date(a.date)-new Date(b.date));
-}
-
-// Group postings by account code → {code:{name,type,category,postings,totalDebit,totalCredit,balance}}
-function _groupByAccount(posts){
-  const map={};
-  posts.forEach(p=>{
-    if(!map[p.accountCode]){
-      const acc=(DB.chartOfAccounts||[]).find(a=>a.code===p.accountCode)||{};
-      map[p.accountCode]={code:p.accountCode,name:p.accountName,type:acc.type||'',category:acc.category||'',postings:[],totalDebit:0,totalCredit:0};
-    }
-    map[p.accountCode].postings.push(p);
-    map[p.accountCode].totalDebit+=p.debit;
-    map[p.accountCode].totalCredit+=p.credit;
-  });
-  // compute balance (normal side depends on account type)
-  Object.values(map).forEach(a=>{
-    const t=(a.type||'').toLowerCase();
-    if(t==='asset'||t==='expense') a.balance=a.totalDebit-a.totalCredit;
-    else a.balance=a.totalCredit-a.totalDebit;
-  });
-  return map;
-}
-
-function _ledgerYears(){
-  const yrs=new Set();
-  const cur=new Date().getFullYear();
-  yrs.add(cur); yrs.add(cur-1); yrs.add(cur-2);
-  (DB.invoices||[]).forEach(i=>yrs.add(new Date(i.date||'').getFullYear()));
-  (DB.expenses||[]).forEach(e=>yrs.add(new Date(e.date||'').getFullYear()));
-  return [...yrs].filter(y=>y>2000).sort((a,b)=>b-a);
-}
-
-function _initLedgerYears(selId){
-  const sel=document.getElementById(selId);
-  if(!sel) return;
-  const cur=new Date().getFullYear();
-  sel.innerHTML=`<option value="">All Years</option>`+_ledgerYears().map(y=>`<option value="${y}"${y===cur?'selected':''}>${y}</option>`).join('');
-}
-
-function _initGLAccounts(){
-  const sel=document.getElementById('gl-account');
-  if(!sel) return;
-  const posts=_buildLedgerPostings();
-  const codes=[...new Set(posts.map(p=>p.accountCode))].sort();
-  const cur=sel.value;
-  sel.innerHTML='<option value="">— All Accounts —</option>'+codes.map(c=>`<option value="${c}"${c===cur?'selected':''}>${c} — ${_codeToName(c)}</option>`).join('');
-}
-
-// ===================== GENERAL LEDGER PAGE =====================
-function renderGL(){
-  _initLedgerYears('gl-year');
-  _initGLAccounts();
-  const yr=document.getElementById('gl-year').value;
-  const accFilter=document.getElementById('gl-account').value;
-  const base=document.getElementById('baseCurrency').value;
-  const sym=SYMBOLS[base]||'$';
-  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-
-  let posts=_buildLedgerPostings(yr||null);
-  if(accFilter) posts=posts.filter(p=>p.accountCode===accFilter);
-
-  const grp=_groupByAccount(posts);
-  const el=document.getElementById('gl-content');
-
-  if(!Object.keys(grp).length){el.innerHTML='<div class="empty-state"><p>No transactions found for this period.</p></div>';return;}
-
-  el.innerHTML=Object.values(grp).sort((a,b)=>a.code.localeCompare(b.code)).map(acct=>{
-    let running=0;
-    const rows=acct.postings.map(p=>{
-      running+=p.debit-p.credit;
-      return `<tr>
-        <td style="font-size:.82rem;color:var(--text-muted)">${p.date}</td>
-        <td style="font-size:.82rem;color:var(--text-muted)">${p.ref}</td>
-        <td>${p.desc}</td>
-        <td style="font-size:.75rem;color:var(--text-muted)">${p.source}</td>
-        <td style="text-align:right;color:var(--primary-light)">${p.debit>0?f(p.debit):''}</td>
-        <td style="text-align:right;color:var(--danger)">${p.credit>0?f(p.credit):''}</td>
-        <td style="text-align:right;font-weight:600">${f(running)}</td>
-      </tr>`;
-    }).join('');
-    return `<div style="margin-bottom:24px">
-      <div style="background:var(--primary);color:#fff;padding:8px 14px;border-radius:8px 8px 0 0;display:flex;justify-content:space-between;font-weight:600;font-size:.88rem">
-        <span>${acct.code} — ${acct.name}</span>
-        <span style="opacity:.7;font-size:.78rem">${acct.type} / ${acct.category}</span>
-      </div>
-      <table style="width:100%;border-collapse:collapse">
-        <thead><tr style="background:var(--surface2)">
-          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Date</th>
-          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Ref</th>
-          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Description</th>
-          <th style="padding:7px 10px;font-size:.75rem;text-align:left">Source</th>
-          <th style="padding:7px 10px;font-size:.75rem;text-align:right">Debit</th>
-          <th style="padding:7px 10px;font-size:.75rem;text-align:right">Credit</th>
-          <th style="padding:7px 10px;font-size:.75rem;text-align:right">Balance</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-        <tfoot><tr style="background:var(--surface2);font-weight:700">
-          <td colspan="4" style="padding:8px 10px;font-size:.82rem">Totals</td>
-          <td style="padding:8px 10px;text-align:right;color:var(--primary-light)">${f(acct.totalDebit)}</td>
-          <td style="padding:8px 10px;text-align:right;color:var(--danger)">${f(acct.totalCredit)}</td>
-          <td style="padding:8px 10px;text-align:right">${f(acct.balance)}</td>
-        </tr></tfoot>
-      </table>
-    </div>`;
-  }).join('');
-}
-
-// ===================== GL DETAIL REPORT =====================
-function renderGLDetail(){
-  _initLedgerYears('gld-year');
-  const yr=document.getElementById('gld-year').value;
-  const base=document.getElementById('baseCurrency').value;
-  const sym=SYMBOLS[base]||'$';
-  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-  const grp=_groupByAccount(_buildLedgerPostings(yr||null));
-  const s=DB.settings||{};
-  const el=document.getElementById('gld-content');
-
-  el.innerHTML=`<div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — General Ledger Detail ${yr?'FY '+yr:'(All Years)'}</div>`+
-    Object.values(grp).sort((a,b)=>a.code.localeCompare(b.code)).map(acct=>{
-      let running=0;
-      const rows=acct.postings.map(p=>{
-        running+=p.debit-p.credit;
-        return `<tr><td style="padding:5px 8px;font-size:.82rem">${p.date}</td><td style="padding:5px 8px;font-size:.82rem">${p.ref}</td><td style="padding:5px 8px;font-size:.82rem">${p.desc}</td><td style="padding:5px 8px;text-align:right;font-size:.82rem">${p.debit>0?f(p.debit):''}</td><td style="padding:5px 8px;text-align:right;font-size:.82rem">${p.credit>0?f(p.credit):''}</td><td style="padding:5px 8px;text-align:right;font-size:.82rem;font-weight:600">${f(running)}</td></tr>`;
-      }).join('');
-      return `<div style="margin-bottom:20px;border:1px solid var(--border);border-radius:8px;overflow:hidden">
-        <div style="background:var(--surface2);padding:8px 12px;font-weight:700;font-size:.85rem">${acct.code} ${acct.name} <span style="font-weight:400;color:var(--text-muted);font-size:.78rem">(${acct.type})</span></div>
-        <table style="width:100%;border-collapse:collapse"><thead><tr style="background:#f9f6f3"><th style="padding:6px 8px;text-align:left;font-size:.75rem">Date</th><th style="padding:6px 8px;text-align:left;font-size:.75rem">Ref</th><th style="padding:6px 8px;text-align:left;font-size:.75rem">Description</th><th style="padding:6px 8px;text-align:right;font-size:.75rem">Debit</th><th style="padding:6px 8px;text-align:right;font-size:.75rem">Credit</th><th style="padding:6px 8px;text-align:right;font-size:.75rem">Balance</th></tr></thead>
-        <tbody>${rows}</tbody>
-        <tfoot><tr style="background:var(--surface2);font-weight:700"><td colspan="3" style="padding:6px 8px;font-size:.8rem">Closing Balance</td><td style="padding:6px 8px;text-align:right;font-size:.8rem">${f(acct.totalDebit)}</td><td style="padding:6px 8px;text-align:right;font-size:.8rem">${f(acct.totalCredit)}</td><td style="padding:6px 8px;text-align:right;font-size:.8rem">${f(acct.balance)}</td></tr></tfoot>
-        </table></div>`;
-    }).join('');
-}
-
-// ===================== GL SUMMARY REPORT =====================
-function renderGLSummary(){
-  _initLedgerYears('gls-year');
-  const yr=document.getElementById('gls-year').value;
-  const base=document.getElementById('baseCurrency').value;
-  const sym=SYMBOLS[base]||'$';
-  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-  const grp=_groupByAccount(_buildLedgerPostings(yr||null));
-  const s=DB.settings||{};
-  const types=['Asset','Liability','Equity','Revenue','Expense'];
-  const el=document.getElementById('gls-content');
-
-  let html=`<div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — General Ledger Summary ${yr?'FY '+yr:'(All Years)'}</div>`;
-  types.forEach(type=>{
-    const accts=Object.values(grp).filter(a=>a.type===type).sort((a,b)=>a.code.localeCompare(b.code));
-    if(!accts.length) return;
-    html+=`<div style="margin-bottom:16px"><div style="background:var(--primary);color:#fff;padding:7px 14px;font-weight:700;font-size:.85rem;border-radius:6px 6px 0 0">${type} Accounts</div>
-    <table style="width:100%;border-collapse:collapse;border:1px solid var(--border)">
-    <thead><tr style="background:var(--surface2)"><th style="padding:7px 10px;text-align:left;font-size:.75rem">Code</th><th style="padding:7px 10px;text-align:left;font-size:.75rem">Account</th><th style="padding:7px 10px;text-align:right;font-size:.75rem">Total Debits</th><th style="padding:7px 10px;text-align:right;font-size:.75rem">Total Credits</th><th style="padding:7px 10px;text-align:right;font-size:.75rem">Net Balance</th></tr></thead>
-    <tbody>${accts.map(a=>`<tr><td style="padding:6px 10px;font-size:.82rem;color:var(--text-muted)">${a.code}</td><td style="padding:6px 10px;font-size:.85rem">${a.name}</td><td style="padding:6px 10px;text-align:right;font-size:.82rem">${f(a.totalDebit)}</td><td style="padding:6px 10px;text-align:right;font-size:.82rem">${f(a.totalCredit)}</td><td style="padding:6px 10px;text-align:right;font-size:.85rem;font-weight:600;color:${a.balance>=0?'var(--accent2)':'var(--danger)'}">${f(a.balance)}</td></tr>`).join('')}</tbody>
-    <tfoot><tr style="background:var(--surface2);font-weight:700"><td colspan="2" style="padding:7px 10px;font-size:.82rem">Total</td><td style="padding:7px 10px;text-align:right;font-size:.82rem">${f(accts.reduce((s,a)=>s+a.totalDebit,0))}</td><td style="padding:7px 10px;text-align:right;font-size:.82rem">${f(accts.reduce((s,a)=>s+a.totalCredit,0))}</td><td style="padding:7px 10px;text-align:right;font-size:.85rem">${f(accts.reduce((s,a)=>s+a.balance,0))}</td></tr></tfoot>
-    </table></div>`;
-  });
-  el.innerHTML=html;
-}
-
-// ===================== TRIAL BALANCE =====================
-function renderTrialBalance(){
-  _initLedgerYears('tb-year');
-  const yr=document.getElementById('tb-year').value;
-  const base=document.getElementById('baseCurrency').value;
-  const sym=SYMBOLS[base]||'$';
-  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-  const grp=_groupByAccount(_buildLedgerPostings(yr||null));
-  const s=DB.settings||{};
-  const el=document.getElementById('tb-content');
-
-  let totalDr=0, totalCr=0;
-  const rows=Object.values(grp).sort((a,b)=>a.code.localeCompare(b.code)).map(a=>{
-    const t=(a.type||'').toLowerCase();
-    const isDebitNormal=(t==='asset'||t==='expense');
-    const debitBal=isDebitNormal&&a.balance>0?a.balance:(!isDebitNormal&&a.balance<0?Math.abs(a.balance):0);
-    const creditBal=!isDebitNormal&&a.balance>0?a.balance:(isDebitNormal&&a.balance<0?Math.abs(a.balance):0);
-    totalDr+=debitBal; totalCr+=creditBal;
-    if(debitBal===0&&creditBal===0) return '';
-    return `<tr>
-      <td style="padding:6px 10px;font-size:.82rem;color:var(--text-muted)">${a.code}</td>
-      <td style="padding:6px 10px;font-size:.85rem">${a.name}</td>
-      <td style="padding:6px 10px;font-size:.82rem;color:var(--text-muted)">${a.type}</td>
-      <td style="padding:6px 10px;text-align:right;font-weight:600;color:var(--primary-light)">${debitBal>0?f(debitBal):''}</td>
-      <td style="padding:6px 10px;text-align:right;font-weight:600;color:var(--danger)">${creditBal>0?f(creditBal):''}</td>
-    </tr>`;
-  }).join('');
-
-  const balanced=Math.abs(totalDr-totalCr)<0.01;
-  el.innerHTML=`
-    <div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — Trial Balance ${yr?'FY '+yr:'(All Years)'}</div>
-    ${balanced
-      ?'<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:.83rem;color:#2e7d32">✅ Trial balance is in balance — Debits equal Credits</div>'
-      :`<div style="background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;padding:8px 14px;margin-bottom:12px;font-size:.83rem;color:#e65100">⚠ Out of balance by ${f(Math.abs(totalDr-totalCr))} — check for unposted entries</div>`
-    }
-    <table style="width:100%;border-collapse:collapse;border:1px solid var(--border)">
-      <thead><tr style="background:var(--surface2)">
-        <th style="padding:8px 10px;text-align:left;font-size:.75rem">Code</th>
-        <th style="padding:8px 10px;text-align:left;font-size:.75rem">Account Name</th>
-        <th style="padding:8px 10px;text-align:left;font-size:.75rem">Type</th>
-        <th style="padding:8px 10px;text-align:right;font-size:.75rem">Debit</th>
-        <th style="padding:8px 10px;text-align:right;font-size:.75rem">Credit</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-      <tfoot><tr style="background:var(--primary);color:#fff;font-weight:700">
-        <td colspan="3" style="padding:9px 10px;font-size:.88rem">TOTALS</td>
-        <td style="padding:9px 10px;text-align:right;font-size:.88rem">${f(totalDr)}</td>
-        <td style="padding:9px 10px;text-align:right;font-size:.88rem">${f(totalCr)}</td>
-      </tr></tfoot>
-    </table>`;
-}
-
-// ===================== SALES TAX REPORT =====================
-function renderSalesTax(){
-  _initLedgerYears('stax-year');
-  const yr=document.getElementById('stax-year').value;
-  const base=document.getElementById('baseCurrency').value;
-  const sym=SYMBOLS[base]||'$';
-  const f=v=>`${sym}${(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
-  const s=DB.settings||{};
-  const filterYr=yr?parseInt(yr):null;
-  const inYr=d=>!filterYr||new Date(d||'').getFullYear()===filterYr;
-
-  // Output tax (GST collected from customers)
-  const outputRows=[]; let totalOutput=0;
-  (DB.invoices||[]).forEach(inv=>{
-    if(!inYr(inv.date)) return;
-    if(!inv.lines) return;
-    const taxAmt=inv.lines.reduce((s,l)=>s+(l.qty*l.price*(l.tax||0)/100),0);
-    if(taxAmt<=0) return;
-    const net=inv.lines.reduce((s,l)=>s+l.qty*l.price,0);
-    outputRows.push({date:inv.date,ref:inv.id,desc:`Invoice — ${getClientName(inv.clientId)||''}`,taxableAmt:net,taxAmt,rate:`${Math.round(taxAmt/net*100)}%`});
-    totalOutput+=taxAmt;
-  });
-
-  // Input tax (GST paid on expenses)
-  const inputRows=[]; let totalInput=0;
-  (DB.expenses||[]).forEach(e=>{
-    if(!inYr(e.date)) return;
-    const taxAmt=e.tax?toBase(e.tax,e.currency):0;
-    if(taxAmt<=0) return;
-    inputRows.push({date:e.date,ref:e.id,desc:e.desc||e.cat,taxableAmt:toBase(e.amount,e.currency),taxAmt});
-    totalInput+=taxAmt;
-  });
-  (DB.bills||[]).forEach(b=>{
-    if(!inYr(b.date)) return;
-    const taxAmt=b.tax?toBase(b.tax,b.currency):0;
-    if(taxAmt<=0) return;
-    inputRows.push({date:b.date,ref:b.id,desc:b.desc||b.vendor,taxableAmt:toBase(b.amount,b.currency),taxAmt});
-    totalInput+=taxAmt;
-  });
-
-  const netPayable=totalOutput-totalInput;
-  const el=document.getElementById('stax-content');
-
-  const mkTable=(rows,emptyMsg)=>rows.length?`
-    <table style="width:100%;border-collapse:collapse;font-size:.83rem">
-      <thead><tr style="background:var(--surface2)"><th style="padding:7px 10px;text-align:left">Date</th><th style="padding:7px 10px;text-align:left">Ref</th><th style="padding:7px 10px;text-align:left">Description</th><th style="padding:7px 10px;text-align:right">Taxable Amt</th><th style="padding:7px 10px;text-align:right">Tax Collected</th></tr></thead>
-      <tbody>${rows.map(r=>`<tr><td style="padding:6px 10px">${r.date}</td><td style="padding:6px 10px;color:var(--text-muted)">${r.ref}</td><td style="padding:6px 10px">${r.desc}</td><td style="padding:6px 10px;text-align:right">${f(r.taxableAmt)}</td><td style="padding:6px 10px;text-align:right;font-weight:600">${f(r.taxAmt)}</td></tr>`).join('')}</tbody>
-    </table>`:`<div style="padding:14px;color:var(--text-muted);font-size:.83rem">${emptyMsg}</div>`;
-
-  el.innerHTML=`
-    <div style="margin-bottom:16px;font-weight:600;color:var(--primary);font-family:'Playfair Display',serif">${s.name||'Company'} — Sales Tax Report ${yr?'FY '+yr:'(All Years)'}</div>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
-      <div class="kpi-card blue"><div class="kpi-label">Output Tax (Collected)</div><div class="kpi-value">${f(totalOutput)}</div></div>
-      <div class="kpi-card green"><div class="kpi-label">Input Tax (Recoverable)</div><div class="kpi-value">${f(totalInput)}</div></div>
-      <div class="kpi-card ${netPayable>=0?'orange':'green'}"><div class="kpi-label">Net ${netPayable>=0?'Payable':'Refundable'}</div><div class="kpi-value">${f(Math.abs(netPayable))}</div></div>
-    </div>
-
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-header"><h3>📤 Output Tax — GST Collected on Sales</h3><span class="badge">${f(totalOutput)}</span></div>
-      ${mkTable(outputRows,'No taxable sales found for this period')}
-    </div>
-
-    <div class="card" style="margin-bottom:16px">
-      <div class="card-header"><h3>📥 Input Tax — GST Paid on Purchases</h3><span class="badge" style="background:var(--accent2)">${f(totalInput)}</span></div>
-      ${mkTable(inputRows,'No taxable purchases found for this period')}
-    </div>
-
-    <div style="background:var(--primary);color:#fff;border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
-      <div>
-        <div style="font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:1px">Net GST ${netPayable>=0?'Payable to IRAS':'Refundable from IRAS'}</div>
-        <div style="font-size:1.8rem;font-weight:700;font-family:'Playfair Display',serif">${f(Math.abs(netPayable))}</div>
-      </div>
-      <div style="text-align:right;font-size:.8rem;opacity:.8">
-        <div>Output: ${f(totalOutput)}</div>
-        <div>Input: (${f(totalInput)})</div>
-        <div style="margin-top:4px;font-weight:700">${netPayable>=0?'PAY':'CLAIM'}: ${f(Math.abs(netPayable))}</div>
-      </div>
-    </div>`;
-}
-
-// ===================== ECI FILING =====================
-function _initECIYears(){
-  const sel=document.getElementById('eci-ya');
-  if(!sel||sel.options.length>0) return;
-  const yr=new Date().getFullYear();
-  for(let y=yr+1;y>=yr-3;y--){ const o=document.createElement('option'); o.value=y; o.textContent='YA '+y; sel.appendChild(o); }
-  sel.value=yr+1;
-}
-
-function renderECI(){
-  _initECIYears();
-  const ya=parseInt(document.getElementById('eci-ya').value)||new Date().getFullYear()+1;
-  const scheme=document.getElementById('eci-scheme').value; // 'partial' or 'startup'
-  const fy=ya-1; // financial year = YA - 1
-
-  // ---- Auto-fill from DB ----
-  // Revenue: invoices in financial year
-  const revenue=(DB.invoices||[]).filter(inv=>{
-    const d=new Date(inv.date||inv.createdAt||'');
-    return d.getFullYear()===fy && (inv.status==='paid'||inv.status==='sent'||inv.status==='overdue');
-  }).reduce((s,inv)=>s+getInvoiceTotal(inv),0);
-
-  // Total Expenses from expense records in financial year
-  const totalExp=(DB.expenses||[]).filter(e=>{
-    const d=new Date(e.date||'');
-    return d.getFullYear()===fy;
-  }).reduce((s,e)=>s+(_toSGD(e.amount||0,e.currency)||0),0);
-
-  const netProfit=revenue - totalExp;
-
-  // ---- Manual adjustments from inputs ----
-  const dep    =parseFloat(document.getElementById('eci-dep').value)||0;
-  const car    =parseFloat(document.getElementById('eci-car').value)||0;
-  const rptax  =parseFloat(document.getElementById('eci-rptax').value)||0;
-  const othDis =parseFloat(document.getElementById('eci-other-dis').value)||0;
-  const caLva  =parseFloat(document.getElementById('eci-ca-lva').value)||0;
-  const caComp =parseFloat(document.getElementById('eci-ca-comp').value)||0;
-  const ca3yr  =parseFloat(document.getElementById('eci-ca-3yr').value)||0;
-  const caBf   =parseFloat(document.getElementById('eci-ca-bf').value)||0;
-  const rental =parseFloat(document.getElementById('eci-rental').value)||0;
-  const rentalExp=parseFloat(document.getElementById('eci-rental-exp').value)||0;
-  const interest=parseFloat(document.getElementById('eci-interest').value)||0;
-  const ftc    =parseFloat(document.getElementById('eci-ftc').value)||0;
-
-  // ---- ECI Computation (IRAS method) ----
-  const totalDisallowable = dep+car+rptax+othDis;
-  const totalCA = caLva+caComp+ca3yr+caBf;
-  const totalSeparateSrc = rental+interest;
-
-  const adjBeforeCA = netProfit - totalSeparateSrc + totalDisallowable;
-  const adjAfterCA  = adjBeforeCA - totalCA;
-  const netRental   = rental - rentalExp; // rental net of deductible expenses
-  const eciBeforeExempt = adjAfterCA + netRental + (interest>0?interest:0);
-
-  // ---- Partial vs Start-up exemption ----
-  let exemptAmt=0;
-  if(scheme==='partial'){
-    exemptAmt = Math.min(eciBeforeExempt, 10000)*0.75 + Math.max(0,Math.min(eciBeforeExempt-10000,190000))*0.50;
-  } else {
-    exemptAmt = Math.min(eciBeforeExempt, 100000)*0.75 + Math.max(0,Math.min(eciBeforeExempt-100000,100000))*0.50;
-  }
-  exemptAmt = Math.max(0, Math.min(exemptAmt, eciBeforeExempt));
-
-  const eciAfterExempt = Math.max(0, eciBeforeExempt - exemptAmt);
-  const estTaxThereon  = eciAfterExempt * 0.17;
-  const ftcRelief      = Math.min(ftc, estTaxThereon);
-  const etp            = estTaxThereon - ftcRelief; // Estimated Tax Payable
-
-  // ---- Back-calculate ECI if FTC claimed (IRAS formula) ----
-  let eciToFile = eciBeforeExempt; // default: no FTC
-  let ftcFormula = '';
-  if(ftc>0 && etp>0){
-    if(scheme==='partial'){
-      if(etp<425)         { eciToFile=(200*etp)/8.5; ftcFormula='ECI = (200 × ETP) / 8.5'; }
-      else if(etp<16575)  { eciToFile=(100*etp)/8.5+5000; ftcFormula='ECI = (100 × ETP / 8.5) + S$5,000'; }
-      else                { eciToFile=(50*etp)/8.5+102500; ftcFormula='ECI = (50 × ETP / 8.5) + S$102,500'; }
-    } else {
-      if(etp<4250)        { eciToFile=(200*etp)/8.5; ftcFormula='ECI = (200 × ETP) / 8.5'; }
-      else if(etp<12750)  { eciToFile=(100*etp)/8.5+50000; ftcFormula='ECI = (100 × ETP / 8.5) + S$50,000'; }
-      else                { eciToFile=(50*etp)/8.5+125000; ftcFormula='ECI = (50 × ETP / 8.5) + S$125,000'; }
-    }
-  } else {
-    eciToFile = eciBeforeExempt;
-  }
-
-  const exemptNote = scheme==='partial'
-    ? `Partial Tax Exemption: 75% × S$10,000 + 50% × S$190,000 (max S$102,500)`
-    : `Start-Up Exemption: 75% × S$100,000 + 50% × S$100,000 (max S$125,000)`;
-
-  const noFilingNote = revenue<=5000000 && eciBeforeExempt<=0
-    ? `<div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.83rem;color:#2e7d32">
-        ✅ <strong>No ECI filing required.</strong> Annual revenue ≤ S$5,000,000 and ECI = NIL.
-       </div>` : '';
-
-  const f=_fmtSGD;
-  const el=document.getElementById('eci-result');
-
-  el.innerHTML=`
-    ${noFilingNote}
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:20px;font-size:.85rem;line-height:1.9">
-      <div style="font-weight:700;font-size:.95rem;color:var(--primary);margin-bottom:12px;font-family:'Playfair Display',serif">ECI Computation — YA ${ya} (Financial Year ${fy})</div>
-
-      <table style="width:100%;border-collapse:collapse;font-size:.84rem">
-        <tr><td style="padding:4px 8px;color:var(--text-muted)">Revenue (auto from invoices)</td><td style="padding:4px 8px;text-align:right">${f(revenue)}</td></tr>
-        <tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Total Expenses (auto from expense records)</td><td style="padding:4px 8px;text-align:right">(${f(totalExp)})</td></tr>
-        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Net Profit Before Tax</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(netProfit)}</td></tr>
-
-        ${totalSeparateSrc>0?`<tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Separate Source Income (rental + interest)</td><td style="padding:4px 8px;text-align:right">(${f(totalSeparateSrc)})</td></tr>`:''}
-        ${totalDisallowable>0?`
-        <tr><td style="padding:4px 8px 2px;font-weight:600;color:var(--text-muted)">Add: Disallowable Expenses</td><td></td></tr>
-        ${dep>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Depreciation</td><td style="padding:2px 8px;text-align:right">${f(dep)}</td></tr>`:''}
-        ${car>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">S-plated car transport</td><td style="padding:2px 8px;text-align:right">${f(car)}</td></tr>`:''}
-        ${rptax>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Rental property tax</td><td style="padding:2px 8px;text-align:right">${f(rptax)}</td></tr>`:''}
-        ${othDis>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Other disallowable</td><td style="padding:2px 8px;text-align:right">${f(othDis)}</td></tr>`:''}
-        `:''}
-        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Adjusted Profit Before Capital Allowance</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(adjBeforeCA)}</td></tr>
-
-        ${totalCA>0?`
-        <tr><td style="padding:4px 8px 2px;font-weight:600;color:var(--text-muted)">Less: Capital Allowances</td><td></td></tr>
-        ${caLva>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Low-value assets ≤S$1,000 (100%)</td><td style="padding:2px 8px;text-align:right">(${f(caLva)})</td></tr>`:''}
-        ${caComp>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Computers / Automation (100%)</td><td style="padding:2px 8px;text-align:right">(${f(caComp)})</td></tr>`:''}
-        ${ca3yr>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">3-year write-off (1/3 this YA)</td><td style="padding:2px 8px;text-align:right">(${f(ca3yr)})</td></tr>`:''}
-        ${caBf>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Unutilised CA b/f</td><td style="padding:2px 8px;text-align:right">(${f(caBf)})</td></tr>`:''}
-        `:''}
-        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Adjusted Profit After Capital Allowance</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(adjAfterCA)}</td></tr>
-
-        ${netRental>0||interest>0?`
-        <tr><td style="padding:4px 8px;color:var(--text-muted)">Add: Separate Source Income (net)</td><td></td></tr>
-        ${netRental>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Rental income net of property expenses</td><td style="padding:2px 8px;text-align:right">${f(netRental)}</td></tr>`:''}
-        ${interest>0?`<tr><td style="padding:2px 8px 2px 24px;color:var(--text-muted)">Foreign interest income</td><td style="padding:2px 8px;text-align:right">${f(interest)}</td></tr>`:''}
-        `:''}
-        <tr style="border-top:2px solid var(--primary-light)"><td style="padding:8px 8px;font-weight:700;color:var(--primary)">ECI (Before Exempt Amount)</td><td style="padding:8px 8px;text-align:right;font-weight:700;color:var(--primary)">${f(eciBeforeExempt)}</td></tr>
-        <tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Exempt Amount <span style="font-size:.75rem">(${exemptNote})</span></td><td style="padding:4px 8px;text-align:right">(${f(exemptAmt)})</td></tr>
-        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">ECI (After Exempt Amount)</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(eciAfterExempt)}</td></tr>
-        <tr><td style="padding:4px 8px;color:var(--text-muted)">Estimated Tax @ 17%</td><td style="padding:4px 8px;text-align:right">${f(estTaxThereon)}</td></tr>
-        ${ftcRelief>0?`<tr><td style="padding:4px 8px;color:var(--text-muted)">Less: Double Taxation Relief (FTC)</td><td style="padding:4px 8px;text-align:right">(${f(ftcRelief)})</td></tr>`:''}
-        <tr style="border-top:1px solid var(--border)"><td style="padding:6px 8px;font-weight:600">Estimated Tax Payable (ETP)</td><td style="padding:6px 8px;text-align:right;font-weight:600">${f(etp)}</td></tr>
-      </table>
-
-      ${ftc>0&&etp>0?`
-      <div style="margin-top:16px;padding:12px 16px;background:#fff3e0;border:1px solid #ffcc80;border-radius:8px;font-size:.82rem">
-        <strong>FTC Back-Calculation (IRAS formula):</strong><br>
-        ${ftcFormula}<br>
-        = ${f(eciToFile)} ← fill this in IRAS myTax Portal as ECI to be taxed at 17%
-      </div>`:''}
-
-      <div style="margin-top:20px;padding:16px 20px;background:var(--primary);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:16px">
-        <div>
-          <div style="font-size:.75rem;opacity:.75;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">File in IRAS myTax Portal — ECI to be taxed at 17%</div>
-          <div style="font-size:2rem;font-weight:700;font-family:'Playfair Display',serif">${Math.round(eciToFile).toLocaleString()}</div>
-          <div style="font-size:.75rem;opacity:.65;margin-top:2px">S$ — enter this exact value in the ECI field</div>
-        </div>
-        <div style="text-align:right;font-size:.8rem;opacity:.8">
-          <div>YA ${ya}</div>
-          <div>${scheme==='partial'?'Partial Tax Exemption':'Start-Up Exemption'}</div>
-          <div>Revenue: ${f(revenue)}</div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function exportXBRL(){
-  const fy=parseInt(document.getElementById('xbrl-year').value)||new Date().getFullYear();
-  const s=DB.settings||{};
-  const invFY=DB.invoices.filter(i=>i.status!=='draft'&&new Date(i.date).getFullYear()===fy);
-  const expFY=DB.expenses.filter(e=>new Date(e.date).getFullYear()===fy);
-  const billFY=DB.bills.filter(b=>b.status==='paid'&&new Date(b.due).getFullYear()===fy);
-  const payFY=DB.payments.filter(p=>new Date(p.date).getFullYear()===fy);
-  const revenue=invFY.reduce((s,i)=>(s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)),0)),0);
-  const totalExp=expFY.reduce((s,e)=>s+_toSGD(e.amount||0,e.currency||'SGD'),0)+billFY.reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
-  const netProfit=revenue-totalExp;
-  const corpTax=Math.max(0,netProfit)*0.17;
-  const netPAT=netProfit-corpTax;
-  const ar=DB.invoices.filter(i=>i.status!=='paid'&&i.status!=='draft').reduce((s,i)=>(s+(i.lines||[]).reduce((a,l)=>a+((l.qty||0)*(l.price||0)*(1+(l.tax||0)/100)),0)),0);
-  const cash=payFY.reduce((s,p)=>s+_toSGD(p.amount||0,p.currency||'SGD'),0)-totalExp;
-  const totalAssets=Math.max(0,cash)+ar;
-  const totalLiab=DB.bills.filter(b=>b.status==='pending').reduce((s,b)=>s+_toSGD(b.amount||0,b.currency||'SGD'),0);
-  const equity=totalAssets-totalLiab;
-  const xml=_buildXBRL(s,fy,revenue,totalExp,netProfit,corpTax,netPAT,totalAssets,totalLiab,equity,cash,ar);
-  const blob=new Blob([xml],{type:'application/xml'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='Fintiv_XBRL_FY'+fy+'_'+new Date().toISOString().slice(0,10)+'.xml';
-  a.click();
-}
-
 (async function initApp(){
   const sbReady = _initSupabase();
   if(_checkRecoveryToken()) return; // handled by onAuthStateChange PASSWORD_RECOVERY
   if(sbReady){
-    // Always sign out on page load — force login every time
-    await _sb.auth.signOut();
-    _showLoginScreen();
+    // Check existing session
+    const {data:{session}} = await _sb.auth.getSession();
+    if(session){
+      // If MFA is enrolled but not yet verified at aal2, force re-login
+      const {data:aal} = await _sb.auth.mfa.getAuthenticatorAssuranceLevel();
+      if(aal && aal.nextLevel==='aal2' && aal.nextLevel!==aal.currentLevel){
+        await _sb.auth.signOut();
+        _showLoginScreen();
+      } else {
+        _user = session.user;
+        _isAdmin = (_user.app_metadata && _user.app_metadata.role === 'admin');
+        loadDB();
+        await _pullDown();
+        _showApp(_user.email);
+        renderDashboard();
+      }
+    } else {
+      _showLoginScreen();
+    }
     // Listen for auth state changes
     _sb.auth.onAuthStateChange(async (event, session)=>{
       if(event==='SIGNED_IN' && session){
+        // Guard: if MFA is required but not yet verified, don't open the app
+        const {data:aal} = await _sb.auth.mfa.getAuthenticatorAssuranceLevel();
+        if(aal && aal.nextLevel==='aal2' && aal.nextLevel!==aal.currentLevel) return;
         _user = session.user;
         _isAdmin = (_user.app_metadata && _user.app_metadata.role === 'admin');
         loadDB();
@@ -5162,8 +3354,6 @@ function exportXBRL(){
       }
     });
   } else {
-    // Supabase not configured — run in local mode, show local-mode hint
-    document.getElementById('local-mode-bar').style.display='block';
     _showLoginScreen();
   }
 })();
