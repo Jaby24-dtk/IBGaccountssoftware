@@ -2157,6 +2157,20 @@ function renderCashflowForecast(){
 (async function initApp(){
   const sbReady = _initSupabase();
   if(_checkRecoveryToken()) return; // handled by onAuthStateChange PASSWORD_RECOVERY
+
+  // STIV SSO bridge — reached with an access/refresh token pair in the URL
+  // fragment (never sent to any server) when opened from the STIV Systems
+  // panel, which mints the session server-side using credentials it holds.
+  // onAuthStateChange's SIGNED_IN handler below does the rest.
+  if(sbReady){
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/,''));
+    const ssoAccess = hashParams.get('access_token'), ssoRefresh = hashParams.get('refresh_token');
+    if(ssoAccess && ssoRefresh && !window.location.hash.includes('type=recovery')){
+      history.replaceState({}, '', window.location.pathname + window.location.search);
+      await _sb.auth.setSession({access_token: ssoAccess, refresh_token: ssoRefresh});
+    }
+  }
+
   if(sbReady){
     // Check existing session
     const {data:{session}} = await _sb.auth.getSession();
