@@ -297,7 +297,7 @@ function openBankStatementModal(){
 }
 
 async function saveBankStatement(){
-  if(!useCloud || !currentUser || !_sb){
+  if(!_user || !_sb){
     alert('Sign in to upload bank statements — files are stored in cloud storage, not locally.');
     return;
   }
@@ -312,7 +312,7 @@ async function saveBankStatement(){
   try{
     const id = `STMT-${String(DB.nextStmtNum).padStart(4,'0')}`;
     const ext = (file.name.split('.').pop()||'dat').toLowerCase();
-    const path = `${currentUser.id}/${id}.${ext}`;
+    const path = `${_user.id}/${id}.${ext}`;
     const { error: upErr } = await _sb.storage.from('bank-statements').upload(path, file, { upsert:false });
     if(upErr) throw upErr;
 
