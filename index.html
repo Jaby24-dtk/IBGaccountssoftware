@@ -303,6 +303,10 @@ tr:hover td{background:var(--surface2)}
 <svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="8" x2="21" y1="6" y2="6"></line><line x1="8" x2="21" y1="12" y2="12"></line><line x1="8" x2="21" y1="18" y2="18"></line><circle cx="3" cy="6" fill="currentColor" r="1.5" stroke="none"></circle><circle cx="3" cy="12" fill="currentColor" r="1.5" stroke="none"></circle><circle cx="3" cy="18" fill="currentColor" r="1.5" stroke="none"></circle></svg>
         Chart of Accounts
       </a>
+<a id="nav-bankstatements">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="16" rx="2" width="20" x="2" y="4"></rect><line x1="2" x2="22" y1="10" y2="10"></line><line x1="6" x2="10" y1="15" y2="15"></line></svg>
+        Bank Statements
+      </a>
 </div>
 <div class="nav-section" id="_ev_16">Reports <span class="nav-arrow">▼</span></div>
 <div class="nav-group">
@@ -487,6 +491,17 @@ tr:hover td{background:var(--surface2)}
 <div class="card">
 <div class="card-header"><h3>Chart of Accounts</h3><span class="text-muted" id="coa-count"></span></div>
 <div id="coa-table"></div>
+</div>
+</div>
+<!-- ===== BANK STATEMENTS ===== -->
+<div class="page" id="page-bankstatements">
+<div class="search-bar">
+<input id="stmt-search" placeholder="Search by filename or note..." type="text"/>
+<button class="btn btn-primary" id="btn-upload-statement">+ Upload Statement</button>
+</div>
+<div class="card">
+<div class="card-header"><h3>Bank Statements</h3><span class="text-muted" id="stmt-total"></span></div>
+<div id="bankstatements-table"></div>
 </div>
 </div>
 <div class="page" id="page-journal">
@@ -875,6 +890,23 @@ tr:hover td{background:var(--surface2)}
 <div class="modal-footer">
 <button class="btn btn-outline" id="_ev_62">Cancel</button>
 <button class="btn btn-primary" id="_ev_63">Save Expense</button>
+</div>
+</div>
+</div>
+<!-- Bank Statement Upload Modal -->
+<div class="modal-overlay" id="modal-bankstatement">
+<div class="modal">
+<div class="modal-header"><h3>Upload Bank Statement</h3><button class="modal-close" id="btn-close-stmt-modal">×</button></div>
+<div class="modal-body">
+<div class="form-grid">
+<div class="form-group" style="grid-column:1/-1"><label>Statement File *</label><input accept=".pdf,.csv,.ofx,.qfx,image/*" id="stmt-file" type="file"/></div>
+<div class="form-group"><label>Statement Date</label><input id="stmt-date" type="date"/></div>
+</div>
+<div class="form-group"><label>Note</label><textarea id="stmt-note" placeholder="e.g. DBS Current Account — June 2026"></textarea></div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-outline" id="btn-cancel-stmt">Cancel</button>
+<button class="btn btn-primary" id="btn-save-stmt">Upload</button>
 </div>
 </div>
 </div>

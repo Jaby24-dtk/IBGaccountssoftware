@@ -145,6 +145,7 @@ function defaultDB(){
     purchaseOrders: [],
     budgets: [],
     auditLog: [],
+    bankStatements: [],
     nextQuoteNum: 1,
     nextPONum: 1,
     nextInvNum: 1,
@@ -152,6 +153,7 @@ function defaultDB(){
     nextExpNum: 1,
     nextBillNum: 1,
     nextJrnNum: 1,
+    nextStmtNum: 1,
   };
 }
 
@@ -280,6 +282,106 @@ function toggleCOA(code){
 
 // COA selects are populated directly inside each modal function (see below)
 
+// ===================== BANK STATEMENTS =====================
+// Store-only — no parsing/reconciliation. Files live in the Supabase
+// Storage bucket "bank-statements" (private); DB.bankStatements only holds
+// metadata (filename, storage path, date, note). Requires the "Bank
+// Statements" section to have been signed in via cloud mode — there is no
+// local-only fallback, since a file needs somewhere durable to live.
+
+function openBankStatementModal(){
+  document.getElementById('stmt-file').value = '';
+  document.getElementById('stmt-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('stmt-note').value = '';
+  document.getElementById('modal-bankstatement').classList.add('open');
+}
+
+async function saveBankStatement(){
+  if(!useCloud || !currentUser || !_sb){
+    alert('Sign in to upload bank statements — files are stored in cloud storage, not locally.');
+    return;
+  }
+  const fileInput = document.getElementById('stmt-file');
+  const file = fileInput.files[0];
+  if(!file){ alert('Choose a file to upload.'); return; }
+
+  const btn = document.getElementById('btn-save-stmt');
+  const originalLabel = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Uploading...';
+
+  try{
+    const id = `STMT-${String(DB.nextStmtNum).padStart(4,'0')}`;
+    const ext = (file.name.split('.').pop()||'dat').toLowerCase();
+    const path = `${currentUser.id}/${id}.${ext}`;
+    const { error: upErr } = await _sb.storage.from('bank-statements').upload(path, file, { upsert:false });
+    if(upErr) throw upErr;
+
+    DB.bankStatements.push({
+      id,
+      filename: file.name,
+      storagePath: path,
+      date: document.getElementById('stmt-date').value || new Date().toISOString().slice(0,10),
+      note: document.getElementById('stmt-note').value.trim(),
+      uploadedAt: new Date().toISOString(),
+    });
+    DB.nextStmtNum++;
+    saveDB();
+    closeModal('modal-bankstatement');
+    renderBankStatements();
+  }catch(e){
+    alert('Upload failed: ' + (e.message || 'Unknown error. Check that the "bank-statements" bucket exists in Supabase Storage.'));
+  }finally{
+    btn.disabled = false; btn.textContent = originalLabel;
+  }
+}
+
+async function downloadBankStatement(id){
+  const stmt = (DB.bankStatements||[]).find(s=>s.id===id);
+  if(!stmt || !_sb) return;
+  const { data, error } = await _sb.storage.from('bank-statements').createSignedUrl(stmt.storagePath, 60);
+  if(error){ alert('Could not generate a download link: ' + error.message); return; }
+  window.open(data.signedUrl, '_blank');
+}
+
+async function deleteBankStatement(id){
+  if(!confirm('Delete this bank statement? This removes the file permanently.')) return;
+  const stmt = (DB.bankStatements||[]).find(s=>s.id===id);
+  if(stmt && _sb){
+    const { error } = await _sb.storage.from('bank-statements').remove([stmt.storagePath]);
+    if(error){ alert('Could not delete the file from storage: ' + error.message); return; }
+  }
+  DB.bankStatements = (DB.bankStatements||[]).filter(s=>s.id!==id);
+  saveDB();
+  renderBankStatements();
+}
+
+function renderBankStatements(){
+  const q = (document.getElementById('stmt-search')||{value:''}).value.toLowerCase();
+  const list = (DB.bankStatements||[]).filter(s =>
+    !q || s.filename.toLowerCase().includes(q) || (s.note||'').toLowerCase().includes(q)
+  );
+  const countEl = document.getElementById('stmt-total');
+  if(countEl) countEl.textContent = list.length + ' statement' + (list.length!==1?'s':'');
+
+  const rows = list.slice().reverse().map(s => `
+    <tr>
+      <td>${esc(s.filename)}</td>
+      <td>${esc(s.date||'')}</td>
+      <td>${esc(s.note||'')}</td>
+      <td>
+        <button class="btn btn-outline btn-sm" onclick="downloadBankStatement('${s.id}')">Download</button>
+        <button class="btn btn-outline btn-sm" style="color:#c0392b" onclick="deleteBankStatement('${s.id}')">Delete</button>
+      </td>
+    </tr>`).join('');
+
+  const tableEl = document.getElementById('bankstatements-table');
+  if(tableEl) tableEl.innerHTML = `
+    <table class="data-table">
+      <thead><tr><th>File</th><th>Date</th><th>Note</th><th>Actions</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="4" style="text-align:center;padding:32px;opacity:.4">No bank statements uploaded yet</td></tr>'}</tbody>
+    </table>`;
+}
+
 // ===================== CURRENCY =====================
 const SYMBOLS = {SGD:'S$',PHP:'₱',USD:'$',MYR:'RM',KRW:'₩'};
 const FX = {SGD:1,PHP:42,USD:0.74,MYR:3.28,KRW:985}; // approx to SGD
@@ -302,7 +404,7 @@ function updateCurrency(){ renderDashboard(); }
 const PAGE_TITLES = {
   dashboard:'Dashboard',invoices:'Invoices',payments:'Payments Received',
   expenses:'Expense Register',bills:'Bills & Payables',clients:'Clients & Accounts',
-  coa:'Chart of Accounts',
+  coa:'Chart of Accounts',bankstatements:'Bank Statements',
   journal:'General Journal',pnl:'P&L Statement',balance:'Balance Sheet',
   cashflow:'Cash Flow Statement',quotes:'Quotes & Estimates',purchaseorders:'Purchase Orders',budgets:'Budget vs Actual',settings:'Company Settings'
 };
@@ -350,6 +452,7 @@ function showPage(name){
   if(name==='bills') renderBills();
   if(name==='clients') renderClients();
   if(name==='coa') renderCOA();
+  if(name==='bankstatements') renderBankStatements();
   if(name==='journal') renderJournal();
   if(name==='pnl') renderPnL();
   if(name==='balance') renderBalance();
@@ -2244,6 +2347,11 @@ function renderCashflowForecast(){
     document.getElementById('_ev_13').addEventListener("click", (e) => { showPage('clients') });
     document.getElementById('_ev_14').addEventListener("click", (e) => { showPage('journal') });
     document.getElementById('_ev_15').addEventListener("click", (e) => { showPage('coa') });
+    document.getElementById('nav-bankstatements').addEventListener("click", (e) => { showPage('bankstatements') });
+    document.getElementById('btn-upload-statement').addEventListener("click", (e) => { openBankStatementModal() });
+    document.getElementById('btn-close-stmt-modal').addEventListener("click", (e) => { closeModal('modal-bankstatement') });
+    document.getElementById('btn-cancel-stmt').addEventListener("click", (e) => { closeModal('modal-bankstatement') });
+    document.getElementById('btn-save-stmt').addEventListener("click", (e) => { saveBankStatement() });
     document.getElementById('_ev_16').addEventListener("click", function(e){ toggleNavGroup(this) });
     document.getElementById('_ev_17').addEventListener("click", (e) => { showPage('pnl') });
     document.getElementById('_ev_18').addEventListener("click", (e) => { showPage('balance') });
